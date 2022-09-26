@@ -16,7 +16,7 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Home"
+      initialRouteName="CustomizeHome"
       screenOptions={{ tabBarActiveTintColor: Colors[colorScheme].tint }}
     >
       <BottomTab.Screen
@@ -58,6 +58,11 @@ function CustomizeHomeNavigator() {
         name="Home"
         component={CustomizeHome}
         options={{ headerTitle: "StraightForward" }}
+      />
+      <CustomizeStack.Screen
+        name="Contacts"
+        component={AddContacts}
+        options={{ headerTitle: "Add Contacts" }}
       />
     </CustomizeStack.Navigator>
   );
