@@ -7,25 +7,46 @@ import { useColorScheme } from "react-native";
 
 import Colors from "../constants/Colors";
 import CustomizeHome from "../screens/CustomizeHome";
+import Contacts from "../screens/Contacts";
 import Preview from "../screens/Preview";
+
+const CustomizeStackNav = createStackNavigator();
+
+const CustomizeStack = () => {
+  return (
+    <CustomizeStackNav.Navigator initialRouteName='CustomizeHome' >
+      <CustomizeStackNav.Screen
+        name="CustomizeHome"
+        component={CustomizeHome}
+        options={{ headerTitle: "StraightForward" }}
+      />
+      <CustomizeStackNav.Screen
+        name="Contacts"
+        component={Contacts}
+        options={{ headerTitle: "Add Contacts" }}
+      />
+    </CustomizeStackNav.Navigator>
+  );
+};
 
 const BottomTab = createBottomTabNavigator();
 
-export default function BottomTabNavigator() {
+const BottomTabNavigator = () => {
   const colorScheme = useColorScheme();
 
   return (
     <BottomTab.Navigator
-      initialRouteName="CustomizeHome"
       screenOptions={{ tabBarActiveTintColor: Colors[colorScheme].tint }}
     >
       <BottomTab.Screen
-        name="Home"
-        component={CustomizeHome}
+        name="Customize"
+        component={CustomizeStack}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="color-palette" color={color} />
           ),
+          headerShown: false,
+          
         }}
       />
       <BottomTab.Screen
@@ -39,7 +60,9 @@ export default function BottomTabNavigator() {
       />
     </BottomTab.Navigator>
   );
-}
+};
+
+export default BottomTabNavigator;
 
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/
@@ -49,35 +72,5 @@ function TabBarIcon(props) {
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const CustomizeStack = createStackNavigator();
 
-function CustomizeHomeNavigator() {
-  return (
-    <CustomizeStack.Navigator>
-      <CustomizeStack.Screen
-        name="Home"
-        component={CustomizeHome}
-        options={{ headerTitle: "StraightForward" }}
-      />
-      <CustomizeStack.Screen
-        name="Contacts"
-        component={AddContacts}
-        options={{ headerTitle: "Add Contacts" }}
-      />
-    </CustomizeStack.Navigator>
-  );
-}
 
-const PreviewStack = createStackNavigator();
-
-function PreviewNavigator() {
-  return (
-    <PreviewStack.Navigator>
-      <PreviewStack.Screen
-        name="Preview"
-        component={Preview}
-        options={{ headerTitle: "Preview" }}
-      />
-    </PreviewStack.Navigator>
-  );
-}

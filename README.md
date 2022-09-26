@@ -35,3 +35,15 @@
 - Learn more about [Universal React](https://docs.expo.dev/).
 - See what API and components are [available in the React runtimes](https://docs.expo.dev/versions/latest/).
 - Find out more about developing apps and websites: [Official guides](https://docs.expo.dev/guides/).
+
+## HOW TO RUN APP USING REACT NATIVE / EXPO
+1. Pull everything from repo
+2. Navigate to directory in terminal window
+3. Run npm install to make sure all packages are installed
+4. Run expo start to preview on a simulator or your phone
+5. Once expo has started (you should see a QR code) you can either scan the qr code to preview on your own phone, or hit "I" to test on IPhone simulator, or hit "a" to test on Android simulator
+- to test on your phone you'll need the expo go app
+
+## EXPO TIPS
+- Hit ^c to stop server
+- Should automatically update in real time whenever you make a change in the code. If for some reason it doesn't you can hit r in the terminal or shake your phone
