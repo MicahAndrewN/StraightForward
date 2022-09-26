@@ -6,8 +6,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { useColorScheme } from "react-native";
 
 import Colors from "../constants/Colors";
-import TabOneScreen from "../screens/TabOneScreen";
-import TabTwoScreen from "../screens/TabTwoScreen";
+import CustomizeHome from "../screens/CustomizeHome";
+import Preview from "../screens/Preview";
 
 const BottomTab = createBottomTabNavigator();
 
@@ -16,24 +16,24 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Home"
       screenOptions={{ tabBarActiveTintColor: Colors[colorScheme].tint }}
     >
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneNavigator}
+        name="Home"
+        component={CustomizeHome}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <TabBarIcon name="color-palette" color={color} />
           ),
         }}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoNavigator}
+        name="Preview"
+        component={Preview}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <TabBarIcon name="eye" color={color} />
           ),
         }}
       />
@@ -49,30 +49,30 @@ function TabBarIcon(props) {
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const TabOneStack = createStackNavigator();
+const CustomizeStack = createStackNavigator();
 
-function TabOneNavigator() {
+function CustomizeHomeNavigator() {
   return (
-    <TabOneStack.Navigator>
-      <TabOneStack.Screen
-        name="TabOneScreen"
-        component={TabOneScreen}
-        options={{ headerTitle: "Tab One Title" }}
+    <CustomizeStack.Navigator>
+      <CustomizeStack.Screen
+        name="Home"
+        component={CustomizeHome}
+        options={{ headerTitle: "StraightForward" }}
       />
-    </TabOneStack.Navigator>
+    </CustomizeStack.Navigator>
   );
 }
 
-const TabTwoStack = createStackNavigator();
+const PreviewStack = createStackNavigator();
 
-function TabTwoNavigator() {
+function PreviewNavigator() {
   return (
-    <TabTwoStack.Navigator>
-      <TabTwoStack.Screen
-        name="TabTwoScreen"
-        component={TabTwoScreen}
-        options={{ headerTitle: "Tab Two Title" }}
+    <PreviewStack.Navigator>
+      <PreviewStack.Screen
+        name="Preview"
+        component={Preview}
+        options={{ headerTitle: "Preview" }}
       />
-    </TabTwoStack.Navigator>
+    </PreviewStack.Navigator>
   );
 }
