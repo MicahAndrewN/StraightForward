@@ -5,14 +5,14 @@ import { Text, View } from "../components/Themed";
 import React, { useState, useEffect } from "react";
 
 
-const CustomizeHome = ({navigation}) => {
+const CustomizeHome = ({ navigation }) => {
 
   const [data, setdata] = useState();
 
   useEffect(() => {
     fetch("http://127.0.0.1:5000/handler1").then((response) => response.json())
       .then((json) => {
-        setdata(json.body)
+        setdata(json.apiuser)
       }).catch((error) => {
         console.error(error);
         setdata("error parsing json ")
@@ -23,21 +23,21 @@ const CustomizeHome = ({navigation}) => {
       });
   }, []);
   return (
-      <View style={styles.container}>
-        <View>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate('Customize',
-              {
-                screen: 'Contacts',
-                params: {
-                }
-              })}
-          >
-            <Text>Add Contact Widget</Text>
-            <Text style={styles.title}>{data}</Text>
-          </TouchableOpacity>
-        </View>
+    <View style={styles.container}>
+      <Text style={styles.title}>Hello user, {data}</Text>
+      <View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('Customize',
+            {
+              screen: 'Contacts',
+              params: {
+              }
+            })}
+        >
+          <Text>Add Contact Widget</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 
