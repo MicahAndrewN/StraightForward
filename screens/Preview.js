@@ -3,6 +3,41 @@ import { StyleSheet } from "react-native";
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 
+import { Wrapper, Status } from "@googlemaps/react-wrapper";
+
+const render = (status) => {
+  switch (status) {
+    case Status.LOADING:
+      return <Spinner />;
+    case Status.FAILURE:
+      return <ErrorComponent />;
+    case Status.SUCCESS:
+      return <MyMapComponent />;
+  }
+};
+
+function MyMapComponent({
+  center,
+  zoom,
+}) {
+  const ref = useRef();
+
+  useEffect(() => {
+    new window.google.maps.Map(ref.current, {
+      center,
+      zoom,
+    });
+  });
+
+  return <div ref={ref} id="map" />;
+}
+
+const RenderMap = () => (
+  <Wrapper apiKey={"AIzaSyCbD_d7uMnnYJ_kQxpQ8lQYhaOb5RwQgpI"} render={render}>
+    <MyMapComponent />
+  </Wrapper>
+);
+
 export default function Preview() {
   return (
     <View style={styles.container}>
