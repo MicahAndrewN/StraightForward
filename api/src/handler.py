@@ -15,9 +15,8 @@ def handle():
 
 app.route("login", methods=['POST'])
 def handle_login():
-    print(request.data)
-    print(request.form)
-    # TODO authenticate user and set flask session
+    flask.session['username'] = request.json.get('username')
+    print('logged in user is ', flask.session['username'])
 
 if __name__ == '__main__':
     app.run()
