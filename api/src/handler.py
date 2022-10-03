@@ -2,7 +2,7 @@
 import flask # run `pip install Flask` if this is not found
 from flask import Flask
 import json
-import requests
+import requests, request, session
 
 app = Flask(__name__)
 
@@ -12,6 +12,12 @@ def handle():
     resp = requests.put(url="https://straightforward-89f53-default-rtdb.firebaseio.com/users.json", data=json.dumps({'apiuser': 'API User'}))
     resp = requests.get(url="https://straightforward-89f53-default-rtdb.firebaseio.com/users.json")
     return resp.json()
+
+app.route("login", methods=['POST'])
+def handle_login():
+    print(request.data)
+    print(request.form)
+    # TODO authenticate user and set flask session
 
 if __name__ == '__main__':
     app.run()
