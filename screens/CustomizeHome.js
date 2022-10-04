@@ -22,22 +22,35 @@ const CustomizeHome = ({ navigation }) => {
         setdata("error with connecting to api ")
       });
   }, []);
+
   return (
     <View style={styles.container}>
+      <Text style={styles.title}><b>StraightForward</b></Text>
       <Text style={styles.title}>Hello user, {data}</Text>
-      <View>
         <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('Customize',
-            {
-              screen: 'Contacts',
-              params: {
-              }
-            })}
+         style={styles.button}
+         onPress={() => navigation.navigate('Customize',
+          {
+            screen: 'AllowCalls',
+            params: {}
+          })}
         >
-          <Text>Add Contact Widget</Text>
+         <Text style={styles.text}><b>Add Contacts Widget</b></Text>
         </TouchableOpacity>
-      </View>
+        <TouchableOpacity
+         style={styles.button}
+         onPress={() => console.log("add music")}
+        >
+         <Text style={styles.text}><b>Add Music Widget</b></Text>
+        </TouchableOpacity>
+        <View style={styles.driveButton}>
+          <TouchableOpacity
+           style={styles.drive}
+           onPress={() => console.log("Drive")}
+          >
+           <Text style={styles.driveText}><b>Drive</b></Text>
+          </TouchableOpacity>
+        </View>
     </View>
   );
 
@@ -49,21 +62,52 @@ export default CustomizeHome;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: "#FFFFFF"
+  },
+  button: {
+    textAlign: 'center',
+    backgroundColor: '#DDDDDD',
+    marginTop: 10,
+    marginBottom: 10,
+    height: 65,
+    width: 250,
+    borderRadius: 20,
+  },
+  text: {
+    fontSize: 20,
+    marginTop: 15,
+  },
+  driveText: {
+    fontSize: 24,
+    marginTop: 15,
+    color: '#FFFFFF',
+  },
+  title: {
+    fontSize: 32,
+  },
+  driveButton: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  drive: {
+    textAlign: 'center',
+    backgroundColor: '#4285F4',
+    marginTop: 10,
+    marginBottom: 10,
+    height: 65,
+    width: 250,
+    borderRadius: 20,
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
+    marginTop: 10,
   },
   separator: {
     marginVertical: 30,
     height: 1,
     width: "80%",
-  },
-  button: {
-    alignItems: "center",
-    backgroundColor: "#DDDDDD",
-    padding: 10
   },
 });

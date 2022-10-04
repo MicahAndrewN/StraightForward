@@ -7,23 +7,35 @@ import { useColorScheme } from "react-native";
 
 import Colors from "../constants/Colors";
 import CustomizeHome from "../screens/CustomizeHome";
-import Contacts from "../screens/Contacts";
 import Preview from "../screens/Preview";
+import Login from "../screens/Login";
+import MakeCalls from "../screens/MakeCalls";
+import AllowCalls from "../screens/AllowCalls";
 
 const CustomizeStackNav = createStackNavigator();
 
 const CustomizeStack = () => {
   return (
-    <CustomizeStackNav.Navigator initialRouteName='CustomizeHome' >
+    <CustomizeStackNav.Navigator initialRouteName='Login' >
+      <CustomizeStackNav.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }}
+      />
       <CustomizeStackNav.Screen
         name="CustomizeHome"
         component={CustomizeHome}
-        options={{ headerTitle: "StraightForward" }}
+        options={{ headerShown: false }}
       />
       <CustomizeStackNav.Screen
-        name="Contacts"
-        component={Contacts}
-        options={{ headerTitle: "Add Contacts" }}
+        name="AllowCalls"
+        component={AllowCalls}
+        options={{ headerTitle: "" }}
+      />
+      <CustomizeStackNav.Screen
+        name="MakeCalls"
+        component={MakeCalls}
+        options={{ headerTitle: "" }}
       />
     </CustomizeStackNav.Navigator>
   );
