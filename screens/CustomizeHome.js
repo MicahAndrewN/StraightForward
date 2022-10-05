@@ -25,7 +25,7 @@ const CustomizeHome = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}><b>StraightForward</b></Text>
+      <Text style={styles.title}>StraightForward</Text>
       <Text style={styles.title}>Hello user, {data}</Text>
         <TouchableOpacity
          style={styles.button}
@@ -35,20 +35,20 @@ const CustomizeHome = ({ navigation }) => {
             params: {}
           })}
         >
-         <Text style={styles.text}><b>Add Contacts Widget</b></Text>
+         <Text style={styles.text}>Add Contacts Widget</Text>
         </TouchableOpacity>
         <TouchableOpacity
          style={styles.button}
          onPress={() => console.log("add music")}
         >
-         <Text style={styles.text}><b>Add Music Widget</b></Text>
+         <Text style={styles.text}>Add Music Widget</Text>
         </TouchableOpacity>
         <View style={styles.driveButton}>
           <TouchableOpacity
            style={styles.drive}
            onPress={() => console.log("Drive")}
           >
-           <Text style={styles.driveText}><b>Drive</b></Text>
+           <Text style={styles.driveText}>Drive</Text>
           </TouchableOpacity>
         </View>
     </View>

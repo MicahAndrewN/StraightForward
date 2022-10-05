@@ -31,7 +31,7 @@ const Login = ({navigation}) => {
 
     return (
       <View style={styles.container}>
-          <View><Text style={{ fontSize: 24 }}><b>StraightForward</b></Text></View>
+          <View><Text style={{ fontSize: 24 }}>StraightForward</Text></View>
           <View style={styles.login}>
 
               <StatusBar style="auto" />
@@ -58,7 +58,7 @@ const Login = ({navigation}) => {
                 screen: 'CustomizeHome',
                 params: {}
                 })}>
-                  <Text><b>LOGIN</b></Text>
+                  <Text>LOGIN</Text>
               </TouchableOpacity>
           </View>
       </View>
