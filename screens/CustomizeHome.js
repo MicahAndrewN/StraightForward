@@ -12,7 +12,7 @@ const CustomizeHome = ({ navigation }) => {
   useEffect(() => {
     fetch("http://127.0.0.1:5000/handler1").then((response) => response.json())
       .then((json) => {
-        setdata(json.apiuser)
+        setdata(json.apiuser2.name)
       }).catch((error) => {
         console.error(error);
         setdata("error parsing json ")
