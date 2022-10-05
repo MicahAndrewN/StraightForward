@@ -23,7 +23,7 @@ const MakeCalls = ({navigation}) => {
   
     return (
         <View style={styles.container}>
-            <Text style={{ fontSize: 24 }}><b>Make Calls</b></Text>
+            <Text style={{ fontSize: 24, fontWeight: 'bold'}}>Make Calls</Text>
             <FlatList
             data={data}
             renderItem={render}
@@ -37,7 +37,7 @@ const MakeCalls = ({navigation}) => {
                 params: {}
             })}
             >
-            <Text style={styles.text}><b>Submit</b></Text>
+            <Text style={styles.text}>Submit</Text>
             </TouchableOpacity>
         </View>
     );
@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     marginTop: 15,
+    fontWeight: 'bold'
   },
 });
 
