@@ -12,56 +12,60 @@ import {
 
 // adapted from https://code.tutsplus.com/tutorials/common-react-native-app-layouts-login-page--cms-27639
 
-/*function loginHandler(username, password) {
+function loginHandler(navigation, username, password) {
     fetch('http://127.0.0.1:5000/login', {
-        method: 'POST',
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify({
-            username: username,
-            password: password
+            'username': username,
+           // 'password': password,
         })
     }).catch((error) => {
         console.error(error);
         setdata("error with connecting to api")
     });
-}*/
+    navigation.navigate('Customize',
+        {
+            screen: 'CustomizeHome',
+            params: {}
+        })
+}
 
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     return (
-      <View style={styles.container}>
-          <View><Text style={{ fontSize: 24 }}>StraightForward</Text></View>
-          <View style={styles.login}>
+        <View style={styles.container}>
+            <View><Text style={{ fontSize: 24 }}>StraightForward</Text></View>
+            <View style={styles.login}>
 
-              <StatusBar style="auto" />
-              <View style={styles.inputView}>
-                  <TextInput
-                      style={styles.TextInput}
-                      placeholder="Username"
-                      placeholderTextColor="#003f5c"
-                      onChangeText={(username) => setUsername(username)}
-                  />
-              </View>
+                <StatusBar style="auto" />
+                <View style={styles.inputView}>
+                    <TextInput
+                        style={styles.TextInput}
+                        placeholder="Username"
+                        placeholderTextColor="#003f5c"
+                        onChangeText={(username) => setUsername(username)}
+                    />
+                </View>
 
-              <View style={styles.inputView}>
-                  <TextInput
-                      style={styles.TextInput}
-                      placeholder="Password."
-                      placeholderTextColor="#003f5c"
-                      secureTextEntry={true}
-                      onChangeText={(password) => setPassword(password)}
-                  />
-              </View>
-              <TouchableOpacity style={styles.loginBtn} onPress={() => navigation.navigate('Customize',
-                {
-                screen: 'CustomizeHome',
-                params: {}
-                })}>
-                  <Text>LOGIN</Text>
-              </TouchableOpacity>
-          </View>
-      </View>
+                <View style={styles.inputView}>
+                    <TextInput
+                        style={styles.TextInput}
+                        placeholder="Password."
+                        placeholderTextColor="#003f5c"
+                        secureTextEntry={true}
+                        onChangeText={(password) => setPassword(password)}
+                    />
+                </View>
+                <TouchableOpacity style={styles.loginBtn} onPress={() => loginHandler(navigation, username, password)}>
+                    <Text>LOGIN</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
     );
 };
 
@@ -74,9 +78,9 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     login: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 
     image: {
