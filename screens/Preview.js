@@ -1,9 +1,9 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Spinner } from "react-native";
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 
-// import { Wrapper, Status } from "@googlemaps/react-wrapper";
+import { Wrapper, Status } from "@googlemaps/react-wrapper";
 
 const render = (status) => {
   switch (status) {
@@ -32,10 +32,12 @@ function MyMapComponent({
   return <div ref={ref} id="map" />;
 }
 
-const RenderMap = () => (
+const RenderMap = () =>(
+  <View>
   <Wrapper apiKey={"AIzaSyCbD_d7uMnnYJ_kQxpQ8lQYhaOb5RwQgpI"} render={render}>
     <MyMapComponent />
   </Wrapper>
+  </View>
 );
 
 export default function Preview() {
@@ -48,6 +50,7 @@ export default function Preview() {
         darkColor="rgba(255,255,255,0.1)"
       />
       <Text>Preview screen will go here.</Text>
+      {RenderMap()}
     </View>
   );
 }
