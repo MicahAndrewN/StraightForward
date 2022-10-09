@@ -28,6 +28,17 @@ def hello_user():
     resp = requests.get(url=f"https://straightforward-89f53-default-rtdb.firebaseio.com/users/{getLogname()}.json")
     return resp.json()
 
+@app.route("/getwidgets", methods=['GET'])
+def get_widget():
+    resp = requests.get(url=f"https://straightforward-89f53-default-rtdb.firebaseio.com/users/{getLogname()}/widgets.json")
+    return resp.json()
+
+@app.route("/addwidgets", methods=['POST'])
+def postwidget():
+    #TODO how do we want to do this? Maybe instead make endpooints for each widget type? ie post contact widget?
+    # or just front end can pass json obj and api can blindly just insert it 
+    return
+
 if __name__ == '__main__':
     app.debug = True
     app.run()
