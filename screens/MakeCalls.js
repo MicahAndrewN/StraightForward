@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native
 
 
 const MakeCalls = ({ navigation }) => {
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState({});
   const data = [
     "Mom", "Dad", "Daniel", "1", "2", "3"
   ];
@@ -24,22 +24,24 @@ const MakeCalls = ({ navigation }) => {
   const handleWidgets = () => {
     console.log(typeof selected)
     console.log(selected)
-    selected.keys.map(function (element) {
-      console.log(element)
-      fetch('http://127.0.0.1:5000/addwidget', {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          "type": "contacts",
-          "subtype": "call",
-          "contact-name": element
-        })
-      }).catch((error) => {
-        console.error(error);
-        setdata("error with connecting to api")
-      });
+    Object.keys(selected).forEach(function(key, index) {
+      console.log(key)
+      if (selected[key]) {
+        fetch('http://127.0.0.1:5000/addwidget', {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "type": "contacts",
+            "subtype": "call",
+            "contact-name": key
+          })
+        }).catch((error) => {
+          console.error(error);
+          setdata("error with connecting to api")
+        });
+      }
       return
     });
 
