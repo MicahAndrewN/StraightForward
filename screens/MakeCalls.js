@@ -63,7 +63,7 @@ const MakeCalls = ({ navigation }) => {
         style={styles.button2}
         onPress={() => handleWidgets(selected)}
       >
-        <Text style={styles.text}>Submit</Text>
+        <Text style={{ fontWeight: 'bold' }}>Submit</Text>
       </TouchableOpacity>
     </View>
   );
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    textAlign: 'center',
+    alignItems: 'center',
     backgroundColor: '#FFFFFF',
     marginTop: 10,
     marginBottom: 10,
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   button2: {
-    textAlign: 'center',
+    alignItems: 'center',
     backgroundColor: '#DDDDDD',
     marginTop: 10,
     marginBottom: 10,
@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     marginTop: 15,
-    fontWeight: 'bold'
   },
 });
 
