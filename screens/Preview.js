@@ -28,7 +28,9 @@ export default function Preview() {
         darkColor="rgba(255,255,255,0.1)"/>
 
       {buttons}
-      
+
+      <Image source={require('../assets/images/mapimage2.png')} />
+
     </View>
   );
 }
