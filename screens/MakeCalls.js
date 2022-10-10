@@ -1,46 +1,70 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 
-const MakeCalls = ({navigation}) => {
-    const [selected, setSelected] = useState({});
-    const data = [
-      "Mom", "Dad", "Daniel", "1", "2", "3"
-    ];
-  
-    const check = (item) => {
-      setSelected(test => (test[item] ? {...test, [item]: false} : {...test, [item]: true}));
-    }
-    const render = ({item}) => {
-      return(
-        <TouchableOpacity
-            style={styles.button}
-            onPress={() => check(item)}
-          >
-          {selected[item] ? <Text style={styles.text}>{item} &#10003;</Text> : <Text style={styles.text}>{item}</Text>}
-        </TouchableOpacity>
-      )
-    }
-  
+
+const MakeCalls = ({ navigation }) => {
+  const [selected, setSelected] = useState([]);
+  const data = [
+    "Mom", "Dad", "Daniel", "1", "2", "3"
+  ];
+
+  const check = (item) => {
+    setSelected(test => (test[item] ? { ...test, [item]: false } : { ...test, [item]: true }));
+  }
+  const render = ({ item }) => {
     return (
-        <View style={styles.container}>
-            <Text style={{ fontSize: 24, fontWeight: 'bold'}}>Make Calls</Text>
-            <FlatList
-            data={data}
-            renderItem={render}
-            keyExtractor={(item, index) => index.toString()}
-            />
-            <TouchableOpacity
-            style={styles.button2}
-            onPress={() => navigation.navigate('Customize',
-            {
-                screen: 'CustomizeHome',
-                params: {}
-            })}
-            >
-            <Text style={styles.text}>Submit</Text>
-            </TouchableOpacity>
-        </View>
-    );
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => check(item)}
+      >
+        {selected[item] ? <Text style={styles.text}>{item} &#10003;</Text> : <Text style={styles.text}>{item}</Text>}
+      </TouchableOpacity>
+    )
+  }
+  const handleWidgets = () => {
+    console.log(typeof selected)
+    console.log(selected)
+    selected.keys.map(function (element) {
+      console.log(element)
+      fetch('http://127.0.0.1:5000/addwidget', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          "type": "contacts",
+          "subtype": "call",
+          "contact-name": element
+        })
+      }).catch((error) => {
+        console.error(error);
+        setdata("error with connecting to api")
+      });
+      return
+    });
+
+    navigation.navigate('Customize',
+      {
+        screen: 'CustomizeHome',
+        params: {}
+      })
+  }
+  return (
+    <View style={styles.container}>
+      <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Make Calls</Text>
+      <FlatList
+        data={data}
+        renderItem={render}
+        keyExtractor={(item, index) => index.toString()}
+      />
+      <TouchableOpacity
+        style={styles.button2}
+        onPress={() => handleWidgets(selected)}
+      >
+        <Text style={styles.text}>Submit</Text>
+      </TouchableOpacity>
+    </View>
+  );
 };
 
 

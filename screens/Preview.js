@@ -48,6 +48,12 @@ export default function Preview() {
         style={styles.separator}
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
+        // TODO loop over widgets returned from 
+        // API endpoint /getwidgets
+        // each will have a "type" and "subtype"
+        // for Alpha all types will be "contacts" and subtype "call"
+        // call widgets have a "name" attribute which are contact names
+        // Render widgets with "name"
       />
       <Text>Preview screen will go here.</Text>
       {RenderMap()}
