@@ -28,11 +28,6 @@ const CustomizeStack = () => {
         options={{ headerShown: false }}
       />
       <CustomizeStackNav.Screen
-        name="AllowCalls"
-        component={AllowCalls}
-        options={{ headerTitle: "" }}
-      />
-      <CustomizeStackNav.Screen
         name="MakeCalls"
         component={MakeCalls}
         options={{ headerTitle: "" }}

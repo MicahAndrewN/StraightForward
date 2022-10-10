@@ -1,7 +1,6 @@
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, SafeAreaView, Text, View } from "react-native";
 import { GestureHandlerRefContext } from "@react-navigation/stack";
 import EditScreenInfo from "../components/EditScreenInfo";
-import { Text, View } from "../components/Themed";
 import React, { useState, useEffect } from "react";
 
 
@@ -24,14 +23,14 @@ const CustomizeHome = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>StraightForward</Text>
-      <Text style={styles.title}>Hello user, {data}</Text>
+      <Text style={styles.title2}>Hello user, {data}</Text>
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate('Customize',
           {
-            screen: 'AllowCalls',
+            screen: 'MakeCalls',
             params: {}
           })}
       >
@@ -51,7 +50,7 @@ const CustomizeHome = ({ navigation }) => {
           <Text style={styles.driveText}>Drive</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 
 
@@ -67,7 +66,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF"
   },
   button: {
-    textAlign: 'center',
+    alignItems: 'center',
     backgroundColor: '#DDDDDD',
     marginTop: 10,
     marginBottom: 10,
@@ -78,11 +77,13 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     marginTop: 15,
+    fontWeight: 'bold'
   },
   driveText: {
     fontSize: 24,
     marginTop: 15,
     color: '#FFFFFF',
+    fontWeight: 'bold'
   },
   title: {
     fontSize: 32,
@@ -93,15 +94,16 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   drive: {
-    textAlign: 'center',
+    alignItems: 'center',
     backgroundColor: '#4285F4',
     marginTop: 10,
     marginBottom: 10,
     height: 65,
     width: 250,
     borderRadius: 20,
+    fontWeight: 'bold'
   },
-  title: {
+  title2: {
     fontSize: 20,
     fontWeight: "bold",
     marginTop: 10,
