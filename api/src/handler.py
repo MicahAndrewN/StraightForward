@@ -3,6 +3,7 @@ import flask # run `pip install Flask` if this is not found
 from flask import Flask, request, session, jsonify
 import json
 import requests
+import os
 
 app = Flask(__name__)
 app.secret_key = 'super secret key'
@@ -35,8 +36,9 @@ def get_widget():
 
 @app.route("/addwidget", methods=['POST'])
 def postwidget():
-    resp = requests.post(url=f"https://straightforward-89f53-default-rtdb.firebaseio.com/users/{getLogname()}/widgets.json", data=request.json())
-    return resp.json()
+    cmd = f"curl -X POST https://straightforward-89f53-default-rtdb.firebaseio.com/users/{getLogname()}/widgets.json -d '{json.dumps(request.json)}'"
+    os.system(cmd)
+    return jsonify({'status_code': 200}), 200
 
 if __name__ == '__main__':
     app.debug = True
