@@ -22,10 +22,7 @@ const MakeCalls = ({ navigation }) => {
     )
   }
   const handleWidgets = () => {
-    console.log(typeof selected)
-    console.log(selected)
     Object.keys(selected).forEach(function(key, index) {
-      console.log(key)
       if (selected[key]) {
         fetch('http://127.0.0.1:5000/addwidget', {
           method: "POST",
@@ -35,7 +32,7 @@ const MakeCalls = ({ navigation }) => {
           body: JSON.stringify({
             "type": "contacts",
             "subtype": "call",
-            "contact-name": key
+            "name": key
           })
         }).catch((error) => {
           console.error(error);
