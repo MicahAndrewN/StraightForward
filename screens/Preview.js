@@ -1,69 +1,34 @@
 import { StyleSheet, Spinner } from "react-native";
 
 import EditScreenInfo from "../components/EditScreenInfo";
-import { Text, View } from "../components/Themed";
-
-import { Wrapper, Status } from "@googlemaps/react-wrapper";
-
-const render = (status) => {
-  switch (status) {
-    case Status.LOADING:
-      return <Spinner />;
-    case Status.FAILURE:
-      return <ErrorComponent />;
-    case Status.SUCCESS:
-      return <MyMapComponent />;
-  }
-};
-
-function MyMapComponent({
-  center,
-  zoom,
-}) {
-  const ref = useRef();
-
-  useEffect(() => {
-    new window.google.maps.Map(ref.current, {
-      center,
-      zoom,
-    });
-  });
-
-  return <div ref={ref} id="map" />;
-}
-
-const RenderMap = () => (
-  <View>
-    <Wrapper apiKey={"AIzaSyCbD_d7uMnnYJ_kQxpQ8lQYhaOb5RwQgpI"} render={render}>
-      <MyMapComponent />
-    </Wrapper>
-  </View>
-);
+import { Text, View, Button, Alert } from "../components/Themed";
 
 export default function Preview() {
-  const getNamesToCall = () => {
-    //Returns a list of names to make call buttons for
-    let names = [];
-    fetch('http://127.0.0.1:5000/getwidgets').then((response) => response.json()).then((json) => {
-      for (var i in json)
-        names.push(json[i].name)
-    })
-    console.log(names)
-    return names
+  let names = [];
+  fetch('http://127.0.0.1:5000/getwidgets').then((response) => response.json()).then((json) => {
+    for (var i in json)
+      names.push(json[i].name)
+  })
+  console.log(names)
+
+  let buttons = []
+  for (let i = 0; i < names.length; i++) {
+    buttons.push(<Button
+      title={names[i]}
+      onPress={() => Alert.alert('No widget action assigned')}
+    />)
   }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab Two</Text>
       <View
         style={styles.separator}
         lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      // TODO loop over names returned from getNamesToCall and make call buttons for each
-      // TODO add static image of map
+        darkColor="rgba(255,255,255,0.1)"/>
+
+      {buttons}
       
-      />
-      <Text>Preview screen will go here.</Text>
-      {RenderMap()}
     </View>
   );
 }
