@@ -1,27 +1,30 @@
-import * as React from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList, Button } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons'; 
+import React, { useState, useEffect } from "react";
+import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 
 const Preview = () => {
-  const getNamesToCall = () => {
-    let names = [];
-    //Returns a list of names to make call buttons for
-    fetch('http://127.0.0.1:5000/getwidgets').then((response) => response.json()).then((json) => {
-      for (var i in json)
-        names.push(json[i].name)
-    })
-    console.log(names)
-    return names
-  }
+  const [names, setNames] = useState([]);
 
-  const names = getNamesToCall()
+  useEffect(() => {
+    fetch('http://127.0.0.1:5000/getwidgets')
+      .then((response) => response.json()).catch((error) => console.log(error)).then((json) => {
+        var vals = Object.values(json)
+        var tempNames = new Array()
+        vals.forEach(function (v) {
+          tempNames.push(v.name)
+        })
+        console.log(tempNames)
+        setNames(tempNames)
+        }).catch((error) => console.log("error1 " + error))
+  }, []);
+
 
   const render = ({ item }) => {
-    return(
+    return (
       <TouchableOpacity
-          style={styles.button}
-          onPress={() => console.log("Call")}
-        >
+        style={styles.button}
+        onPress={() => console.log("Call")}
+      >
         <Text style={styles.buttonText}><FontAwesome name="phone" size={20} color="black" /> Call {item}</Text>
       </TouchableOpacity>
     )
