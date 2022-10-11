@@ -32,6 +32,7 @@ def hello_user():
 @app.route("/getwidgets", methods=['GET'])
 def get_widget():
     resp = requests.get(url=f"https://straightforward-89f53-default-rtdb.firebaseio.com/users/{getLogname()}/widgets.json")
+    print(resp)
     return resp.json()
 
 @app.route("/addwidget", methods=['POST'])

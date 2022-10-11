@@ -20,17 +20,18 @@ function loginHandler(navigation, username, password) {
         },
         body: JSON.stringify({
             'username': username,
-           // 'password': password,
+            // 'password': password,
         })
+    }).then(() => {
+        navigation.navigate('Customize',
+            {
+                screen: 'CustomizeHome',
+                params: {}
+            })
     }).catch((error) => {
         console.error(error);
         setdata("error with connecting to api")
     });
-    navigation.navigate('Customize',
-        {
-            screen: 'CustomizeHome',
-            params: {}
-        })
 }
 
 const Login = ({ navigation }) => {

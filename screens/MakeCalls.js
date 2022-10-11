@@ -22,7 +22,7 @@ const MakeCalls = ({ navigation }) => {
     )
   }
   const handleWidgets = () => {
-    Object.keys(selected).forEach(function(key, index) {
+    Object.keys(selected).forEach(function (key, index) {
       if (selected[key]) {
         fetch('http://127.0.0.1:5000/addwidget', {
           method: "POST",
@@ -34,6 +34,12 @@ const MakeCalls = ({ navigation }) => {
             "subtype": "call",
             "name": key
           })
+        }).then(() => {
+          navigation.navigate('Customize',
+            {
+              screen: 'CustomizeHome',
+              params: {}
+            })
         }).catch((error) => {
           console.error(error);
           setdata("error with connecting to api")
@@ -41,12 +47,6 @@ const MakeCalls = ({ navigation }) => {
       }
       return
     });
-
-    navigation.navigate('Customize',
-      {
-        screen: 'CustomizeHome',
-        params: {}
-      })
   }
   return (
     <View style={styles.container}>
