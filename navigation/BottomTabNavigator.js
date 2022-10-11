@@ -63,6 +63,7 @@ const BottomTabNavigator = () => {
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="eye" color={color} />
           ),
+          headerShown: false,
         }}
       />
     </BottomTab.Navigator>

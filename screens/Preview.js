@@ -1,51 +1,78 @@
-import { StyleSheet, Spinner } from "react-native";
+import * as React from 'react';
+import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList, Button } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons'; 
 
-import EditScreenInfo from "../components/EditScreenInfo";
-import { Text, View, Button, Alert } from "../components/Themed";
+const Preview = () => {
+  const getNamesToCall = () => {
+    let names = [];
+    //Returns a list of names to make call buttons for
+    fetch('http://127.0.0.1:5000/getwidgets').then((response) => response.json()).then((json) => {
+      for (var i in json)
+        names.push(json[i].name)
+    })
+    console.log(names)
+    return names
+  }
 
-export default function Preview() {
-  let names = [];
-  fetch('http://127.0.0.1:5000/getwidgets').then((response) => response.json()).then((json) => {
-    for (var i in json)
-      names.push(json[i].name)
-  })
-  console.log(names)
+  const names = getNamesToCall()
 
-  let buttons = []
-  for (let i = 0; i < names.length; i++) {
-    buttons.push(<Button
-      title={names[i]}
-      onPress={() => Alert.alert('No widget action assigned')}
-    />)
+  const render = ({ item }) => {
+    return(
+      <TouchableOpacity
+          style={styles.button}
+          onPress={() => console.log("Call")}
+        >
+        <Text style={styles.buttonText}><FontAwesome name="phone" size={20} color="black" /> Call {item}</Text>
+      </TouchableOpacity>
+    )
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"/>
-
-      {buttons}
-      
+      <Image style={styles.image} source={require('../assets/images/mapimage1.png')} />
+      <View style={styles.sidebar}>
+        <FlatList
+          horizontal={true}
+          data={names}
+          renderItem={render}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </View>
     </View>
   );
 }
 
+export default Preview;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: 336,
+    height: '100%',
+    backgroundColor: "#FFFFFF",
+    alignSelf: 'center',
+    alignItems: 'center'
+  },
+  image: {
+    flex: 3,
+    resizeMode: 'cover',
+    width: "100%"
+  },
+  sidebar: {
+    flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: 'space-between'
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#DDD',
+    height: 65,
+    width: 150,
+    alignSelf: 'center',
+    transform: [{ rotate: '-90deg' }],
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
+  buttonText: {
+    fontWeight: 'bold'
   },
 });

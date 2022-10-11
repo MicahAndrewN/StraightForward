@@ -60,7 +60,7 @@ const MakeCalls = ({ navigation }) => {
         style={styles.button2}
         onPress={() => handleWidgets(selected)}
       >
-        <Text style={{ fontWeight: 'bold' }}>Submit</Text>
+        <Text style={{ fontWeight: 'bold', marginTop: 15, fontSize: 20 }}>Submit</Text>
       </TouchableOpacity>
     </View>
   );
