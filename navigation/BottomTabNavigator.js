@@ -49,6 +49,7 @@ const BottomTabNavigator = () => {
         name="Customize"
         component={CustomizeStack}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="color-palette" color={color} />
           ),
@@ -60,6 +61,7 @@ const BottomTabNavigator = () => {
         name="Preview"
         component={Preview}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="eye" color={color} />
           ),
