@@ -40,7 +40,7 @@ const Login = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <View><Text style={{ fontSize: 24 }}>StraightForward</Text></View>
+            <View><Text style={{ fontSize: 24, marginTop: 100 }}>StraightForward</Text></View>
             <View style={styles.login}>
 
                 <StatusBar style="auto" />
