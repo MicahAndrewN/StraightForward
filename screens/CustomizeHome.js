@@ -25,7 +25,7 @@ const CustomizeHome = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>StraightForward</Text>
-      <Text style={styles.title2}>Hello user, {data}</Text>
+      <Text style={styles.title2}>Hello {data}</Text>
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate('Customize',

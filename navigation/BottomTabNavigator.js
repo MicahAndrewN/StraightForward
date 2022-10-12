@@ -23,7 +23,7 @@ const CustomizeStack = () => {
         options={{ headerShown: false }}
       />
       <CustomizeStackNav.Screen
-        name="CustomizeHome"
+        name="Home"
         component={CustomizeHome}
         options={{ headerShown: false }}
       />

@@ -25,7 +25,7 @@ function loginHandler(navigation, username, password) {
     }).then(() => {
         navigation.navigate('Customize',
             {
-                screen: 'CustomizeHome',
+                screen: 'Home',
                 params: {}
             })
     }).catch((error) => {
