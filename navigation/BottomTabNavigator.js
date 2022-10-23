@@ -8,28 +8,47 @@ import { useColorScheme } from "react-native";
 import Colors from "../constants/Colors";
 import CustomizeHome from "../screens/CustomizeHome";
 import Preview from "../screens/Preview";
-import Login from "../screens/Login";
 import MakeCalls from "../screens/MakeCalls";
+import Contacts from "../screens/Contacts";
 import AllowCalls from "../screens/AllowCalls";
+import Music from "../screens/Music";
 
 const CustomizeStackNav = createStackNavigator();
 
 const CustomizeStack = () => {
   return (
-    <CustomizeStackNav.Navigator initialRouteName='Login' >
-      <CustomizeStackNav.Screen
+    <CustomizeStackNav.Navigator initialRouteName='Home' >
+      {/* <CustomizeStackNav.Screen
         name="Login"
         component={Login}
         options={{ headerShown: false }}
-      />
+      /> */}
       <CustomizeStackNav.Screen
         name="CustomizeHome"
         component={CustomizeHome}
-        options={{ headerShown: false }}
+        options={{ 
+          headerShown: true,
+          headerTitle: "StraightForward" 
+        }}
       />
       <CustomizeStackNav.Screen
         name="MakeCalls"
         component={MakeCalls}
+        options={{ headerTitle: "" }}
+      />
+      <CustomizeStackNav.Screen
+        name="Contacts"
+        component={Contacts}
+        options={{ headerTitle: "" }}
+      />
+      <CustomizeStackNav.Screen
+        name="AllowCalls"
+        component={AllowCalls}
+        options={{ headerTitle: "" }}
+      />
+      <CustomizeStackNav.Screen
+        name="Music"
+        component={Music}
         options={{ headerTitle: "" }}
       />
     </CustomizeStackNav.Navigator>

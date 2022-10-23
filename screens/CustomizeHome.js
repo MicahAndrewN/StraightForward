@@ -24,8 +24,8 @@ const CustomizeHome = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>StraightForward</Text>
-      <Text style={styles.title2}>Hello {data}</Text>
+      {/* <Text style={styles.title}>StraightForward</Text> */}
+      <Text style={styles.title2}>Welcome back, {data}!</Text>
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate('Customize',
@@ -38,7 +38,12 @@ const CustomizeHome = ({ navigation }) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => console.log("add music")}
+        onPress={() => navigation.navigate('Customize',
+        {
+          screen: 'Music',
+          params: {}
+        })
+      }
       >
         <Text style={styles.text}>Add Music Widget</Text>
       </TouchableOpacity>
@@ -106,7 +111,7 @@ const styles = StyleSheet.create({
   title2: {
     fontSize: 20,
     fontWeight: "bold",
-    marginTop: 10,
+    marginVertical: 10,
   },
   separator: {
     marginVertical: 30,
