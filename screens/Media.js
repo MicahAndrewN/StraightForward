@@ -4,13 +4,16 @@ import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 
 
-const Contacts = ({navigation}) => {
+const Media = ({navigation}) => {
 
     return (
         <View style={styles.container}>
           <TouchableOpacity
           style={styles.drive}
-          onPress={() => console.log("Spotify")}
+          onPress={() => navigation.navigate('Customize', {
+            screen: 'Spotify',
+            params: {}
+          })}
         >
           <Text style={styles.driveText}>Add a Spotify Playlist</Text>
         </TouchableOpacity>
@@ -19,7 +22,7 @@ const Contacts = ({navigation}) => {
 
 }
 
-export default Contacts;
+export default Media;
 
 const styles = StyleSheet.create({
   container: {

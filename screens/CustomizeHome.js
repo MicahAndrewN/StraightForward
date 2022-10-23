@@ -40,12 +40,12 @@ const CustomizeHome = ({ navigation }) => {
         style={styles.button}
         onPress={() => navigation.navigate('Customize',
         {
-          screen: 'Music',
+          screen: 'Media',
           params: {}
         })
       }
       >
-        <Text style={styles.text}>Add Music Widget</Text>
+        <Text style={styles.text}>Add Media Widget</Text>
       </TouchableOpacity>
       <View style={styles.driveButton}>
         <TouchableOpacity

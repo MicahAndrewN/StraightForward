@@ -11,7 +11,9 @@ import Preview from "../screens/Preview";
 import MakeCalls from "../screens/MakeCalls";
 import Contacts from "../screens/Contacts";
 import AllowCalls from "../screens/AllowCalls";
-import Music from "../screens/Music";
+import Media from "../screens/Media";
+import Spotify from "../screens/Spotify";
+
 
 const CustomizeStackNav = createStackNavigator();
 
@@ -47,8 +49,13 @@ const CustomizeStack = () => {
         options={{ headerTitle: "" }}
       />
       <CustomizeStackNav.Screen
-        name="Music"
-        component={Music}
+        name="Media"
+        component={Media}
+        options={{ headerTitle: "" }}
+      />
+      <CustomizeStackNav.Screen
+        name="Spotify"
+        component={Spotify}
         options={{ headerTitle: "" }}
       />
     </CustomizeStackNav.Navigator>
