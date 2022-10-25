@@ -50,7 +50,11 @@ const CustomizeHome = ({ navigation }) => {
       <View style={styles.driveButton}>
         <TouchableOpacity
           style={styles.drive}
-          onPress={() => console.log("Drive")}
+          onPress={() => navigation.navigate('Customize',
+          {
+            screen: 'Drive',
+            params: {}
+          })}
         >
           <Text style={styles.driveText}>Drive</Text>
         </TouchableOpacity>

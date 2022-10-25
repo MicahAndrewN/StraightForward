@@ -13,6 +13,7 @@ import Contacts from "../screens/Contacts";
 import AllowCalls from "../screens/AllowCalls";
 import Media from "../screens/Media";
 import Spotify from "../screens/Spotify";
+import Drive from "../screens/Drive";
 
 
 const CustomizeStackNav = createStackNavigator();
@@ -56,6 +57,11 @@ const CustomizeStack = () => {
       <CustomizeStackNav.Screen
         name="Spotify"
         component={Spotify}
+        options={{ headerTitle: "" }}
+      />
+      <CustomizeStackNav.Screen
+        name="Drive"
+        component={Drive}
         options={{ headerTitle: "" }}
       />
     </CustomizeStackNav.Navigator>
