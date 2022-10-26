@@ -20,6 +20,7 @@ def handle():
 
 @app.route("/login", methods=['POST'])
 def handle_login():
+    print(request.json.get('username'))
     flask.session['username'] = request.json.get('username')
     print('logged in user is ', flask.session['username'])
     return jsonify({'status_code': 200}), 200

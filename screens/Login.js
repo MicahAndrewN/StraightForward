@@ -9,34 +9,48 @@ import {
     Button,
     TouchableOpacity,
 } from "react-native";
+import AuthContext from "../components/AuthContext";
+
 
 // adapted from https://code.tutsplus.com/tutorials/common-react-native-app-layouts-login-page--cms-27639
 
-function loginHandler(navigation, username, password) {
-    fetch('http://127.0.0.1:5000/login', {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            'username': username,
-            // 'password': password,
-        })
-    }).then(() => {
-        navigation.navigate('Customize',
-            {
-                screen: 'CustomizeHome',
-                params: {}
-            })
-    }).catch((error) => {
-        console.error(error);
-        setdata("error with connecting to api")
-    });
-}
+
 
 const Login = ({ navigation }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [buttonPressed, setButtonPressed] = useState(false);
+
+    const auth = React.useContext(AuthContext);
+
+    function loginHandler(navigation, username, password) {
+        console.log(auth)
+        fetch('http://127.0.0.1:5000/login', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'username': username,
+                // 'password': password,
+            })
+        }).then((response) => {
+            response = response.json();
+            console.log(response)
+            console.log("successfully logged in (in login page) ")
+            setButtonPressed(!buttonPressed)
+            // navigation.navigate('Customize',
+            //     {
+            //         screen: 'CustomizeHome',
+            //         params: {}
+            //     })
+            auth.status = true;
+            console.log(auth)
+        }).catch((error) => {
+            console.error(error);
+            setdata("error with connecting to api")
+        });
+    }
 
     return (
         <View style={styles.container}>
@@ -62,7 +76,7 @@ const Login = ({ navigation }) => {
                         onChangeText={(password) => setPassword(password)}
                     />
                 </View>
-                <TouchableOpacity style={styles.loginBtn} onPress={() => loginHandler(navigation, username, password)}>
+                <TouchableOpacity style={styles.loginBtn} onPress={() => auth.login(username, password)}>
                     <Text>LOGIN</Text>
                 </TouchableOpacity>
             </View>

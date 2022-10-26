@@ -3,42 +3,42 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 
-import {
-    auth as SpotifyAuth,
-    remote as SpotifyRemote,
-    ApiScope,
-    ApiConfig,
-  } from "react-native-spotify-remote";
+// import {
+//     auth as SpotifyAuth,
+//     remote as SpotifyRemote,
+//     ApiScope,
+//     ApiConfig,
+//   } from "react-native-spotify-remote";
 
 
 
 const Spotify = ({navigation}) => {
 
-    const [session, setSession] = useState(null)
+    // const [session, setSession] = useState(null)
 
-    const spotifyConfig = ApiConfig = {
-        clientID: "e36f952ff0df46de96031217f169216a",
-        redirectURL: "www.google.com", // change
-        tokenRefreshURL: "SPOTIFY_TOKEN_REFRESH_URL",
-        tokenSwapURL: "SPOTIFY_TOKEN_SWAP_URL",
-        scopes: [ApiScope.AppRemoteControlScope, ApiScope.UserFollowReadScope],
-      };
+    // const spotifyConfig = ApiConfig = {
+    //     clientID: "e36f952ff0df46de96031217f169216a",
+    //     redirectURL: "www.google.com", // change
+    //     tokenRefreshURL: "SPOTIFY_TOKEN_REFRESH_URL",
+    //     tokenSwapURL: "SPOTIFY_TOKEN_SWAP_URL",
+    //     scopes: [ApiScope.AppRemoteControlScope, ApiScope.UserFollowReadScope],
+    //   };
 
-      async function logInUser(){
-        try{
-            const token = await SpotifyAuth.authorize(spotifyConfig);
-            await SpotifyRemote.connect(token);
-            setSession(SpotifyRemote.connect(token));
-        }catch(err){
-            console.error("Couldn't authorize with or connect to Spotify",err);
-        }
-    }
+    //   async function logInUser(){
+    //     try{
+    //         const token = await SpotifyAuth.authorize(spotifyConfig);
+    //         await SpotifyRemote.connect(token);
+    //         setSession(SpotifyRemote.connect(token));
+    //     }catch(err){
+    //         console.error("Couldn't authorize with or connect to Spotify",err);
+    //     }
+    // }
 
     return (
         <View style={styles.container}>
           <TouchableOpacity
           style={styles.drive}
-          onPress={() => logInUser}
+          onPress={() => console.log("pressed")}
         >
           <Text style={styles.driveText}>Connect Your Spotify Account</Text>
         </TouchableOpacity>

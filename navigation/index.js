@@ -11,32 +11,51 @@ import NotFoundScreen from "../screens/NotFoundScreen";
 import BottomTabNavigator from "./BottomTabNavigator";
 import AuthStack from "./AuthStack";
 import LinkingConfiguration from "./LinkingConfiguration";
-import { useState } from "react";
+import AuthContext from "../components/AuthContext";
+import * as React from "react";
 
 
 
 export default function Navigation({ colorScheme }) {
 
-  const [user, setUser] = useState(false)
+  const [loggedIn, setLoggedIn] = React.useState(false);
 
-  fetch("http://127.0.0.1:5000/getname").then((response) => response.json())
-  .then((json) => {
-    setUser(true)
-  }).catch((error) => {
-    console.error(error);
-    setUser(false)
-  })
-  .catch((error) => {
-    console.error(error);
-    setUser(false)
-  });
+  const auth = React.useContext(AuthContext);
+
+  const logIn = (username, password)=>{
+    console.log("logIn")
+    console.log(username)
+    fetch('http://127.0.0.1:5000/login', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'username': username,
+            // 'password': password,
+        })
+    }).then((response) => {
+        response = response.json();
+        console.log(response)
+        console.log("successfully logged in on index")
+        auth.status = true;
+        setLoggedIn(true);
+
+    }).catch((error) => {
+        console.error(error);
+        setdata("error with connecting to api")
+    });
+  }
+  console.log(auth)
   return (
-    <NavigationContainer
-      linking={LinkingConfiguration}
-      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-    >
-      {user ? <BottomTabNavigator/> : <AuthStack/> }
-    </NavigationContainer>
+    <AuthContext.Provider value={{ status: loggedIn, login: logIn }}>
+        <NavigationContainer
+          linking={LinkingConfiguration}
+          theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        >
+          {auth.status ? <BottomTabNavigator/> : <AuthStack/> }
+        </NavigationContainer>
+      </AuthContext.Provider>
   );
 }
 

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 import Login from '../screens/Login';
+import CustomizeHome from '../screens/CustomizeHome';
 // import ForgotPassword from '../screens/ForgotPassword';
 
 // import { LoginForm } from '../screens';
@@ -15,8 +16,16 @@ const AuthStack = () => {
         name="Login" 
         component={Login}
         options={{
-          title: 'Drive StraightForward!',
-          
+          headerShown: false
+
+        }}
+      />
+      <Stack.Screen
+        name="CustomizeHome"
+        component={CustomizeHome}
+        options={{ 
+          headerShown: true,
+          headerTitle: "StraightForward" 
         }}
       />
       {/* <Stack.Screen 
