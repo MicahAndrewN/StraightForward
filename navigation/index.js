@@ -28,12 +28,13 @@ export default function Navigation({ colorScheme }) {
     fetch('http://127.0.0.1:5000/login', {
         method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify({
             'username': username,
             // 'password': password,
-        })
+        }),
+        mode: 'no-cors'
     }).then((response) => {
         response = response.json();
         console.log(response)

@@ -9,7 +9,7 @@ const CustomizeHome = ({ navigation }) => {
   const [data, setdata] = useState();
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/getname").then((response) => response.json())
+    fetch("http://127.0.0.1:5000/getname", {mode: 'no-cors'}).then((response) => response.json())
       .then((json) => {
         setdata(json.name)
       }).catch((error) => {

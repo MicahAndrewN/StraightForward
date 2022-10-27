@@ -33,7 +33,8 @@ const MakeCalls = ({ navigation }) => {
             "type": "contacts",
             "subtype": "call",
             "name": key
-          })
+          }), 
+          mode: 'no-cors'
         }).then(() => {
           navigation.navigate('Customize',
             {

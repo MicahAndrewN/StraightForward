@@ -1,17 +1,20 @@
 """This is a generic handler that will write to and read from database and allow frontend to print result."""
 import flask # run `pip install Flask` if this is not found
 from flask import Flask, request, session, jsonify
+# import flask_cors
 import json
 import requests
 import os
 
 app = Flask(__name__)
+# flask_cors.CORS(app)
 app.secret_key = 'super secret key'
 
 def getLogname():
     return flask.session['username']
 
 @app.route("/login", methods=['POST'])
+# @flask_cors.cross_origin
 def handle_login():
     print(request.json.get('username'))
     flask.session['username'] = request.json.get('username')
