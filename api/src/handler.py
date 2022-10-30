@@ -53,7 +53,16 @@ def postwidget():
 
 @app.route("/deletewidget", methods=['DELETE'])
 def deletewidget():
-    return jsonify({'status_code': 204}), 204
+    resp = requests.get(url=f"https://straightforward-89f53-default-rtdb.firebaseio.com/users/{getLogname()}/widgets.json")
+    resp_json = resp.json()
+    req = request.json
+    if isinstance(resp_json, str):
+        resp_json = [resp_json]
+    for item in resp_json:
+        if resp_json[item]['type'] == 'contacts' and resp_json[item]['name'] == req['name']:
+            requests.delete(url=f"https://straightforward-89f53-default-rtdb.firebaseio.com/users/{getLogname()}/widgets/{item}.json")
+            return jsonify({'status_code': 204}), 204
+    return jsonify({'status_code': 404}), 404
 
 if __name__ == '__main__':
     app.debug = True
