@@ -23,7 +23,12 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": {
+        "name": ["android.permission.INTERNET",
+                "android.permission.CALL_PRIVILEGED"]
+      },
+      "usesCleartextTraffic": "true"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
