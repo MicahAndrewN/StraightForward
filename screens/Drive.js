@@ -16,7 +16,7 @@ const Drive = ({ navigation }) => {
   const GOOGLE_MAPS_APIKEY = 'AIzaSyCbD_d7uMnnYJ_kQxpQ8lQYhaOb5RwQgpI';
 
   useEffect(() => {
-    fetch('http://10.0.2.2:5000/getwidgets')
+    fetch('http://127.0.0.1:5000/getwidgets')
       .then((response) => response.json()).catch((error) => console.log(error)).then((json) => {
         var vals = Object.values(json)
         var tempNames = new Array()
@@ -33,7 +33,7 @@ const Drive = ({ navigation }) => {
     contactWidgets.push(
       <TouchableOpacity
         style={styles.button}
-        onPress={callNumber("2485742275")}
+        // onPress={callNumber("2485742275")} (still buggy?)
       >
         <Text style={styles.buttonText}><FontAwesome name="phone" size={20} color="black" /> Call {names[i]}</Text>
       </TouchableOpacity>

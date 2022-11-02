@@ -24,7 +24,7 @@ const Navigation = ({ navigation }) => {
   const handleWidgets = () => {
     Object.keys(selected).forEach(function (key, index) {
       if (selected[key]) {
-        fetch('http://10.0.2.2:5000/addwidget', {
+        fetch('http://127.0.0.1:5000/addwidget', {
           method: "POST",
           headers: {
             'Content-Type': 'application/json'
