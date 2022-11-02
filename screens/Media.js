@@ -15,7 +15,7 @@ const Media = ({navigation}) => {
             params: {}
           })}
         >
-          <Text style={styles.driveText}>Add a Spotify Playlist</Text>
+          <Text style={styles.driveText}>Add a Spotify Widget</Text>
         </TouchableOpacity>
         </View>
       );
@@ -41,12 +41,11 @@ const styles = StyleSheet.create({
   },
   drive: {
     alignItems: 'center',
-    backgroundColor: 'green',
-    marginTop: 10,
-    marginBottom: 10,
+    backgroundColor: '#1DB954',
+    margin: 10,
     height: 65,
-    width: 250,
-    borderRadius: 20,
+    width: 350,
+    borderRadius: 10,
     fontWeight: 'bold'
   },
   driveText: {

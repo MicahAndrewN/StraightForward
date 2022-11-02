@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useContext } from "react";
-import { View, StyleSheet, KeyboardAvoidingView, Text, Button, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Alert, KeyboardAvoidingView, Text, Button, TouchableOpacity } from "react-native";
 import { useEffect, useState } from "react";
 import { ResponseType, useAuthRequest, makeRedirectUri } from "expo-auth-session";
 import { useSelector, useDispatch } from "react-redux";
@@ -61,22 +61,19 @@ const Spotify = ({ navigation }) => {
         },
       })
         .then((response) => {
-          dispatch(songAction.addTopSongs(response));
+          console.log("success!!!!!")
+          console.log(response.json)
+          console.log(auth)
+
+          // dispatch(songAction.addTopSongs(response));
         })
         .catch((error) => {
           console.log("error", error.message);
         });
 
-      setTimeout(
-        () =>
-          navigation.replace("Home", {
-            token: token,
-            other: "blaaaa",
-          }),
-        500
-      );
+        auth.spotifyToken = token
+      // should prob take them back to previous page here? 
 
-      // dispatch(tokenAction.addToken(token));
     }
   });
 
@@ -92,13 +89,45 @@ const Spotify = ({ navigation }) => {
           }}
         >
         </Text>
-        <Button
+        { auth.spotifyToken === '' ?
+        // user is not logged into spotify:
+          <Button
           title="Login with Spotify"
           style={styles.button}
           onPress={() => {
             promptAsync();
           }}
         />
+          : 
+          // user is logged into spotify: 
+          <View>
+
+          <TouchableOpacity
+          style={styles.button}
+          onPress={() => console.log("make a playlist")}
+        >
+          <Text style={styles.buttonText}>Add Playlist Widget</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => console.log("make a playlist")}
+        >
+          <Text style={styles.buttonText}>Add Album Widget</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => console.log("make a playlist")}
+        >
+          <Text style={styles.buttonText}>Add Artist Widget</Text>
+        </TouchableOpacity>
+
+
+        </View>
+
+        }
+
         <View style={{ height: 100 }} />
       </KeyboardAvoidingView>
   );
@@ -117,5 +146,20 @@ const styles = StyleSheet.create({
   button: {
     width: 200,
     marginTop: 50,
+  },
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#1DB954',
+    margin: 10,
+    height: 65,
+    width: 350,
+    borderRadius: 10,
+    fontWeight: 'bold'
+  },
+  buttonText: {
+    fontSize: 24,
+    marginTop: 15,
+    color: '#FFFFFF',
+    fontWeight: 'bold'
   },
 });

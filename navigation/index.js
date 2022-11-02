@@ -13,6 +13,8 @@ import AuthStack from "./AuthStack";
 import LinkingConfiguration from "./LinkingConfiguration";
 import AuthContext from "../components/AuthContext";
 import * as React from "react";
+import TokenReducer from '../store/reducers/token';
+import Provider from 'react-native';
 
 
 
@@ -48,14 +50,14 @@ export default function Navigation({ colorScheme }) {
   }
   console.log(auth)
   return (
-    <AuthContext.Provider value={{ status: loggedIn, login: logIn }}>
-        <NavigationContainer
-          linking={LinkingConfiguration}
-          theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
-          {auth.status ? <BottomTabNavigator/> : <AuthStack/> }
-        </NavigationContainer>
-      </AuthContext.Provider>
+      <AuthContext.Provider value={{ status: loggedIn, login: logIn, }} >
+          <NavigationContainer
+            linking={LinkingConfiguration}
+            theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          >
+            {auth.status ? <BottomTabNavigator/> : <AuthStack/> }
+          </NavigationContainer>
+        </AuthContext.Provider>
   );
 }
 
