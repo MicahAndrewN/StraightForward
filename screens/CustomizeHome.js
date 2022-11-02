@@ -58,6 +58,16 @@ const CustomizeHome = ({ navigation }) => {
         >
           <Text style={styles.driveText}>Drive</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.drive}
+          onPress={() => navigation.navigate('Customize',
+          {
+            screen: 'Navigation',
+            params: {}
+          })}
+        >
+          <Text style={styles.driveText}>Navigation</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
