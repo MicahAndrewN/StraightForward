@@ -2,11 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
 import { Linking, Alert, Platform } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import MapViewDirections from 'react-native-maps-directions';
+import MapView from 'react-native-maps';
 
 // npm i react-native-phone-call --legacy-peer-deps
+// npm install react-native-maps-directions --legacy-peer-deps
 
 const Drive = ({ navigation }) => {
   const [names, setNames] = useState([]);
+
+  const origin = {latitude: 42.292894, longitude: -83.715395};
+  const destination = {latitude: 42.284096, longitude: -83.738599};
+  const GOOGLE_MAPS_APIKEY = 'AIzaSyCbD_d7uMnnYJ_kQxpQ8lQYhaOb5RwQgpI';
 
   useEffect(() => {
     fetch('http://10.0.2.2:5000/getwidgets')
@@ -35,7 +42,25 @@ const Drive = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.image} source={require('../assets/images/mapimage1.png')} />
+      <MapView style={styles.map}
+      provider={MapView.PROVIDER_GOOGLE}
+      showsUserLocation={true} 
+      initialRegion={{
+        latitude: 42.292894,
+        longitude: -83.715395,
+        latitudeDelta: 0.00922,
+        longitudeDelta: 0.00421,
+      }}> 
+        <MapViewDirections
+          origin={origin}
+          destination={destination}
+          apikey={GOOGLE_MAPS_APIKEY}
+          mode="DRIVING"
+          strokeWidth={3}
+          strokeColor="blue"
+          optimizeWaypoints={true}
+        />
+      </MapView>
       <View style={styles.sidebar}>
         {contactWidgets}
       </View>
@@ -74,11 +99,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center'
   },
-  image: {
-    flex: 3,
-    resizeMode: 'cover',
-    width: "100%"
-  },
   sidebar: {
     flex: 1,
     alignItems: "center",
@@ -96,4 +116,10 @@ const styles = StyleSheet.create({
   buttonText: {
     fontWeight: 'bold'
   },
+  map: {
+    flex: 3,
+    width: 336,
+    height: "100%",
+    transform: [{ rotate: '-90deg' }]
+  }
 });

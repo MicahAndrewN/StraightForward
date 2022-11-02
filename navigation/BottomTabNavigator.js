@@ -13,7 +13,8 @@ import Contacts from "../screens/Contacts";
 import AllowCalls from "../screens/AllowCalls";
 import Media from "../screens/Media";
 import Spotify from "../screens/Spotify";
-// import Drive from "../screens/Drive";
+import Drive from "../screens/Drive";
+import Navigation from "../screens/Navigation";
 
 
 const CustomizeStackNav = createStackNavigator();
@@ -59,11 +60,16 @@ const CustomizeStack = () => {
         component={Spotify}
         options={{ headerTitle: "" }}
       />
-      {/* <CustomizeStackNav.Screen
+      <CustomizeStackNav.Screen
         name="Drive"
         component={Drive}
         options={{ headerTitle: "" }}
-      /> */}
+      />
+      <CustomizeStackNav.Screen
+        name="Navigation"
+        component={Navigation}
+        options={{ headerTitle: "" }}
+      />
     </CustomizeStackNav.Navigator>
   );
 };
