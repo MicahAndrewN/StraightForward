@@ -55,6 +55,7 @@ const MakeCalls = ({ navigation }) => {
       <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Make Calls</Text>
       <FlatList
         data={data}
+        key={data}
         renderItem={render}
         keyExtractor={(item, index) => index.toString()}
       />
