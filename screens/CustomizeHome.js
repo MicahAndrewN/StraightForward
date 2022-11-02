@@ -47,6 +47,17 @@ const CustomizeHome = ({ navigation }) => {
       >
         <Text style={styles.text}>Add Media Widget</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('Customize',
+        {
+          screen: 'Navigation',
+          params: {}
+        })
+      }
+      >
+        <Text style={styles.text}>Add Map Widget</Text>
+      </TouchableOpacity>
       <View style={styles.driveButton}>
         <TouchableOpacity
           style={styles.drive}
@@ -57,16 +68,6 @@ const CustomizeHome = ({ navigation }) => {
           })}
         >
           <Text style={styles.driveText}>Drive</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.drive}
-          onPress={() => navigation.navigate('Customize',
-          {
-            screen: 'Navigation',
-            params: {}
-          })}
-        >
-          <Text style={styles.driveText}>Navigation</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
