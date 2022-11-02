@@ -32,7 +32,8 @@ const MakeCalls = ({ navigation }) => {
           body: JSON.stringify({
             "type": "contacts",
             "subtype": "call",
-            "name": key
+            "name": key,
+            "phonenumber": "4406267220"
           }), 
           mode: 'no-cors'
         }).then(() => {
