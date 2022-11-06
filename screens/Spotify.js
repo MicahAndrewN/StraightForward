@@ -8,6 +8,9 @@ import * as tokenAction from "../store/actions/token";
 import axios from "axios";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import AuthContext from "../components/AuthContext";
+import SpotifyWebApi from "spotify-web-api-node";
+import { acc } from "react-native-reanimated";
+
 
 const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
@@ -20,6 +23,10 @@ const Spotify = ({ navigation }) => {
   const redirectUri = makeRedirectUri();
   console.log(redirectUri);
   const auth = useContext(AuthContext)
+
+  const spotifyApi = new SpotifyWebApi();
+  const [playlists, setPlaylists] = useState([])
+
 
   const [request, response, promptAsync] = useAuthRequest(
     {
@@ -46,24 +53,32 @@ const Spotify = ({ navigation }) => {
   useEffect(() => {
     if (response?.type === "success") {
       const { access_token } = response.params;
+      const { refresh_token } = response.params;
       setToken(access_token);
+      auth.spotifyToken = access_token
+      try{
+        spotifyApi.setAccessToken(access_token);
+        spotifyApi.setRefreshToken(refresh_token)
+      }
+      catch(error){
+        console.log("could not set access token", error)
+      }
     }
   }, [response]);
 
   useEffect(() => {
     if (token) {
-      axios("https://api.spotify.com/v1/me/top/tracks?time_range=short_term", {
+
+      axios("https://api.spotify.com/v1/me/playlists", {
         method: "GET",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
+          Authorization: token,
         },
       })
         .then((response) => {
           console.log("success!!!!!")
-          console.log(response.json)
-          console.log(auth)
 
           // dispatch(songAction.addTopSongs(response));
         })
@@ -71,12 +86,18 @@ const Spotify = ({ navigation }) => {
           console.log("error", error.message);
         });
 
-        auth.spotifyToken = token
       // should prob take them back to previous page here? 
 
     }
   });
 
+  spotifyApi.setAccessToken(token)
+  console.log(spotifyApi.getAccessToken)
+
+  console.log(auth.spotifyToken)
+
+  // automatically do login stuff 
+  // if theyre not logged in THEN go to login page
   return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <StatusBar style="light" />
@@ -89,7 +110,7 @@ const Spotify = ({ navigation }) => {
           }}
         >
         </Text>
-        { auth.spotifyToken === '' ?
+        { auth.spotifyToken === "" || auth.spotifyToken === undefined ?
         // user is not logged into spotify:
           <Button
           title="Login with Spotify"
@@ -104,21 +125,42 @@ const Spotify = ({ navigation }) => {
 
           <TouchableOpacity
           style={styles.button}
-          onPress={() => console.log("make a playlist")}
+          onPress={() =>
+              spotifyApi.getUserPlaylists('elizabethloeher')
+              .then(function(data) {
+                console.log('Retrieved playlists', data.body);
+                let playlist_data = [];
+                data.body.items.map((playlist) => {
+                  let item = {};
+                  item[playlist['name']] = playlist['url'];
+                  playlist_data.push(item)
+                });
+                console.log(playlist_data)
+                setPlaylists(playlist_data)
+
+              },function(err) {
+                console.log('Something went wrong!', err);
+                Alert.alert("You may need to reconnect your Spotify account.");
+                auth.spotifyToken = "";
+              })
+            }
         >
           <Text style={styles.buttonText}>Add Playlist Widget</Text>
+          
+
+
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => console.log("make a playlist")}
+          onPress={() => console.log("add album")}
         >
           <Text style={styles.buttonText}>Add Album Widget</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => console.log("make a playlist")}
+          onPress={() => console.log("add artist")}
         >
           <Text style={styles.buttonText}>Add Artist Widget</Text>
         </TouchableOpacity>
