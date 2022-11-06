@@ -8,6 +8,8 @@ const Media = ({navigation}) => {
 
     return (
         <View style={styles.container}>
+          <Text style={styles.text}>Click on each menu below to link StraightForward to your existing accounts and save media to play on your drive!</Text>
+          <View style={styles.menu}>
           <TouchableOpacity
           style={styles.drive}
           onPress={() => navigation.navigate('Customize', {
@@ -17,6 +19,7 @@ const Media = ({navigation}) => {
         >
           <Text style={styles.driveText}>Add a Spotify Widget</Text>
         </TouchableOpacity>
+        </View>
         </View>
       );
 
@@ -28,11 +31,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
+  },
+  text: {
+    fontSize: 20,
+    textAlign: 'center'
   },
   separator: {
     marginVertical: 30,
@@ -47,6 +53,9 @@ const styles = StyleSheet.create({
     width: 350,
     borderRadius: 10,
     fontWeight: 'bold'
+  },
+  menu: {
+    marginTop: 30,
   },
   driveText: {
     fontSize: 24,

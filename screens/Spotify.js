@@ -4,6 +4,7 @@ import { View, StyleSheet, Alert, KeyboardAvoidingView, Text, Button, TouchableO
 import { useEffect, useState } from "react";
 import { ResponseType, useAuthRequest, makeRedirectUri } from "expo-auth-session";
 import { useSelector, useDispatch } from "react-redux";
+import ItemSelector from "../components/ItemSelector"
 import * as tokenAction from "../store/actions/token";
 import axios from "axios";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -26,6 +27,7 @@ const Spotify = ({ navigation }) => {
 
   const spotifyApi = new SpotifyWebApi();
   const [playlists, setPlaylists] = useState([])
+  const [display, setDisplay] = useState("All")
 
 
   const [request, response, promptAsync] = useAuthRequest(
@@ -66,31 +68,6 @@ const Spotify = ({ navigation }) => {
     }
   }, [response]);
 
-  useEffect(() => {
-    if (token) {
-
-      axios("https://api.spotify.com/v1/me/playlists", {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-      })
-        .then((response) => {
-          console.log("success!!!!!")
-
-          // dispatch(songAction.addTopSongs(response));
-        })
-        .catch((error) => {
-          console.log("error", error.message);
-        });
-
-      // should prob take them back to previous page here? 
-
-    }
-  });
-
   spotifyApi.setAccessToken(token)
   console.log(spotifyApi.getAccessToken)
 
@@ -98,6 +75,34 @@ const Spotify = ({ navigation }) => {
 
   // automatically do login stuff 
   // if theyre not logged in THEN go to login page
+
+  function addPlaylistWidgets(newWidgets){
+    for (let i = 0; i < newWidgets.length; ++i){
+      fetch('http://127.0.0.1:5000/addwidget', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          "type": "music",
+          "subtype": "playlist",
+          "name": newWidgets[i]['name'],
+          "url": newWidgets[i]['url']
+        })
+      }).then(() => {
+        console.log("widget added")
+      }).catch((error) => {
+        console.error(error);
+        setdata("error with connecting to api")
+      });
+    }
+    setDisplay("All")
+
+    
+  }
+  console.log(display)
+
+
   return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <StatusBar style="light" />
@@ -128,11 +133,13 @@ const Spotify = ({ navigation }) => {
           onPress={() =>
               spotifyApi.getUserPlaylists('elizabethloeher')
               .then(function(data) {
+                setDisplay("Playlists")
                 console.log('Retrieved playlists', data.body);
                 let playlist_data = [];
                 data.body.items.map((playlist) => {
                   let item = {};
-                  item[playlist['name']] = playlist['url'];
+                  item['name'] = playlist['name']
+                  item['url'] = playlist['external_urls']['spotify'];
                   playlist_data.push(item)
                 });
                 console.log(playlist_data)
@@ -145,25 +152,42 @@ const Spotify = ({ navigation }) => {
               })
             }
         >
-          <Text style={styles.buttonText}>Add Playlist Widget</Text>
-          
+
+        { (display == "Playlists" || display == "All") && 
+        <Text style={styles.buttonText}>Add Playlist Widget</Text>
+        }
+
 
 
         </TouchableOpacity>
+        {
+          playlists.length != 0 && display == "Playlists" && 
+          <>
+            <ItemSelector items={playlists} addWidgets={addPlaylistWidgets}/>
+          </>
+        }
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => console.log("add album")}
-        >
-          <Text style={styles.buttonText}>Add Album Widget</Text>
-        </TouchableOpacity>
+        { (display == "Album" || display == "All") && 
+        <>
+            <TouchableOpacity
+            style={styles.button}
+            onPress={() => console.log("add album")}
+          >
+            <Text style={styles.buttonText}>Add Album Widget</Text>
+          </TouchableOpacity>
+          </>
+        }
+        { (display == "Artist" || display == "All") && 
+        <>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => console.log("add artist")}
+          >
+            <Text style={styles.buttonText}>Add Artist Widget</Text>
+          </TouchableOpacity>
+          </>
+        }
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => console.log("add artist")}
-        >
-          <Text style={styles.buttonText}>Add Artist Widget</Text>
-        </TouchableOpacity>
 
 
         </View>
@@ -181,7 +205,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    // justifyContent: "center",
     backgroundColor: "white",
   },
 
