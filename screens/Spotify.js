@@ -320,7 +320,7 @@ const Spotify = ({ navigation }) => {
 
         }
 
-        { (display == "Podcast" || display == "All") && 
+        {/* { (display == "Podcast" || display == "All") && 
         <>
           <TouchableOpacity
             style={styles.button}
@@ -329,7 +329,7 @@ const Spotify = ({ navigation }) => {
             <Text style={styles.buttonText}>Add Podcast Widget</Text>
           </TouchableOpacity>
           </>
-        }
+        } */}
 
         </View>
 
