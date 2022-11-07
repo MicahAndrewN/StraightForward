@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { ResponseType, useAuthRequest, makeRedirectUri } from "expo-auth-session";
 import { useSelector, useDispatch } from "react-redux";
 import ItemSelector from "../components/ItemSelector"
+import SearchBarSpotify from "../components/SearchBarSpotify"
 import * as tokenAction from "../store/actions/token";
 import axios from "axios";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -27,6 +28,7 @@ const Spotify = ({ navigation }) => {
 
   const spotifyApi = new SpotifyWebApi();
   const [playlists, setPlaylists] = useState([])
+  const [searchResults, setSearchResults] = useState([])
   const [display, setDisplay] = useState("All")
 
 
@@ -52,6 +54,8 @@ const Spotify = ({ navigation }) => {
     discovery
   );
 
+  
+
   useEffect(() => {
     if (response?.type === "success") {
       const { access_token } = response.params;
@@ -76,6 +80,33 @@ const Spotify = ({ navigation }) => {
   // automatically do login stuff 
   // if theyre not logged in THEN go to login page
 
+  // search functions
+  function searchAlbumName(query){
+    spotifyApi.searchAlbums(query)
+    .then(function(data) {
+      console.log('Retrieved albums', data.body);
+      let album_data = [];
+      data.body.albums.items.map((album) => {
+        console.log(album)
+        let item = {};
+        item['name'] = album['name'] + ' - ' + album['artists'][0]['name']
+        item['artist'] = album['artists']['name']
+        item['url'] = album['external_urls']['spotify'];
+        item['albumName'] = album['name']
+        album_data.push(item)
+      });
+      console.log(album_data)
+      setSearchResults(album_data)
+
+    },function(err) {
+      console.log('Something went wrong!', err);
+      Alert.alert("You may need to reconnect your Spotify account.");
+      auth.spotifyToken = "";
+    })
+  }
+
+
+  // add widget functions
   function addPlaylistWidgets(newWidgets){
     for (let i = 0; i < newWidgets.length; ++i){
       fetch('http://127.0.0.1:5000/addwidget', {
@@ -100,6 +131,33 @@ const Spotify = ({ navigation }) => {
 
     
   }
+
+  function addAlbumWidgets(newWidgets){
+    console.log("adding widget")
+    for (let i = 0; i < newWidgets.length; ++i){
+      fetch('http://127.0.0.1:5000/addwidget', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          "type": "music",
+          "subtype": "album",
+          "name": newWidgets[i]['albumName'],
+          "url": newWidgets[i]['url']
+        })
+      }).then(() => {
+        console.log("widget added")
+      }).catch((error) => {
+        console.error(error);
+        setdata("error with connecting to api")
+      });
+    }
+    setDisplay("All")
+  }
+
+
+
   console.log(display)
 
 
@@ -171,11 +229,19 @@ const Spotify = ({ navigation }) => {
         <>
             <TouchableOpacity
             style={styles.button}
-            onPress={() => console.log("add album")}
+            onPress={() => setDisplay("Album")}
           >
             <Text style={styles.buttonText}>Add Album Widget</Text>
           </TouchableOpacity>
           </>
+        }
+        {
+          display == "Album" && 
+          <SearchBarSpotify searchFunction={searchAlbumName} />
+        }
+        {
+          display == "Album" && 
+          <ItemSelector items={searchResults} addWidgets={addAlbumWidgets}/>
         }
         { (display == "Artist" || display == "All") && 
         <>
@@ -184,6 +250,17 @@ const Spotify = ({ navigation }) => {
             onPress={() => console.log("add artist")}
           >
             <Text style={styles.buttonText}>Add Artist Widget</Text>
+          </TouchableOpacity>
+          </>
+        }
+
+        { (display == "Podcast" || display == "All") && 
+        <>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => console.log("add podcast")}
+          >
+            <Text style={styles.buttonText}>Add Podcast Widget</Text>
           </TouchableOpacity>
           </>
         }
