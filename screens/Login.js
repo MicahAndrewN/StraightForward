@@ -56,7 +56,8 @@ const Login = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <View><Text style={{ fontSize: 24, marginTop: 100 }}>StraightForward</Text></View>
+            <View><Text style={{ fontSize: 40, marginTop: 100, }}>StraightForward</Text></View>
+            <Text style={{ fontSize: 24, }}>Drive distraction-free.</Text>
             <View style={styles.login}>
 
                 <StatusBar style="auto" />
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     login: {
-        flex: 1,
+        top: 150,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -116,8 +117,11 @@ const styles = StyleSheet.create({
     TextInput: {
         height: 50,
         flex: 1,
+        fontSize: 20,
         padding: 10,
         marginLeft: 20,
+        width: 250,
+        borderRadius: 10,
     },
 
     forgot_button: {
@@ -132,6 +136,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         marginTop: 40,
+        fontSize: 20,
         backgroundColor: "#FF1493",
     },
 });

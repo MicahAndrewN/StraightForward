@@ -4,37 +4,53 @@ import { FontAwesome } from '@expo/vector-icons';
 
 const Preview = () => {
   const [names, setNames] = useState([]);
+  const [contactWidgets, setContactWidgets] = useState([]);
+  const [musicWidgets, setMusicWidgets] = useState([]);
+
 
   useEffect(() => {
     fetch('http://127.0.0.1:5000/getwidgets', { mode: 'no-cors' })
       .then((response) => response.json()).catch((error) => console.log(error)).then((json) => {
         var vals = Object.values(json)
-        var tempNames = new Array()
-        vals.forEach(function (v) {
-          tempNames.push(v.name)
-        })
-        console.log(tempNames)
-        setNames(tempNames)
+        console.log(vals)
+        setNames(vals)
         }).catch((error) => console.log("error1 " + error))
   }, []);
 
-  let contactWidgets = []
+  console.log("names", names)
+
+  let temp_contacts = []
+  let temp_music = []
   for (let i = 0; i < names.length; i++) {
-    contactWidgets.push(
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => console.log("Call")}
-      >
-        <Text style={styles.buttonText}><FontAwesome name="phone" size={20} color="black" /> Call {names[i]}</Text>
-      </TouchableOpacity>
-    )
+
+    if (names[i]['type'] == 'contacts'){
+      temp_contacts.push(
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => console.log("Call")}
+        >
+          <Text style={styles.buttonText}><FontAwesome name="phone" size={20} color="black" /> Call {names[i]['name']}</Text>
+        </TouchableOpacity>
+      )
+    }
+    else if (names[i]['type'] == 'music'){
+      temp_music.push(
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => console.log("Call")}
+        >
+          <Text style={styles.buttonText}><FontAwesome name="music" size={20} color="black" /> Play {names[i]['name']}</Text>
+        </TouchableOpacity>
+      )
+    }
   }
 
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={require('../assets/images/mapimage1.png')} />
       <View style={styles.sidebar}>
-        {contactWidgets}
+        {temp_contacts}
+        {temp_music}
       </View>
     </View>
   );
@@ -68,7 +84,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#DDD',
     marginTop: 10,
     height: 65,
-    width: 110,
+    width: 200,
+    borderRadius: 20,
   },
   buttonText: {
     fontWeight: 'bold'
