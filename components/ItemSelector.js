@@ -6,7 +6,15 @@ import MultiSelect from 'react-native-multiple-select';
 const ItemSelector = ({items, addWidgets}) => {
 
     const [selectedItems, setSelectedItems] = useState([]);
+    const [itemsToReturn, setItemsToReturn] = useState([]);
 
+    useEffect(() => {
+        let all_items = []
+        for (let i = 0; i < selectedItems.length; ++i){
+            all_items.push(items[selectedItems[i]])
+        }
+        setItemsToReturn(all_items)
+      }, [selectedItems]);
 
 
     return (
@@ -14,7 +22,8 @@ const ItemSelector = ({items, addWidgets}) => {
             <MultiSelect
                 items={items}
                 single={false}
-                uniqueKey="name"
+                uniqueKey="id"
+                displayKey="name"
                 onSelectedItemsChange={setSelectedItems}
                 selectedItems={selectedItems}
                 fixedHeight={true}
@@ -24,7 +33,7 @@ const ItemSelector = ({items, addWidgets}) => {
             />
             <TouchableOpacity
             style={styles.button}
-            onPress={() => addWidgets(selectedItems)}
+            onPress={() => addWidgets(itemsToReturn)}
           >
             {
                 selectedItems.length == 0 ? 
@@ -32,8 +41,6 @@ const ItemSelector = ({items, addWidgets}) => {
                  selectedItems.length == 1 ? 
                     <Text style={styles.buttonText}>Add 1 Widget</Text> : 
                     <Text style={styles.buttonText}>Add {selectedItems.length} Widgets</Text>
-
-                
                 
             }
             

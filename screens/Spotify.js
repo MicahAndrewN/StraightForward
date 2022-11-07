@@ -86,17 +86,45 @@ const Spotify = ({ navigation }) => {
     .then(function(data) {
       console.log('Retrieved albums', data.body);
       let album_data = [];
+      let id = 0;
       data.body.albums.items.map((album) => {
         console.log(album)
         let item = {};
+        item['id'] = id
         item['name'] = album['name'] + ' - ' + album['artists'][0]['name']
-        item['artist'] = album['artists']['name']
+        item['artist'] = album['artists'][0]['name']
         item['url'] = album['external_urls']['spotify'];
         item['albumName'] = album['name']
         album_data.push(item)
+        id += 1
       });
       console.log(album_data)
       setSearchResults(album_data)
+
+    },function(err) {
+      console.log('Something went wrong!', err);
+      Alert.alert("You may need to reconnect your Spotify account.");
+      auth.spotifyToken = "";
+    })
+  }
+
+  function searchArtistName(query){
+    spotifyApi.searchArtists(query)
+    .then(function(data) {
+      console.log('Retrieved artist data', data.body);
+      let artist_data = [];
+      let id = 0;
+      data.body.artists.items.map((artist) => {
+        console.log(artist)
+        let item = {};
+        item['id'] = id
+        item['name'] = artist['name']
+        item['url'] = artist['external_urls']['spotify'];
+        artist_data.push(item)
+        id += 1
+      });
+      console.log(artist_data)
+      setSearchResults(artist_data)
 
     },function(err) {
       console.log('Something went wrong!', err);
@@ -133,7 +161,33 @@ const Spotify = ({ navigation }) => {
   }
 
   function addAlbumWidgets(newWidgets){
-    console.log("adding widget")
+    console.log("adding widget:")
+    console.log(newWidgets)
+    for (let i = 0; i < newWidgets.length; ++i){
+      fetch('http://127.0.0.1:5000/addwidget', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          "type": "music",
+          "subtype": "album",
+          "name": newWidgets[i]['albumName'],
+          "url": newWidgets[i]['url']
+        })
+      }).then(() => {
+        console.log("widget added")
+      }).catch((error) => {
+        console.error(error);
+        setdata("error with connecting to api")
+      });
+    }
+    setDisplay("All")
+  }
+
+  function addArtistWidgets(newWidgets){
+    console.log("adding widget:")
+    console.log(newWidgets)
     for (let i = 0; i < newWidgets.length; ++i){
       fetch('http://127.0.0.1:5000/addwidget', {
         method: "POST",
@@ -194,11 +248,14 @@ const Spotify = ({ navigation }) => {
                 setDisplay("Playlists")
                 console.log('Retrieved playlists', data.body);
                 let playlist_data = [];
+                let id = 0
                 data.body.items.map((playlist) => {
                   let item = {};
+                  item['id'] = id
                   item['name'] = playlist['name']
                   item['url'] = playlist['external_urls']['spotify'];
                   playlist_data.push(item)
+                  id += 1
                 });
                 console.log(playlist_data)
                 setPlaylists(playlist_data)
@@ -237,21 +294,30 @@ const Spotify = ({ navigation }) => {
         }
         {
           display == "Album" && 
-          <SearchBarSpotify searchFunction={searchAlbumName} />
-        }
-        {
-          display == "Album" && 
-          <ItemSelector items={searchResults} addWidgets={addAlbumWidgets}/>
+          <>
+            <SearchBarSpotify searchFunction={searchAlbumName} />
+            <ItemSelector items={searchResults} addWidgets={addAlbumWidgets}/>
+          </>
+
         }
         { (display == "Artist" || display == "All") && 
         <>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => console.log("add artist")}
+            onPress={() => setDisplay("Artist")}
           >
             <Text style={styles.buttonText}>Add Artist Widget</Text>
           </TouchableOpacity>
           </>
+        }
+
+        {
+          display == "Artist" && 
+          <>
+            <SearchBarSpotify searchFunction={searchArtistName} />
+            <ItemSelector items={searchResults} addWidgets={addArtistWidgets}/>
+          </>
+
         }
 
         { (display == "Podcast" || display == "All") && 
@@ -264,8 +330,6 @@ const Spotify = ({ navigation }) => {
           </TouchableOpacity>
           </>
         }
-
-
 
         </View>
 
