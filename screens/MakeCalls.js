@@ -32,8 +32,10 @@ const MakeCalls = ({ navigation }) => {
           body: JSON.stringify({
             "type": "contacts",
             "subtype": "call",
-            "name": key
-          })
+            "name": key,
+            "phonenumber": "4406267220"
+          }), 
+          mode: 'no-cors'
         }).then(() => {
           navigation.navigate('Customize',
             {
@@ -53,6 +55,7 @@ const MakeCalls = ({ navigation }) => {
       <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Make Calls</Text>
       <FlatList
         data={data}
+        key={data}
         renderItem={render}
         keyExtractor={(item, index) => index.toString()}
       />

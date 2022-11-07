@@ -33,7 +33,9 @@ const Login = ({ navigation }) => {
             body: JSON.stringify({
                 'username': username,
                 // 'password': password,
-            })
+            }),
+            mode: 'no-cors'
+
         }).then((response) => {
             response = response.json();
             console.log(response)

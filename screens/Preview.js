@@ -6,7 +6,7 @@ const Preview = () => {
   const [names, setNames] = useState([]);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/getwidgets')
+    fetch('http://127.0.0.1:5000/getwidgets', { mode: 'no-cors' })
       .then((response) => response.json()).catch((error) => console.log(error)).then((json) => {
         var vals = Object.values(json)
         var tempNames = new Array()

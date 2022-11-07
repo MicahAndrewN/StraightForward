@@ -9,7 +9,7 @@ const CustomizeHome = ({ navigation }) => {
   const [data, setdata] = useState();
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/getname").then((response) => response.json())
+    fetch("http://127.0.0.1:5000/getname", {mode: 'no-cors'}).then((response) => response.json())
       .then((json) => {
         setdata(json.name)
       }).catch((error) => {
@@ -46,6 +46,17 @@ const CustomizeHome = ({ navigation }) => {
       }
       >
         <Text style={styles.text}>Add Media Widget</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('Customize',
+        {
+          screen: 'Navigation',
+          params: {}
+        })
+      }
+      >
+        <Text style={styles.text}>Add Map Widget</Text>
       </TouchableOpacity>
       <View style={styles.driveButton}>
         <TouchableOpacity
