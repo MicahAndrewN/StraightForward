@@ -43,13 +43,16 @@ def postwidget():
     req = request.json
     if isinstance(resp_json, str):
         resp_json = [resp_json]
-    for item in resp_json:
-        if resp_json[item]['type'] == 'contacts' and resp_json[item]['name'] == req['name']:
-            return jsonify({'status_code': 304}), 304
-        if resp_json[item]['type'] == 'music' and resp_json[item]['name'] == req['name']:
-            return jsonify({'status_code': 304}), 304
+    if resp_json:
+        for item in resp_json:
+            if resp_json[item]['type'] == 'contacts' and resp_json[item]['name'] == req['name']:
+                return jsonify({'status_code': 304}), 304
+            if resp_json[item]['type'] == 'music' and resp_json[item]['name'] == req['name']:
+                return jsonify({'status_code': 304}), 304
 
-    cmd = f"curl -X POST https://straightforward-89f53-default-rtdb.firebaseio.com/users/{getLogname()}/widgets.json -d '{req}'"
+    print(req)
+
+    cmd = f"curl -X POST https://straightforward-89f53-default-rtdb.firebaseio.com/users/{getLogname()}/widgets.json -d '{json.dumps(req)}' -H 'Content-Type: application/json'"
     os.system(cmd)
     return jsonify({'status_code': 200}), 200
 
