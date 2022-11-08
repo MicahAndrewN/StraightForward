@@ -1,12 +1,14 @@
 import { StyleSheet, TouchableOpacity, SafeAreaView, Text, View } from "react-native";
 import { GestureHandlerRefContext } from "@react-navigation/stack";
 import EditScreenInfo from "../components/EditScreenInfo";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { ColorMode } from "../navigation/index"
 
 
 const CustomizeHome = ({ navigation }) => {
 
   const [data, setdata] = useState();
+  const [colorMode, setColorMode] = useContext(ColorMode);
 
   useEffect(() => {
     fetch("http://127.0.0.1:5000/getname", {mode: 'no-cors'}).then((response) => response.json())
@@ -21,6 +23,64 @@ const CustomizeHome = ({ navigation }) => {
         setdata("error with connecting to api ")
       });
   }, []);
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: [colorMode === "dark" ? "#000" : "#FFFFFF"]
+    },
+    button: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#DDDDDD',
+      marginTop: 10,
+      marginBottom: 10,
+      height: 65,
+      width: 250,
+      borderRadius: 20,
+    },
+    text: {
+      fontSize: 20,
+      fontWeight: 'bold',
+    },
+    driveText: {
+      fontSize: 24,
+      color: '#FFFFFF',
+      fontWeight: 'bold'
+    },
+    title: {
+      fontSize: 32,
+      fontWeight: 'bold'
+    },
+    driveButton: {
+      flex: 1,
+      justifyContent: 'flex-end',
+    },
+    drive: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#4285F4',
+      marginTop: 10,
+      marginBottom: 10,
+      height: 65,
+      width: 250,
+      borderRadius: 20,
+      fontWeight: 'bold'
+    },
+    title2: {
+      fontSize: 20,
+      fontWeight: "bold",
+      marginVertical: 10,
+      color: [colorMode === "dark" ? "#FFFFFF" : "#000"]
+    },
+    separator: {
+      marginVertical: 30,
+      height: 1,
+      width: "80%",
+    },
+  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -60,6 +120,17 @@ const CustomizeHome = ({ navigation }) => {
       </TouchableOpacity>
       <View style={styles.driveButton}>
         <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('Customize',
+            {
+              screen: 'ManageWidgets',
+              params: {}
+            })
+          }
+        >
+          <Text style={styles.text}>Manage Widgets</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
           style={styles.drive}
           onPress={() => navigation.navigate('Customize',
           {
@@ -72,66 +143,7 @@ const CustomizeHome = ({ navigation }) => {
       </View>
     </SafeAreaView>
   );
-
-
 }
 
 export default CustomizeHome;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: "#FFFFFF"
-  },
-  button: {
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    marginTop: 10,
-    marginBottom: 10,
-    height: 65,
-    width: 400,
-    borderRadius: 10,
-  },
-  text: {
-    fontSize: 20,
-    marginTop: 15,
-    fontWeight: 'bold'
-  },
-  driveText: {
-    fontSize: 24,
-    marginTop: 15,
-    color: '#FFFFFF',
-    fontWeight: 'bold'
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold'
-  },
-  driveButton: {
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
-  drive: {
-    alignItems: 'center',
-    backgroundColor: '#4285F4',
-    marginTop: 10,
-    marginBottom: 10,
-    height: 65,
-    width: 250,
-    borderRadius: 10,
-    fontWeight: 'bold'
-  },
-  title2: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginVertical: 10,
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
-  
-});

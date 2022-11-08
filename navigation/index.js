@@ -16,13 +16,16 @@ import * as React from "react";
 import TokenReducer from '../store/reducers/token';
 import Provider from 'react-native';
 
-
+export const ColorMode = React.createContext();
+export const WidgetLayout = React.createContext();
 
 export default function Navigation({ colorScheme }) {
 
   const [loggedIn, setLoggedIn] = React.useState(false);
 
   const auth = React.useContext(AuthContext);
+  const [colorMode, setColorMode] = React.useState("light");
+  const [widgetLayout, setWidgetLayout] = React.useState("left");
 
   const logIn = (username, password)=>{
     console.log("logIn")
@@ -50,14 +53,18 @@ export default function Navigation({ colorScheme }) {
   }
   console.log(auth)
   return (
-      <AuthContext.Provider value={{ status: loggedIn, login: logIn, }} >
+    <AuthContext.Provider value={{ status: loggedIn, login: logIn, }}>
+        <ColorMode.Provider value={[colorMode, setColorMode]}>
+        <WidgetLayout.Provider value={[widgetLayout, setWidgetLayout]}>
           <NavigationContainer
             linking={LinkingConfiguration}
-            theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+            theme={colorMode === "dark" ? DarkTheme : DefaultTheme}
           >
             {auth.status ? <BottomTabNavigator/> : <AuthStack/> }
           </NavigationContainer>
-        </AuthContext.Provider>
+        </WidgetLayout.Provider>
+        </ColorMode.Provider>
+      </AuthContext.Provider>
   );
 }
 

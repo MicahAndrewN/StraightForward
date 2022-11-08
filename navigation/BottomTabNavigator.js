@@ -15,6 +15,9 @@ import Media from "../screens/Media";
 import Spotify from "../screens/Spotify";
 import Drive from "../screens/Drive";
 import Navigation from "../screens/Navigation";
+import ManageWidgets from "../screens/ManageWidgets";
+import DeleteWidgets from "../screens/DeleteWidgets";
+// import Drive from "../screens/Drive";
 
 
 const CustomizeStackNav = createStackNavigator();
@@ -68,6 +71,16 @@ const CustomizeStack = () => {
       <CustomizeStackNav.Screen
         name="Navigation"
         component={Navigation}
+        options={{ headerTitle: "" }}
+      />
+      <CustomizeStackNav.Screen
+        name="DeleteWidgets"
+        component={DeleteWidgets}
+        options={{ headerTitle: "" }}
+      />
+      <CustomizeStackNav.Screen
+        name="ManageWidgets"
+        component={ManageWidgets}
         options={{ headerTitle: "" }}
       />
     </CustomizeStackNav.Navigator>

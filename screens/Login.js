@@ -80,7 +80,7 @@ const Login = ({ navigation }) => {
                     />
                 </View>
                 <TouchableOpacity style={styles.loginBtn} onPress={() => auth.login(username, password)}>
-                    <Text>LOGIN</Text>
+                    <Text style={{ fontSize: 20, fontWeight: "bold", color: "#FFF" }}>Login</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
 
     inputView: {
         backgroundColor: "#DDD",
-        width: "90%",
+        width: 230,
         height: 45,
         marginBottom: 20,
 
@@ -137,6 +137,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         marginTop: 40,
         fontSize: 20,
-        backgroundColor: "#FF1493",
+        backgroundColor: "#4285F4",
     },
 });

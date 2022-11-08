@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
+import React, { useState, useEffect, useContext } from "react";
+import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { ColorMode, WidgetLayout } from "../navigation";
 
 const Preview = () => {
   const [names, setNames] = useState([]);
   const [contactWidgets, setContactWidgets] = useState([]);
   const [musicWidgets, setMusicWidgets] = useState([]);
-
+  const [colorMode, setColorMode] = useContext(ColorMode);
+  const [widgetLayout, setWidgetLayout] = useContext(WidgetLayout);
 
   useEffect(() => {
     fetch('http://127.0.0.1:5000/getwidgets', { mode: 'no-cors' })
@@ -17,92 +19,80 @@ const Preview = () => {
         }).catch((error) => console.log("error1 " + error))
   }, []);
 
-  console.log("names", names)
+  const flex = {"top": "row-reverse", "bottom": "row", "left": "column", "right": "column-reverse"};
 
-  let temp_contacts = []
-  let temp_music = []
-  for (let i = 0; i < names.length; i++) {
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      flexDirection: flex[widgetLayout],
+      width: '100%',
+      height: '100%',
+      backgroundColor: colorMode === "dark" ? "#000" : "#FFFFFF",
+      alignSelf: 'center',
+      alignItems: 'center',
+      margin: 10,
+    },
+    image: {
+      flex: 3,
+      resizeMode: 'cover',
+      height: '100%',
+      width: "100%"
+    },
+    sidebar: {
+      flex: 1,
+      flexDirection: widgetLayout === "left" || widgetLayout === "right" ? "column" : "row",
+      alignItems: widgetLayout === "left" || widgetLayout === "right" ? "" : "flex-end"
+    },
+    button: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#DDD',
+      height: widgetLayout === "left" || widgetLayout === "right" ? 80 : 90,
+      width: widgetLayout === "left" || widgetLayout === "right" ? 200 : 100,
+      margin: widgetLayout === "left" || widgetLayout === "right" ? -55 : 10,
+      alignSelf: 'center',
+      transform: [{ rotate: '-90deg' }],
+      borderRadius: 20
+    },
+    buttonText: {
+      fontWeight: 'bold',
+      textAlign: 'center'
+    },
+  });
 
-    if (names[i]['type'] == 'contacts'){
-      temp_contacts.push(
-        <TouchableOpacity
-          style={styles.callButton}
+  const render = ({ item }) => {
+    var widgetType = item['type'] == 'contacts' ? 'phone' : 'music';
+    var text = item['type'] == 'contacts' ? 'Call' : 'Play';
+
+    return(
+      <TouchableOpacity
+          style={styles.button}
           onPress={() => console.log("Call")}
         >
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <FontAwesome name="phone" size={20} color="black" />
-          <Text style={styles.buttonText}> Call {names[i]['name']}</Text>
-          </View>
-        </TouchableOpacity>
-      )
-    }
-    else if (names[i]['type'] == 'music'){
-      temp_music.push(
-        <TouchableOpacity
-          style={styles.musicButton}
-          onPress={() => console.log("Call")}
+        <Text 
+          style={styles.buttonText}
+          numberOfLines={2}
+          adjustsFontSizeToFit={true}
         >
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <FontAwesome name="music" size={20} color="black" />
-            <Text style={styles.buttonText}> Play {names[i]['name']}</Text>
-          </View>
-        </TouchableOpacity>
-      )
-    }
+          <FontAwesome name={widgetType} size={20} color="black" /> {text} {item['name']}
+        </Text>
+      </TouchableOpacity>
+    )
   }
 
   return (
-    <View style={styles.container}>
-      <Image style={styles.image} source={require('../assets/images/mapimage1.png')} />
+    <SafeAreaView style={styles.container}>
+      <Image style={styles.image} source={require('../assets/images/mapimage2.png')} />
       <View style={styles.sidebar}>
-        {temp_contacts}
-        {temp_music}
+        <FlatList
+          horizontal={widgetLayout === "left" || widgetLayout === "right" ? true : false}
+          data={names}
+          renderItem={render}
+          keyExtractor={(item, index) => index.toString()}
+        />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 export default Preview;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: 336,
-    height: '100%',
-    backgroundColor: "#FFFFFF",
-    alignSelf: 'center',
-    alignItems: 'center'
-  },
-  image: {
-    flex: 3,
-    resizeMode: 'cover',
-    width: "100%"
-  },
-  sidebar: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "space-evenly",
-    transform: [{ rotate: '-90deg' }],
-  },
-  callButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#afdbc2',
-    marginTop: 10,
-    height: 65,
-    width: 200,
-    borderRadius: 10,
-  },
-  musicButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#f5b0cf',
-    marginTop: 10,
-    height: 65,
-    width: 200,
-    borderRadius: 10,
-  },
-  buttonText: {
-    fontWeight: 'bold'
-  },
-});
