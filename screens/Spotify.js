@@ -93,8 +93,9 @@ const Spotify = ({ navigation }) => {
         item['id'] = id
         item['name'] = album['name'] + ' - ' + album['artists'][0]['name']
         item['artist'] = album['artists'][0]['name']
-        item['url'] = album['external_urls']['spotify'];
-        item['albumName'] = album['name']
+        item['url'] = album['uri'];
+        item['albumName'] = album['name'];
+        item['albumID'] = album['id'];
         album_data.push(item)
         id += 1
       });
@@ -102,8 +103,7 @@ const Spotify = ({ navigation }) => {
       setSearchResults(album_data)
 
     },function(err) {
-      console.log('Something went wrong!', err);
-      Alert.alert("You may need to reconnect your Spotify account.");
+      promptAsync();
       auth.spotifyToken = "";
     })
   }
@@ -119,7 +119,8 @@ const Spotify = ({ navigation }) => {
         let item = {};
         item['id'] = id
         item['name'] = artist['name']
-        item['url'] = artist['external_urls']['spotify'];
+        item['url'] = artist['uri'];
+        item['artistID'] = artist['id']
         artist_data.push(item)
         id += 1
       });
@@ -127,9 +128,8 @@ const Spotify = ({ navigation }) => {
       setSearchResults(artist_data)
 
     },function(err) {
-      console.log('Something went wrong!', err);
-      Alert.alert("You may need to reconnect your Spotify account.");
       auth.spotifyToken = "";
+      promptAsync();
     })
   }
 
@@ -174,7 +174,8 @@ const Spotify = ({ navigation }) => {
           "type": "music",
           "subtype": "album",
           "name": newWidgets[i]['albumName'],
-          "url": newWidgets[i]['url']
+          "url": newWidgets[i]['url'],
+          "albumID": newWidgets[i]['albumID']
         })
       }).then(() => {
         console.log("widget added")
@@ -199,7 +200,8 @@ const Spotify = ({ navigation }) => {
           "type": "music",
           "subtype": "album",
           "name": newWidgets[i]['albumName'],
-          "url": newWidgets[i]['url']
+          "url": newWidgets[i]['url'],
+          "artistID": newWidgets[i]['artistID']
         })
       }).then(() => {
         console.log("widget added")

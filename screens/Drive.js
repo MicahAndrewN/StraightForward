@@ -4,6 +4,7 @@ import { Linking, Alert, Platform, Dimensions } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import MapViewDirections from 'react-native-maps-directions';
 import MapView from 'react-native-maps';
+import { ResponseType, useAuthRequest, makeRedirectUri } from "expo-auth-session";
 import SpotifyWebApi from "spotify-web-api-node";
 import AuthContext from "../components/AuthContext";
 
@@ -37,6 +38,36 @@ const Drive = ({ navigation }) => {
   const SpotifyApi = new SpotifyWebApi();
   SpotifyApi.setAccessToken(auth.spotifyToken);
   let deviceID = ''
+  const redirectUri = makeRedirectUri();
+  const discovery = {
+    authorizationEndpoint: "https://accounts.spotify.com/authorize",
+    tokenEndpoint: "https://accounts.spotify.com/api/token",
+  };
+
+
+
+  const [request, response, promptAsync] = useAuthRequest(
+    {
+      responseType: ResponseType.Token,
+      clientId: "e36f952ff0df46de96031217f169216a",
+      scopes: [
+        "user-read-currently-playing",
+        "user-read-recently-played",
+        "user-read-playback-state",
+        "user-top-read",
+        "user-modify-playback-state",
+        "streaming",
+        "user-read-email",
+        "user-read-private",
+      ],
+      // In order to follow the "Authorization Code Flow" to fetch token after authorizationEndpoint
+      // this must be set to false
+      usePKCE: false,
+      redirectUri: redirectUri,
+    },
+    discovery
+  );
+  
 
   SpotifyApi.getMyDevices()
   .then(function(data) {
@@ -47,10 +78,10 @@ const Drive = ({ navigation }) => {
     console.log('Something went wrong!', err);
   });
 
-
   console.log(auth.spotifyToken)
   console.log(deviceID)
   console.log(playing)
+
   function playSpotify(item){
     if (item['subtype'] == 'playlist'){
       console.log("in if")
@@ -77,10 +108,52 @@ const Drive = ({ navigation }) => {
       
     }
     else if (item['subtype'] == 'album'){
+      SpotifyApi.getAlbumTracks(item['albumID'], {
+        offset: 1,
+        fields: 'items'
+        }).then((data) => {
+          console.log(data.body)
+          SpotifyApi.play({
+              context_uri: item['url'],
+              device_id: deviceID,
+              uri: data.body.items[0].uri 
+            }).then(
+            function () {
+              console.log("playing: ", data.body);
+            },
+            function (err) {
+              //if the user making the request is non-premium, a 403 FORBIDDEN response code
+              console.log("Something went wrong!", err);
+            })
+        }).catch((err) => {
+          console.log(err)
+          console.log(item['albumID'])
+        })
+
 
     }
     else if (item['subtype'] == 'artist'){
-      
+      SpotifyApi.getArtistTopTracks(item['artistID'], {
+        offset: 1,
+        fields: 'items'
+        }).then((data) => {
+          console.log(data.body)
+          SpotifyApi.play({
+              context_uri: item['url'],
+              device_id: deviceID,
+              uri: data.body.items[0].uri 
+            }).then(
+            function () {
+              console.log("playing: ", data.body);
+            },
+            function (err) {
+              //if the user making the request is non-premium, a 403 FORBIDDEN response code
+              console.log("Something went wrong!", err);
+            })
+        }).catch((err) => {
+          console.log(err)
+          console.log(item['artistID'])
+        })
     }
     setPlaying(true);
   }
@@ -244,16 +317,18 @@ export const callNumber = phone => {
   .catch(err => console.log(err));
 };
 
+
+
 const styles = StyleSheet.create({
   container: {
-    width: 336,
+    width: '100%',
     height: '100%',
     backgroundColor: "#FFFFFF",
     alignSelf: 'center',
     alignItems: 'center'
   },
   sidebar: {
-    flex: 1,
+    width: 200,
     alignItems: "center",
     justifyContent: "space-evenly",
     transform: [{ rotate: '-90deg' }],
@@ -281,7 +356,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#afdbc2',
     marginTop: 10,
     height: 65,
-    width: 110,
+    width: 200,
     borderRadius: 10,
   },
   musicButton: {
@@ -290,7 +365,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5b0cf',
     marginTop: 10,
     height: 65,
-    width: 110,
+    width: 200,
     borderRadius: 10,
   },
 });
