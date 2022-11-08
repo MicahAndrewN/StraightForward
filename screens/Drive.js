@@ -15,7 +15,7 @@ const { width, height } = Dimensions.get('window');
 // npm install react-native-maps-directions --legacy-peer-deps
 
 const origin = {latitude: 42.292894, longitude: -83.715395};
-const destination = "Burton Memorial Tower"; // want to get from database
+let destination = ""; // want to get from database
 const GOOGLE_MAPS_APIKEY = 'AIzaSyCbD_d7uMnnYJ_kQxpQ8lQYhaOb5RwQgpI';
 
 const Drive = ({ navigation }) => {
@@ -194,7 +194,7 @@ const Drive = ({ navigation }) => {
       temp_directions.push(
         <TouchableOpacity
           style={styles.button}
-          onPress={() => console.log("Call")}
+          onPress={() => {destination = names[i]['name']}}
         >
           <Text style={styles.buttonText}><FontAwesome name="map" size={20} color="black" /> {names[i]['name']}</Text>
         </TouchableOpacity>
@@ -262,7 +262,7 @@ class Map extends Component {
         {/* {this.state.coordinates.map((coordinate, index) =>
           <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} />
         )} */}
-        {(this.state.coordinates.length >= 2) && (
+        {(this.state.coordinates.length >= 2) && (destination) && (
           <MapViewDirections
             origin={this.state.coordinates[0]}
             destination= {destination}
