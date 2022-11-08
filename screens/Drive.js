@@ -139,7 +139,7 @@ const Drive = ({ navigation }) => {
           SpotifyApi.play({
               context_uri: item['url'],
               device_id: deviceID,
-              uri: data.body.items[0].uri 
+              uri: data.body.tracks[0].uri 
             }).then(
             function () {
               console.log("playing: ", data.body);
