@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, TextInput } from 'react-native';
 
 
 const Navigation = ({ navigation }) => {
   const [selected, setSelected] = useState({});
-  const data = [
-    "Home", "School", "Work"
+  let data = [
+    "Bob and Betty Beyster Building (BBB)", "Burton Memorial Tower", "University of Michigan School of Nursing"
   ];
+  let address = "";
 
   const check = (item) => {
     setSelected(test => (test[item] ? { ...test, [item]: false } : { ...test, [item]: true }));
@@ -21,6 +22,15 @@ const Navigation = ({ navigation }) => {
       </TouchableOpacity>
     )
   }
+
+  const handleKeyDown = (e) => {
+    if(e.nativeEvent.key == "Enter"){
+      dismissKeyboard();
+      data.push(address)
+      address = ""
+    }
+  }
+
   const handleWidgets = () => {
     Object.keys(selected).forEach(function (key, index) {
       if (selected[key]) {
@@ -56,15 +66,26 @@ const Navigation = ({ navigation }) => {
         renderItem={render}
         keyExtractor={(item, index) => index.toString()}
       />
+      <TextInput
+        style={styles.input}
+        placeholder="Enter Destination"
+        keyboardType="default"
+        onKeyPress={handleKeyDown}
+        onChangeText={(destination) => {address = destination}}
+      />
       <TouchableOpacity
         style={styles.button2}
         onPress={() => handleWidgets(selected)}
       >
-        <Text style={{ fontWeight: 'bold', marginTop: 15, fontSize: 20 }}>Submit</Text>
+      <Text style={{ fontWeight: 'bold', marginTop: 15, fontSize: 20 }}>Submit</Text>
       </TouchableOpacity>
     </View>
   );
 };
+
+
+
+
 
 
 const styles = StyleSheet.create({
@@ -95,6 +116,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 15,
   },
+  input: {
+    alignItems: 'center',
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    marginTop: 10,
+    marginBottom: 10,
+  }
 });
 
 export default Navigation;
