@@ -49,6 +49,8 @@ def postwidget():
                 return jsonify({'status_code': 304}), 304
             if resp_json[item]['type'] == 'music' and resp_json[item]['name'] == req['name']:
                 return jsonify({'status_code': 304}), 304
+            if resp_json[item]['type'] == 'navigation' and resp_json[item]['name'] == req['name']:
+                return jsonify({'status_code': 304}), 304
 
     print(req)
 
