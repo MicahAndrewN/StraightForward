@@ -328,6 +328,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   sidebar: {
+    flex: 1,
     width: 200,
     alignItems: "center",
     justifyContent: "space-evenly",
