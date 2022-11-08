@@ -46,7 +46,6 @@ export default function Navigation({ colorScheme }) {
 
     }).catch((error) => {
         console.error(error);
-        setdata("error with connecting to api")
     });
   }
   console.log(auth)

@@ -1,9 +1,12 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { useState, useContext, useEffect, Component } from "react";
 import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
 import { Linking, Alert, Platform, Dimensions } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import MapViewDirections from 'react-native-maps-directions';
 import MapView from 'react-native-maps';
+import SpotifyWebApi from "spotify-web-api-node";
+import AuthContext from "../components/AuthContext";
+
 
 const { width, height } = Dimensions.get('window');
 
@@ -18,6 +21,7 @@ const Drive = ({ navigation }) => {
   const [names, setNames] = useState([]);
   const [contactWidgets, setContactWidgets] = useState([]);
   const [musicWidgets, setMusicWidgets] = useState([]);
+  const [playing, setPlaying] = useState(false);
 
 
   useEffect(() => {
@@ -29,6 +33,63 @@ const Drive = ({ navigation }) => {
         }).catch((error) => console.log("error1 " + error))
   }, []);
 
+  const auth = useContext(AuthContext);
+  const SpotifyApi = new SpotifyWebApi();
+  SpotifyApi.setAccessToken(auth.spotifyToken);
+  let deviceID = ''
+
+  SpotifyApi.getMyDevices()
+  .then(function(data) {
+    let availableDevices = data.body.devices;
+    console.log("devices are", availableDevices);
+    deviceID = data.body.devices[0]['id']
+  }, function(err) {
+    console.log('Something went wrong!', err);
+  });
+
+
+  console.log(auth.spotifyToken)
+  console.log(deviceID)
+  console.log(playing)
+  function playSpotify(item){
+    if (item['subtype'] == 'playlist'){
+      console.log("in if")
+      SpotifyApi.getPlaylistTracks(item['playlistID'], {
+        offset: 1,
+        fields: 'items'
+        }).then((data) => {
+          SpotifyApi.play({
+              context_uri: item['url'],
+              device_id: deviceID,
+              uri: data.body.items[0].track.uri 
+            }).then(
+            function () {
+              console.log("playing: ", data.body);
+            },
+            function (err) {
+              //if the user making the request is non-premium, a 403 FORBIDDEN response code
+              console.log("Something went wrong!", err);
+            })
+        }).catch((err) => {
+          console.log(err)
+          console.log(item['playlistID'])
+        })
+      
+    }
+    else if (item['subtype'] == 'album'){
+
+    }
+    else if (item['subtype'] == 'artist'){
+      
+    }
+    setPlaying(true);
+  }
+
+  function pauseSpotify(){
+    SpotifyApi.pause();
+    setPlaying(false);
+  }
+
   console.log("names", names)
 
   let temp_contacts = []
@@ -39,7 +100,7 @@ const Drive = ({ navigation }) => {
     if (names[i]['type'] == 'contacts'){
       temp_contacts.push(
         <TouchableOpacity
-          style={styles.button}
+          style={styles.callButton}
           onPress={() => console.log("Call")}
         >
           <Text style={styles.buttonText}><FontAwesome name="phone" size={20} color="black" /> Call {names[i]['name']}</Text>
@@ -49,8 +110,8 @@ const Drive = ({ navigation }) => {
     else if (names[i]['type'] == 'music'){
       temp_music.push(
         <TouchableOpacity
-          style={styles.button}
-          onPress={() => console.log("Call")}
+          style={styles.musicButton}
+          onPress={() => playing ? pauseSpotify() : playSpotify(names[i])}
         >
           <Text style={styles.buttonText}><FontAwesome name="music" size={20} color="black" /> Play {names[i]['name']}</Text>
         </TouchableOpacity>
@@ -185,7 +246,6 @@ export const callNumber = phone => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     width: 336,
     height: '100%',
     backgroundColor: "#FFFFFF",
@@ -214,5 +274,23 @@ const styles = StyleSheet.create({
     width: 600,
     height: "100%",
     transform: [{ rotate: '-90deg' }]
-  }
+  },
+  callButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#afdbc2',
+    marginTop: 10,
+    height: 65,
+    width: 110,
+    borderRadius: 10,
+  },
+  musicButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f5b0cf',
+    marginTop: 10,
+    height: 65,
+    width: 110,
+    borderRadius: 10,
+  },
 });

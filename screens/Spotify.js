@@ -146,7 +146,8 @@ const Spotify = ({ navigation }) => {
           "type": "music",
           "subtype": "playlist",
           "name": newWidgets[i]['name'],
-          "url": newWidgets[i]['url']
+          "url": newWidgets[i]['url'],
+          "playlistID": newWidgets[i]['playlistID']
         })
       }).then(() => {
         console.log("widget added")
@@ -251,9 +252,10 @@ const Spotify = ({ navigation }) => {
                 let id = 0
                 data.body.items.map((playlist) => {
                   let item = {};
+                  item['playlistID'] = playlist['id']
                   item['id'] = id
                   item['name'] = playlist['name']
-                  item['url'] = playlist['external_urls']['spotify'];
+                  item['url'] = playlist['uri'];
                   playlist_data.push(item)
                   id += 1
                 });
@@ -262,8 +264,7 @@ const Spotify = ({ navigation }) => {
 
               },function(err) {
                 console.log('Something went wrong!', err);
-                Alert.alert("You may need to reconnect your Spotify account.");
-                auth.spotifyToken = "";
+                promptAsync();
               })
             }
         >

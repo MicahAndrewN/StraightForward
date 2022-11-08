@@ -91,8 +91,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     height: 65,
-    width: 250,
-    borderRadius: 20,
+    width: 400,
+    borderRadius: 10,
   },
   text: {
     fontSize: 20,
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     height: 65,
     width: 250,
-    borderRadius: 20,
+    borderRadius: 10,
     fontWeight: 'bold'
   },
   title2: {
@@ -133,4 +133,5 @@ const styles = StyleSheet.create({
     height: 1,
     width: "80%",
   },
+  
 });

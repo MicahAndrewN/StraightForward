@@ -26,20 +26,26 @@ const Preview = () => {
     if (names[i]['type'] == 'contacts'){
       temp_contacts.push(
         <TouchableOpacity
-          style={styles.button}
+          style={styles.callButton}
           onPress={() => console.log("Call")}
         >
-          <Text style={styles.buttonText}><FontAwesome name="phone" size={20} color="black" /> Call {names[i]['name']}</Text>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <FontAwesome name="phone" size={20} color="black" />
+          <Text style={styles.buttonText}> Call {names[i]['name']}</Text>
+          </View>
         </TouchableOpacity>
       )
     }
     else if (names[i]['type'] == 'music'){
       temp_music.push(
         <TouchableOpacity
-          style={styles.button}
+          style={styles.musicButton}
           onPress={() => console.log("Call")}
         >
-          <Text style={styles.buttonText}><FontAwesome name="music" size={20} color="black" /> Play {names[i]['name']}</Text>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <FontAwesome name="music" size={20} color="black" />
+            <Text style={styles.buttonText}> Play {names[i]['name']}</Text>
+          </View>
         </TouchableOpacity>
       )
     }
@@ -78,14 +84,23 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     transform: [{ rotate: '-90deg' }],
   },
-  button: {
+  callButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#DDD',
+    backgroundColor: '#afdbc2',
     marginTop: 10,
     height: 65,
     width: 200,
-    borderRadius: 20,
+    borderRadius: 10,
+  },
+  musicButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f5b0cf',
+    marginTop: 10,
+    height: 65,
+    width: 200,
+    borderRadius: 10,
   },
   buttonText: {
     fontWeight: 'bold'
