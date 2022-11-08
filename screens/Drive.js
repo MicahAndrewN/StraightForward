@@ -190,7 +190,7 @@ const Drive = ({ navigation }) => {
         </TouchableOpacity>
       )
     }
-    else if (names[i]['type'] == 'address'){
+    else if (names[i]['type'] == 'navigation'){
       temp_directions.push(
         <TouchableOpacity
           style={styles.button}

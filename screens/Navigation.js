@@ -34,7 +34,7 @@ const Navigation = ({ navigation }) => {
   const handleWidgets = () => {
     Object.keys(selected).forEach(function (key, index) {
       if (selected[key]) {
-        fetch('http://127.0.0.1:5000/addwidget', {
+        fetch('http://10.0.2.2:5000/addwidget', {
           method: "POST",
           headers: {
             'Content-Type': 'application/json'
@@ -66,13 +66,13 @@ const Navigation = ({ navigation }) => {
         renderItem={render}
         keyExtractor={(item, index) => index.toString()}
       />
-      <TextInput
+      {/* <TextInput
         style={styles.input}
         placeholder="Enter Destination"
         keyboardType="default"
         onKeyPress={handleKeyDown}
         onChangeText={(destination) => {address = destination}}
-      />
+      /> */}
       <TouchableOpacity
         style={styles.button2}
         onPress={() => handleWidgets(selected)}
