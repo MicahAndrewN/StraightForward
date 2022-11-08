@@ -133,10 +133,8 @@ const Drive = ({ navigation }) => {
 
     }
     else if (item['subtype'] == 'artist'){
-      SpotifyApi.getArtistTopTracks(item['artistID'], {
-        offset: 1,
-        fields: 'items'
-        }).then((data) => {
+      SpotifyApi.getArtistTopTracks(item['artistID'], 'US',
+        ).then((data) => {
           console.log(data.body)
           SpotifyApi.play({
               context_uri: item['url'],
@@ -357,16 +355,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#afdbc2',
     marginTop: 10,
     height: 65,
-    width: 200,
+    width: 150,
     borderRadius: 10,
   },
   musicButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#f5b0cf',
+    backgroundColor: '#a1d3e3',
     marginTop: 10,
     height: 65,
-    width: 200,
+    width: 150,
     borderRadius: 10,
   },
 });
