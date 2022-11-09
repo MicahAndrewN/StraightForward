@@ -217,7 +217,7 @@ const Drive = ({ navigation }) => {
       widgetType = 'music'
     }
     var text = item['type'] == 'contacts' ? 'Call' : 'Play';
-    var text = item['type'] == 'navigation' ? 'Map to' : 'map';
+    var text = item['type'] == 'navigation' ? 'Map to' : 'Play';
     
     return(
       <TouchableOpacity
