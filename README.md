@@ -1,4 +1,4 @@
-# Navigation Example
+# StraightForward
 
 <p>
   <!-- iOS -->
@@ -25,24 +25,17 @@
   - Web: Any web browser
 - When it's time to customize your runtime, refer to the ["Adding custom native code"](https://docs.expo.dev/workflow/customizing/) guide!
 
-## Publishing
-
-- Deploy the native app to the App store and Play store using this guide: [Deployment](https://docs.expo.dev/distribution/app-stores/).
-- Deploy the website using this guide: [Web deployment](https://docs.expo.dev/distribution/publishing-websites/).
-
-## 📝 Notes
-
-- Learn more about [Universal React](https://docs.expo.dev/).
-- See what API and components are [available in the React runtimes](https://docs.expo.dev/versions/latest/).
-- Find out more about developing apps and websites: [Official guides](https://docs.expo.dev/guides/).
-
 ## HOW TO RUN APP USING REACT NATIVE / EXPO
 1. Pull everything from repo
 2. Navigate to directory in terminal window
-3. Run npm install to make sure all packages are installed
+3. Run npm install to make sure all packages are installed (if errors, try with --legacy-peer-deps)
 4. Run expo start to preview on a simulator or your phone
 5. Once expo has started (you should see a QR code) you can either scan the qr code to preview on your own phone, or hit "I" to test on IPhone simulator, or hit "a" to test on Android simulator
 - to test on your phone you'll need the expo go app
+
+## IN APP
+- Run local python server by navigating from project directory to ../api/src/ and run "python3 handler.py"
+- Login with "Beta-user" as the username, with any password
 
 ## EXPO TIPS
 - Hit ^c to stop server
