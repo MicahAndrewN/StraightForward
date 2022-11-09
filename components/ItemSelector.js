@@ -29,6 +29,8 @@ const ItemSelector = ({items, addWidgets}) => {
                 fixedHeight={true}
                 itemFontSize={24}
                 hideSubmitButton={true}
+                noItemsText="No results yet!"
+                selectText="Click to Browse Results"
 
             />
             <TouchableOpacity

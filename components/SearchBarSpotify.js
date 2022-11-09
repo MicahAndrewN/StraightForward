@@ -9,7 +9,7 @@ import SpotifyWebApi from "spotify-web-api-node";
 
 const SearchBarSpotify = ({searchFunction}) => {
 
-  const [text, onChangeText] = useState("Search...");
+  const [text, onChangeText] = useState("");
 
     return (
         <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>

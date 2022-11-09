@@ -198,10 +198,10 @@ const Spotify = ({ navigation }) => {
         },
         body: JSON.stringify({
           "type": "music",
-          "subtype": "artist",
-          "name": newWidgets[i]['name'],
+          "subtype": "album",
+          "name": newWidgets[i]['artistName'],
           "url": newWidgets[i]['url'],
-          "artistID": newWidgets[i]['artistID']
+          "artistID": newWidgets[i]['id']
         })
       }).then(() => {
         console.log("widget added")
@@ -242,7 +242,8 @@ const Spotify = ({ navigation }) => {
           : 
           // user is logged into spotify: 
           <View>
-
+        { (display == "Playlists" || display == "All") && 
+          <>
           <TouchableOpacity
           style={styles.button}
           onPress={() =>
@@ -271,13 +272,10 @@ const Spotify = ({ navigation }) => {
             }
         >
 
-        { (display == "Playlists" || display == "All") && 
-        <Text style={styles.buttonText}>Add Playlist Widget</Text>
-        }
-
-
-
+          <Text style={styles.buttonText}>Add Playlist Widget</Text>
         </TouchableOpacity>
+        </>
+      }
         {
           playlists.length != 0 && display == "Playlists" && 
           <>
