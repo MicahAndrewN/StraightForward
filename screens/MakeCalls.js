@@ -66,12 +66,12 @@ const MakeCalls = ({ navigation }) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: [colorMode === "dark" ? "#000" : "#FFFFFF"],
+      backgroundColor: colorMode === "dark" ? "#000" : "#FFFFFF",
       alignItems: 'center',
     },
     button: {
       alignItems: 'center',
-      backgroundColor: [colorMode === "dark" ? "#000" : "#FFFFFF"],
+      backgroundColor: colorMode === "dark" ? "#000" : "#FFFFFF",
       marginTop: 10,
       marginBottom: 10,
       height: 65,
@@ -90,7 +90,7 @@ const MakeCalls = ({ navigation }) => {
     },
     text: {
       fontSize: 24,
-      color: [colorMode === "dark" ? "#FFFFFF" : "#000"]
+      color: colorMode === "dark" ? "#FFFFFF" : "#000"
     },
     submitText: {
       fontSize: 24,
@@ -100,7 +100,7 @@ const MakeCalls = ({ navigation }) => {
     title: {
       fontSize: 24,
       fontWeight: 'bold',
-      color: [colorMode === "dark" ? "#FFFFFF" : "#000"]
+      color: colorMode === "dark" ? "#FFFFFF" : "#000"
     },
   });
 

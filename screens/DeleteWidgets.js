@@ -69,7 +69,7 @@ const DeleteWidgets = ({ navigation }) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: [colorMode === "dark" ? "#000" : "#FFFFFF"],
+      backgroundColor: colorMode === "dark" ? "#000" : "#FFFFFF",
       alignItems: 'center',
     },
     button: {
@@ -101,7 +101,7 @@ const DeleteWidgets = ({ navigation }) => {
     },
     text: {
       fontSize: 20,
-      color: [colorMode === "dark" ? "#FFFFFF" : "#000"],
+      color: colorMode === "dark" ? "#FFFFFF" : "#000",
       fontWeight: 'bold'
     },
     buttonText: {
@@ -116,7 +116,7 @@ const DeleteWidgets = ({ navigation }) => {
     title: {
       fontSize: 24,
       fontWeight: 'bold',
-      color: [colorMode === "dark" ? "#FFFFFF" : "#000"]
+      color: colorMode === "dark" ? "#FFFFFF" : "#000"
     },
   });
 

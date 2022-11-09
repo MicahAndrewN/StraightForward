@@ -12,7 +12,7 @@ const Media = ({navigation}) => {
       container: {
         flex: 1,
         alignItems: "center",
-        backgroundColor: [colorMode === "dark" ? "#000" : "#FFF"],
+        backgroundColor: colorMode === "dark" ? "#000" : "#FFF",
       },
       title: {
         fontSize: 20,
@@ -21,7 +21,7 @@ const Media = ({navigation}) => {
       text: {
         fontSize: 20,
         textAlign: 'center',
-        color: [colorMode === "dark" ? "#FFFFFF" : "#000"],
+        color: colorMode === "dark" ? "#FFFFFF" : "#000",
       },
       separator: {
         marginVertical: 30,
@@ -39,7 +39,7 @@ const Media = ({navigation}) => {
       },
       menu: {
         marginTop: 30,
-        backgroundColor: [colorMode === "dark" ? "#000" : "#FFF"],
+        backgroundColor: colorMode === "dark" ? "#000" : "#FFF",
       },
       driveText: {
         fontSize: 24,

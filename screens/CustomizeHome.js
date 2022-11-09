@@ -29,7 +29,7 @@ const CustomizeHome = ({ navigation }) => {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: [colorMode === "dark" ? "#000" : "#FFFFFF"]
+      backgroundColor: colorMode === "dark" ? "#000" : "#FFFFFF"
     },
     button: {
       alignItems: 'center',
@@ -73,7 +73,7 @@ const CustomizeHome = ({ navigation }) => {
       fontSize: 20,
       fontWeight: "bold",
       marginVertical: 10,
-      color: [colorMode === "dark" ? "#FFFFFF" : "#000"]
+      color: colorMode === "dark" ? "#FFFFFF" : "#000"
     },
     separator: {
       marginVertical: 30,

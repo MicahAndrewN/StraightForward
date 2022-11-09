@@ -18,7 +18,7 @@ const ManageWidgets = ({ navigation }) => {
     container: {
       flex: 1,
       alignItems: 'center',
-      backgroundColor: [colorMode === "dark" ? "#000" : "#FFFFFF"]
+      backgroundColor: colorMode === "dark" ? "#000" : "#FFFFFF"
     },
     button: {
       alignItems: 'center',
@@ -32,7 +32,7 @@ const ManageWidgets = ({ navigation }) => {
     },
     modalView: {
       margin: 20,
-      backgroundColor: [colorMode === "dark" ? "gray" : "#FFF"],
+      backgroundColor: colorMode === "dark" ? "gray" : "#FFF",
       borderRadius: 20,
       padding: 35,
       alignItems: "center",
@@ -63,7 +63,7 @@ const ManageWidgets = ({ navigation }) => {
       fontSize: 20,
       fontWeight: 'bold',
       marginTop: 50,
-      color: [colorMode === "dark" ? "#FFFFFF" : "#000"]
+      color: colorMode === "dark" ? "#FFFFFF" : "#000"
     },
     image: {
       width: 100,
@@ -71,23 +71,23 @@ const ManageWidgets = ({ navigation }) => {
     },
     top: {
       alignItems: 'center',
-      backgroundColor: [widgetLayout === "top" ? "#DDD" : colorMode === "dark" ? "gray" : "#FFF"],
+      backgroundColor: widgetLayout === "top" ? "#DDD" : colorMode === "dark" ? "gray" : "#FFF",
       marginTop: 10,
       borderRadius: 10,
     },
     left: {
       alignItems: 'center',
-      backgroundColor: [widgetLayout === "left" ? "#DDD" : colorMode === "dark" ? "gray" : "#FFF"],
+      backgroundColor: widgetLayout === "left" ? "#DDD" : colorMode === "dark" ? "gray" : "#FFF",
       borderRadius: 10,
     },
     right: {
       alignItems: 'center',
-      backgroundColor: [widgetLayout === "right" ? "#DDD" : colorMode === "dark" ? "gray" : "#FFF"],
+      backgroundColor: widgetLayout === "right" ? "#DDD" : colorMode === "dark" ? "gray" : "#FFF",
       borderRadius: 10,
     },
     bottom: {
       alignItems: 'center',
-      backgroundColor: [widgetLayout === "bottom" ? "#DDD" : colorMode === "dark" ? "gray" : "#FFF"],
+      backgroundColor: widgetLayout === "bottom" ? "#DDD" : colorMode === "dark" ? "gray" : "#FFF",
       borderRadius: 10,
     },
     title: {
@@ -133,7 +133,7 @@ const ManageWidgets = ({ navigation }) => {
             <Image style={styles.image} source={require('../assets/images/top.png')} />
           </TouchableOpacity>
 
-          <View style={{flex: 1, flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row'}}>
             <TouchableOpacity
               style={styles.left}
               onPress={() => setWidgetLayout("left")}
