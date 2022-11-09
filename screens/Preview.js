@@ -61,8 +61,18 @@ const Preview = () => {
   });
 
   const render = ({ item }) => {
-    var widgetType = item['type'] == 'contacts' ? 'phone' : 'music';
+    var widgetType = ''
+    if (item['type'] == 'contacts') {
+      widgetType = 'phone'
+    }
+    else if (item['type'] == 'navigation') {
+      widgetType = 'map'
+    }
+    else {
+      widgetType = 'music'
+    }
     var text = item['type'] == 'contacts' ? 'Call' : 'Play';
+    var text = item['type'] == 'navigation' ? 'Map to' : 'map';
 
     return(
       <TouchableOpacity
