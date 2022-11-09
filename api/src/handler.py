@@ -66,7 +66,7 @@ def deletewidget():
     if isinstance(resp_json, str):
         resp_json = [resp_json]
     for item in resp_json:
-        if resp_json[item]['type'] == 'contacts' and resp_json[item]['name'] == req['name']:
+        if resp_json[item]['name'] == req['name']:
             requests.delete(url=f"https://straightforward-89f53-default-rtdb.firebaseio.com/users/{getLogname()}/widgets/{item}.json")
             return jsonify({'status_code': 204}), 204
     return jsonify({'status_code': 404}), 404

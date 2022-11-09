@@ -16,56 +16,6 @@ const DeleteWidgets = ({ navigation }) => {
         }).catch((error) => console.log("error1 " + error))
   }, []);
 
-  const remove = (item) => {
-    if (selected.indexOf(item) === -1) {
-      setSelected(test => ([...test, item]));
-    }
-    else {
-      setSelected(test => ([...test.slice(0, test.indexOf(item)), ...test.slice(test.indexOf(item) + 1)]));
-    }
-  }
-  const render = ({ item }) => {
-    var widgetType = item['type'] == 'contacts' ? 'phone' : 'music';
-    var text = item['type'] == 'contacts' ? 'Call' : 'Play';
-
-    return (
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => remove(item)}
-      >
-        {selected.indexOf(item) !== -1 ? <Text style={styles.buttonText}><FontAwesome name={widgetType} size={20} color="black" /> {text} {item['name']} &#10060;</Text> : <Text style={styles.buttonText}><FontAwesome name={widgetType} size={20} color="black" /> {text} {item['name']}</Text>}
-      </TouchableOpacity>
-    )
-  }
-  const handleWidgets = () => {
-    selected.forEach(function (widget) {
-      console.log(widget)
-      fetch('http://127.0.0.1:5000/deletewidget', {
-        method: "DELETE",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          "type": widget['type'],
-          "subtype": widget['subtype'],
-          "name": widget['name'],
-          "phonenumber": "4406267220"
-        }),
-        mode: 'no-cors'
-      }).then(() => {
-        navigation.navigate('Customize',
-          {
-            screen: 'CustomizeHome',
-            params: {}
-          })
-      }).catch((error) => {
-        console.error(error);
-        setdata("error with connecting to api")
-      });
-      return
-    });
-  }
-
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -105,8 +55,10 @@ const DeleteWidgets = ({ navigation }) => {
       fontWeight: 'bold'
     },
     buttonText: {
+      margin: 10,
       fontSize: 24,
-      fontWeight: 'bold'
+      fontWeight: 'bold',
+      textAlign: 'center'
     },
     submitText: {
       fontSize: 24,
@@ -119,6 +71,101 @@ const DeleteWidgets = ({ navigation }) => {
       color: colorMode === "dark" ? "#FFFFFF" : "#000"
     },
   });
+
+  const remove = (item) => {
+    if (selected.indexOf(item) === -1) {
+      setSelected(test => ([...test, item]));
+    }
+    else {
+      setSelected(test => ([...test.slice(0, test.indexOf(item)), ...test.slice(test.indexOf(item) + 1)]));
+    }
+  }
+  const render = ({ item }) => {
+    var widgetType = ''
+    if (item['type'] == 'contacts') {
+      widgetType = 'phone'
+    }
+    else if (item['type'] == 'navigation') {
+      widgetType = 'map'
+    }
+    else {
+      widgetType = 'music'
+    }
+    var text = item['type'] == 'contacts' ? 'Call' : 'Play';
+    var text = item['type'] == 'navigation' ? 'Map to' : 'Play';
+
+    return (
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => remove(item)}
+      >
+        {selected.indexOf(item) !== -1 ? // if
+          <Text 
+            style={styles.buttonText}
+            numberOfLines={3}
+            adjustsFontSizeToFit={true}
+          >
+            <FontAwesome name={widgetType} size={20} color="black" /> {text} {item['name']} &#10060;
+          </Text> 
+          : // else
+          <Text 
+            style={styles.buttonText}
+            numberOfLines={3}
+            adjustsFontSizeToFit={true}
+          >
+            <FontAwesome name={widgetType} size={20} color="black" /> {text} {item['name']}
+          </Text>
+        }
+      </TouchableOpacity>
+    )
+  }
+  const handleWidgets = () => {
+    selected.forEach(function (widget) {
+      var json = ''
+      if (widget['type'] == 'contacts') {
+        json = JSON.stringify({
+          "type": widget['type'],
+          "subtype": widget['subtype'],
+          "name": widget['name'],
+          "phonenumber": "4406267220"
+        })
+      }
+      else if (widget['type' == 'navigation']) {
+        json = JSON.stringify({
+          "type": widget['type'],
+          "name": widget['name']
+        })
+      }
+      else {
+        json = JSON.stringify({
+          "name": widget['name'],
+          "playlistID": widget['playlistID'],
+          "subtype": widget['subtype'],
+          "type": widget['type'],
+          "url": widget['url']
+        })
+      }
+      console.log(widget)
+      fetch('http://127.0.0.1:5000/deletewidget', {
+        method: "DELETE",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: json,
+        mode: 'no-cors'
+      }).then(() => {
+        navigation.navigate('Customize',
+          {
+            screen: 'CustomizeHome',
+            params: {}
+          })
+      }).catch((error) => {
+        console.error(error);
+        setdata("error with connecting to api")
+      });
+      return
+    });
+  }
 
   return (
     <SafeAreaView style={styles.container}>

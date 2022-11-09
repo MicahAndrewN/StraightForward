@@ -48,15 +48,17 @@ const Preview = () => {
       justifyContent: 'center',
       backgroundColor: '#DDD',
       height: widgetLayout === "left" || widgetLayout === "right" ? 80 : 90,
-      width: widgetLayout === "left" || widgetLayout === "right" ? 200 : 100,
-      margin: widgetLayout === "left" || widgetLayout === "right" ? -55 : 10,
+      width: widgetLayout === "left" || widgetLayout === "right" ? 200 : 170,
+      margin: widgetLayout === "left" || widgetLayout === "right" ? -55 : 45,
       alignSelf: 'center',
       transform: [{ rotate: '-90deg' }],
       borderRadius: 20
     },
     buttonText: {
+      fontSize: 24,
       fontWeight: 'bold',
-      textAlign: 'center'
+      textAlign: 'center',
+      margin: 10,
     },
   });
 
@@ -72,7 +74,7 @@ const Preview = () => {
       widgetType = 'music'
     }
     var text = item['type'] == 'contacts' ? 'Call' : 'Play';
-    var text = item['type'] == 'navigation' ? 'Map to' : 'map';
+    var text = item['type'] == 'navigation' ? 'Map to' : 'Play';
 
     return(
       <TouchableOpacity
@@ -81,7 +83,7 @@ const Preview = () => {
         >
         <Text 
           style={styles.buttonText}
-          numberOfLines={2}
+          numberOfLines={3}
           adjustsFontSizeToFit={true}
         >
           <FontAwesome name={widgetType} size={20} color="black" /> {text} {item['name']}
@@ -91,7 +93,7 @@ const Preview = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Image style={styles.image} source={require('../assets/images/mapimage2.png')} />
       <View style={styles.sidebar}>
         <FlatList
@@ -101,7 +103,7 @@ const Preview = () => {
           keyExtractor={(item, index) => index.toString()}
         />
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
