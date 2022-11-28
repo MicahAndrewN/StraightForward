@@ -177,12 +177,16 @@ const DeleteWidgets = ({ navigation }) => {
         keyExtractor={(item, index) => index.toString()}
       />
       <View style={{flexDirection: 'row', marginBottom: 10}}>
-        <TouchableOpacity
-          style={styles.reset}
-          onPress={() => setSelected([])}
-        >
-          <Text style={{fontWeight: 'bold', fontSize: 36}}>&#8635;</Text>
-        </TouchableOpacity>
+        {selected.length != 0 &&
+                <TouchableOpacity
+                style={styles.reset}
+                onPress={() => setSelected([])}
+              >
+                <Text style={{fontWeight: 'bold', fontSize: 14, textAlign: 'center'}}>Clear Selections</Text>
+              </TouchableOpacity>
+        
+        }
+
         <TouchableOpacity
           style={styles.submit}
           onPress={() => handleWidgets(selected)}

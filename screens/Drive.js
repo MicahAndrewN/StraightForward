@@ -22,7 +22,7 @@ const Drive = ({ navigation }) => {
   const [names, setNames] = useState([]);
   const [contactWidgets, setContactWidgets] = useState([]);
   const [musicWidgets, setMusicWidgets] = useState([]);
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState('');
   const [switchDestination, setSwitchDestination] = useState(false);
 
 
@@ -154,12 +154,12 @@ const Drive = ({ navigation }) => {
           console.log(item['artistID'])
         })
     }
-    setPlaying(true);
+    setPlaying(item['name']);
   }
 
   function pauseSpotify(){
     SpotifyApi.pause();
-    setPlaying(false);
+    setPlaying('');
   }
 
   console.log("names", names)
@@ -185,7 +185,11 @@ const Drive = ({ navigation }) => {
           style={styles.musicButton}
           onPress={() => playing ? pauseSpotify() : playSpotify(names[i])}
         >
-          <Text style={styles.buttonText}><FontAwesome name="music" size={20} color="black" /> Play {names[i]['name']}</Text>
+          {
+            playing == names[i]['name'] ? 
+            <Text style={styles.buttonText}><FontAwesome name="music" size={20} color="black" /> Pause {names[i]['name']}</Text> : 
+            <Text style={styles.buttonText}><FontAwesome name="music" size={20} color="black" /> Play {names[i]['name']}</Text>
+          }
         </TouchableOpacity>
       )
     }

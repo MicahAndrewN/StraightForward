@@ -198,10 +198,10 @@ const Spotify = ({ navigation }) => {
         },
         body: JSON.stringify({
           "type": "music",
-          "subtype": "album",
-          "name": newWidgets[i]['artistName'],
+          "subtype": "artist",
+          "name": newWidgets[i]['name'],
           "url": newWidgets[i]['url'],
-          "artistID": newWidgets[i]['id']
+          "artistID": newWidgets[i]['artistID']
         })
       }).then(() => {
         console.log("widget added")
