@@ -21,6 +21,16 @@ def handle_login():
     print('logged in user is ', flask.session['username'])
     return jsonify({'status_code': 200}), 200
 
+@app.route("/account", methods=['POST'])
+# @flask_cors.cross_origin
+def handle_newaccount():
+    # creates account and logs in user
+    username = request.json.get('username')
+    flask.session['username'] = request.json.get('username')
+    print('logged in user is ', flask.session['username'])
+    requests.post(url=f"https://straightforward-89f53-default-rtdb.firebaseio.com/users", data=username)
+    return jsonify({'status_code': 200}), 200
+
 @app.route("/logout", methods=['GET'])
 def handle_logout():
     flask.session['username'] = ''
