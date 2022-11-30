@@ -9,6 +9,7 @@ const CustomizeHome = ({ navigation }) => {
 
   const [data, setdata] = useState();
   const [colorMode, setColorMode] = useContext(ColorMode);
+  const [atWidgetLimit, setAtWidgetLimit] = useState(false);
 
   useEffect(() => {
     fetch("http://127.0.0.1:5000/getname", {mode: 'no-cors'}).then((response) => response.json())
@@ -23,6 +24,25 @@ const CustomizeHome = ({ navigation }) => {
         setdata("error with connecting to api ")
       });
   }, []);
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000/getwidgets", {mode: 'no-cors'}).then((response) => response.json())
+      .then((json) => {
+        if (json && Object.entries(json).length >= 5){
+          setAtWidgetLimit(true);
+        }
+        else{
+          setAtWidgetLimit(false);
+        }
+      }).catch((error) => {
+        console.error(error);
+        setdata("error parsing json ")
+      })
+      .catch((error) => {
+        console.error(error);
+        setdata("error with connecting to api ")
+      });
+  }, );
 
   const styles = StyleSheet.create({
     container: {
@@ -86,7 +106,17 @@ const CustomizeHome = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       {/* <Text style={styles.title}>StraightForward</Text> */}
       <Text style={styles.title2}>Welcome back, {data}!</Text>
-      <TouchableOpacity
+
+      {
+        atWidgetLimit ? 
+        <>
+          <Text>You've hit the safe driving maximum of five widgets. </Text>
+          <Text>Head to "Manage Widgets" to make room for new ones!</Text>
+          <Text>Or, if you're all set, preview your driving interface and hit the road.</Text>
+        </>
+        :
+        <>
+        <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate('Customize',
           {
@@ -118,6 +148,9 @@ const CustomizeHome = ({ navigation }) => {
       >
         <Text style={styles.text}>Add Map Widget</Text>
       </TouchableOpacity>
+      </>
+      }
+      
       <View style={styles.driveButton}>
         <TouchableOpacity
           style={styles.button}
