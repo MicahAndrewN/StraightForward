@@ -82,17 +82,19 @@ const DeleteWidgets = ({ navigation }) => {
   }
   const render = ({ item }) => {
     var widgetType = ''
+    var displayText = ''
     if (item['type'] == 'contacts') {
       widgetType = 'phone'
+      displayText = 'Call'
     }
     else if (item['type'] == 'navigation') {
       widgetType = 'map'
+      displayText = 'Map to'
     }
     else {
       widgetType = 'music'
+      displayText = 'Play'
     }
-    var text = item['type'] == 'contacts' ? 'Call' : 'Play';
-    var text = item['type'] == 'navigation' ? 'Map to' : 'Play';
 
     return (
       <TouchableOpacity
@@ -105,7 +107,7 @@ const DeleteWidgets = ({ navigation }) => {
             numberOfLines={3}
             adjustsFontSizeToFit={true}
           >
-            <FontAwesome name={widgetType} size={20} color="black" /> {text} {item['name']} &#10060;
+            <FontAwesome name={widgetType} size={20} color="black" /> {displayText} {item['name']} &#10060;
           </Text> 
           : // else
           <Text 
@@ -113,7 +115,7 @@ const DeleteWidgets = ({ navigation }) => {
             numberOfLines={3}
             adjustsFontSizeToFit={true}
           >
-            <FontAwesome name={widgetType} size={20} color="black" /> {text} {item['name']}
+            <FontAwesome name={widgetType} size={20} color="black" /> {displayText} {item['name']}
           </Text>
         }
       </TouchableOpacity>
