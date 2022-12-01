@@ -7,7 +7,6 @@ import { ColorMode, WidgetLayout } from "../navigation/index"
 
 const ManageWidgets = ({ navigation }) => {
 
-  const [data, setdata] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [colorMode, setColorMode] = useContext(ColorMode);
   const [widgetLayout, setWidgetLayout] = useContext(WidgetLayout)
@@ -98,6 +97,24 @@ const ManageWidgets = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() =>  {
+          fetch('http://127.0.0.1:5000/logout', {
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          mode: 'no-cors'
+        }).then(() => {navigation.navigate('Customize',
+          {
+            screen: 'Login',
+            params: {}
+          })}).catch((error) => {
+          console.error(error)})}}
+      >
+        <Text style={styles.text}>Logout</Text>
+      </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate('Customize',
