@@ -79,7 +79,8 @@ const Login = ({ navigation }) => {
                         onChangeText={(password) => setPassword(password)}
                     />
                 </View>
-                <TouchableOpacity style={styles.loginBtn} onPress={() => auth.login(username, password)}>
+                <TouchableOpacity style={styles.loginBtn} onPress={() => {
+                    loginHandler(navigation, username, password); auth.login(username, password)}}>
                     <Text style={{ fontSize: 20, fontWeight: "bold", color: "#FFF" }}>Login</Text>
                 </TouchableOpacity>
             </View>

@@ -31,7 +31,7 @@ def handle_newaccount():
     requests.post(url=f"https://straightforward-89f53-default-rtdb.firebaseio.com/users", data=username)
     return jsonify({'status_code': 200}), 200
 
-@app.route("/logout", methods=['GET'])
+@app.route("/", methods=['GET'])
 def handle_logout():
     flask.session['username'] = ''
     return jsonify({'status_code': 200}), 200
@@ -43,7 +43,10 @@ def hello_user():
 
 @app.route("/getwidgets", methods=['GET'])
 def get_widget():
-    resp = requests.get(url=f"https://straightforward-89f53-default-rtdb.firebaseio.com/users/{getLogname()}/widgets.json")
+    try:
+        resp = requests.get(url=f"https://straightforward-89f53-default-rtdb.firebaseio.com/users/{getLogname()}/widgets.json")
+    except Exception:
+        return jsonify({'status_code': 200}), 200
     return resp.json()
 
 @app.route("/addwidget", methods=['POST'])
