@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, SafeAreaView, Alert } from 'react-native';
 import { ColorMode } from "../navigation";
 
 
 const MakeCalls = ({ navigation }) => {
   const [selected, setSelected] = useState({});
   const [colorMode, setColorMode] = useContext(ColorMode);
+  const [potentialWidgets, setPotentialWidgets] = useState(5);
   const data = [
     "Mom", "Dad", "Daniel", "1", "2", "3", "4","5","6","7","8","9","10"
   ];
@@ -34,33 +35,35 @@ const MakeCalls = ({ navigation }) => {
     )
   }
   const handleWidgets = () => {
-    Object.keys(selected).forEach(function (key, index) {
-      if (selected[key]) {
-        fetch('http://127.0.0.1:5000/addwidget', {
-          method: "POST",
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            "type": "contacts",
-            "subtype": "call",
-            "name": key,
-            "phonenumber": "4406267220"
-          }), 
-          mode: 'no-cors'
-        }).then(() => {
-          navigation.navigate('Customize',
-            {
-              screen: 'CustomizeHome',
-              params: {}
-            })
-        }).catch((error) => {
-          console.error(error);
-          setdata("error with connecting to api")
-        });
-      }
-      return
-    });
+    if (checkWidgetLimit()){
+      Object.keys(selected).forEach(function (key, index) {
+        if (selected[key]) {
+          fetch('http://127.0.0.1:5000/addwidget', {
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              "type": "contacts",
+              "subtype": "call",
+              "name": key,
+              "phonenumber": "4406267220"
+            }), 
+            mode: 'no-cors'
+          }).then(() => {
+            navigation.navigate('Customize',
+              {
+                screen: 'CustomizeHome',
+                params: {}
+              })
+          }).catch((error) => {
+            console.error(error);
+            setdata("error with connecting to api")
+          });
+        }
+        return
+      });
+    }
   }
 
   const styles = StyleSheet.create({
@@ -104,6 +107,40 @@ const MakeCalls = ({ navigation }) => {
     },
   });
 
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000/getwidgets", {mode: 'no-cors'}).then((response) => response.json())
+      .then((json) => {
+        if (json && Object.entries(json).length > 0){
+          let nonContactsWidgets = 0;
+          for (let i = 0; i < Object.entries(json).length; ++i){
+            console.log(Object.entries(json)[i][1])
+            if (Object.entries(json)[i][1]['type'] != 'contacts'){
+              nonContactsWidgets += 1
+            }
+          }
+          setPotentialWidgets(5 - nonContactsWidgets);
+        }
+        else{
+          setPotentialWidgets(5);
+        }
+      }).catch((error) => {
+        console.error(error);
+        setPotentialWidgets(5);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, );
+
+  function checkWidgetLimit(){
+    if (Object.entries(selected).length > potentialWidgets){
+      Alert.alert("Too many widgets selected. You've selected " + Object.entries(selected).length + " widgets, and StraightForward has a limit of 5 widgets. Please uncheck a few widgets, or head to the 'Manage Widgets' page to deselect media or navigation widgets.")
+      return false;
+    }
+    return true;
+  }
+
+  console.log("potential widgets to add on this screen: ", potentialWidgets)
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Make Calls</Text>

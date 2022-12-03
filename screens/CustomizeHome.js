@@ -38,11 +38,10 @@ const CustomizeHome = ({ navigation }) => {
         }
       }).catch((error) => {
         console.error(error);
-        setdata("error parsing json ")
+        setAtWidgetLimit(false);
       })
       .catch((error) => {
         console.error(error);
-        setdata("error with connecting to api ")
       });
   }, );
 
