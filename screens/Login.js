@@ -80,7 +80,7 @@ const Login = ({ navigation }) => {
                     />
                 </View>
                 <TouchableOpacity style={styles.loginBtn} onPress={() => {
-                    loginHandler(navigation, username, password); auth.login(username, password)}}>
+                    loginHandler(navigation, username, password); auth.login(username, password); setButtonPressed(!buttonPressed)}}>
                     <Text style={{ fontSize: 20, fontWeight: "bold", color: "#FFF" }}>Login</Text>
                 </TouchableOpacity>
             </View>

@@ -51,9 +51,25 @@ export default function Navigation({ colorScheme }) {
         console.error(error);
     });
   }
+
+  const logOut = () => {
+    fetch('http://127.0.0.1:5000/logout', {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      mode: 'no-cors'
+    }).then(() => {
+      console.log("logging out")
+      auth.status = false;
+      setLoggedIn(false);
+      console.log("authy", auth)
+    }).catch((error) => {
+      console.error(error)})
+  }
   console.log(auth)
   return (
-    <AuthContext.Provider value={{ status: loggedIn, login: logIn, }}>
+    <AuthContext.Provider value={{ status: loggedIn, login: logIn, spotifyToken: '', logout: logOut }}>
         <ColorMode.Provider value={[colorMode, setColorMode]}>
         <WidgetLayout.Provider value={[widgetLayout, setWidgetLayout]}>
           <NavigationContainer

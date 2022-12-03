@@ -3,6 +3,7 @@ import { GestureHandlerRefContext } from "@react-navigation/stack";
 import EditScreenInfo from "../components/EditScreenInfo";
 import React, { useState, useEffect, useContext } from "react";
 import { ColorMode } from "../navigation/index"
+import AuthContext from "../components/AuthContext";
 
 
 const CustomizeHome = ({ navigation }) => {
@@ -10,6 +11,7 @@ const CustomizeHome = ({ navigation }) => {
   const [data, setdata] = useState();
   const [colorMode, setColorMode] = useContext(ColorMode);
   const [atWidgetLimit, setAtWidgetLimit] = useState(false);
+  const auth = useContext(AuthContext)
 
   useEffect(() => {
     fetch("http://127.0.0.1:5000/getname", {mode: 'no-cors'}).then((response) => response.json())
@@ -101,6 +103,8 @@ const CustomizeHome = ({ navigation }) => {
       width: "80%",
     },
   });
+
+  console.log("auth:", auth)
 
   return (
     <SafeAreaView style={styles.container}>

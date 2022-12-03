@@ -3,6 +3,7 @@ import { GestureHandlerRefContext } from "@react-navigation/stack";
 import EditScreenInfo from "../components/EditScreenInfo";
 import React, { useState, useEffect, useContext } from "react";
 import { ColorMode, WidgetLayout } from "../navigation/index"
+import AuthContext from "../components/AuthContext";
 
 
 const ManageWidgets = ({ navigation }) => {
@@ -10,6 +11,9 @@ const ManageWidgets = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [colorMode, setColorMode] = useContext(ColorMode);
   const [widgetLayout, setWidgetLayout] = useContext(WidgetLayout)
+  const [buttonPressed, setButtonPressed] = useState(false);
+
+  const auth = useContext(AuthContext);
 
   const toggleSwitch = () => colorMode === "dark" ? setColorMode("light") : setColorMode("dark");
 
@@ -95,23 +99,13 @@ const ManageWidgets = ({ navigation }) => {
     },
   });
 
+  console.log(auth)
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
         style={styles.button}
-        onPress={() =>  {
-          fetch('http://127.0.0.1:5000/logout', {
-          method: "GET",
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          mode: 'no-cors'
-        }).then(() => {navigation.navigate('Customize',
-          {
-            screen: 'Login',
-            params: {}
-          })}).catch((error) => {
-          console.error(error)})}}
+        onPress={() =>  {auth.logout(); setButtonPressed(!buttonPressed)}}
+
       >
         <Text style={styles.text}>Logout</Text>
       </TouchableOpacity>
@@ -191,7 +185,7 @@ const ManageWidgets = ({ navigation }) => {
           toggleSwitch();
         }}
         value={colorMode === "dark" ? true : false }
-      />
+      />    
     </SafeAreaView>
   );
 }
