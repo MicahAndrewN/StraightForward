@@ -134,7 +134,7 @@ const MakeCalls = ({ navigation }) => {
 
   function checkWidgetLimit(){
     if (Object.entries(selected).length > potentialWidgets){
-      Alert.alert("Too many widgets selected. You've selected " + Object.entries(selected).length + " widgets, and StraightForward has a limit of 5 widgets. Please try again, or head to the 'Manage Widgets' page to deselect media or navigation widgets.")
+      Alert.alert("Too many widgets selected. You've selected " + Object.entries(selected).length + " widgets, while already having " + (5 - potentialWidgets) + " widgets, and StraightForward has a limit of 5 widgets. Please try again, or head to the 'Manage Widgets' page to deselect media or contacts widgets.")
       return false;
     }
     return true;
