@@ -56,8 +56,7 @@ const Login = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <View><Text style={{ fontSize: 40, marginTop: 100, }}>StraightForward</Text></View>
-            <Text style={{ fontSize: 24, }}>Drive distraction-free.</Text>
+            <Image style={styles.image} source={require('../assets/images/logotagline.png')} />
             <View style={styles.login}>
 
                 <StatusBar style="auto" />
@@ -97,21 +96,21 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     login: {
-        top: 150,
+        top: -50,
         justifyContent: 'center',
         alignItems: 'center',
     },
 
     image: {
-        marginBottom: 40,
+        marginBottom: 0,
     },
 
     inputView: {
         backgroundColor: "#DDD",
-        width: 230,
+        width: 250,
         height: 45,
-        marginBottom: 20,
-
+        marginBottom: 10,
+        borderRadius: 10,
         alignItems: "center",
     },
 
@@ -122,7 +121,6 @@ const styles = StyleSheet.create({
         padding: 10,
         marginLeft: 20,
         width: 250,
-        borderRadius: 10,
     },
 
     forgot_button: {
