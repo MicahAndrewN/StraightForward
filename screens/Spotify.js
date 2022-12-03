@@ -30,6 +30,8 @@ const Spotify = ({ navigation }) => {
   const [playlists, setPlaylists] = useState([])
   const [searchResults, setSearchResults] = useState([])
   const [display, setDisplay] = useState("All")
+  const [potentialWidgets, setPotentialWidgets] = useState(5);
+
 
 
   const [request, response, promptAsync] = useAuthRequest(
@@ -136,86 +138,124 @@ const Spotify = ({ navigation }) => {
 
   // add widget functions
   function addPlaylistWidgets(newWidgets){
-    for (let i = 0; i < newWidgets.length; ++i){
-      fetch('http://127.0.0.1:5000/addwidget', {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          "type": "music",
-          "subtype": "playlist",
-          "name": newWidgets[i]['name'],
-          "url": newWidgets[i]['url'],
-          "playlistID": newWidgets[i]['playlistID']
-        })
-      }).then(() => {
-        console.log("widget added")
-      }).catch((error) => {
-        console.error(error);
-        setdata("error with connecting to api")
-      });
+    if (checkWidgetLimit(newWidgets)){
+      for (let i = 0; i < newWidgets.length; ++i){
+        fetch('http://127.0.0.1:5000/addwidget', {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "type": "music",
+            "subtype": "playlist",
+            "name": newWidgets[i]['name'],
+            "url": newWidgets[i]['url'],
+            "playlistID": newWidgets[i]['playlistID']
+          })
+        }).then(() => {
+          console.log("widget added")
+        }).catch((error) => {
+          console.error(error);
+          setdata("error with connecting to api")
+        });
+      }
+      setDisplay("All")
+      setPotentialWidgets(potentialWidgets - newWidgets.length)
     }
-    setDisplay("All")
-
-    
   }
 
   function addAlbumWidgets(newWidgets){
     console.log("adding widget:")
     console.log(newWidgets)
-    for (let i = 0; i < newWidgets.length; ++i){
-      fetch('http://127.0.0.1:5000/addwidget', {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          "type": "music",
-          "subtype": "album",
-          "name": newWidgets[i]['albumName'],
-          "url": newWidgets[i]['url'],
-          "albumID": newWidgets[i]['albumID']
-        })
-      }).then(() => {
-        console.log("widget added")
-      }).catch((error) => {
-        console.error(error);
-        setdata("error with connecting to api")
-      });
+    if (checkWidgetLimit(newWidgets)){
+      for (let i = 0; i < newWidgets.length; ++i){
+        fetch('http://127.0.0.1:5000/addwidget', {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "type": "music",
+            "subtype": "album",
+            "name": newWidgets[i]['albumName'],
+            "url": newWidgets[i]['url'],
+            "albumID": newWidgets[i]['albumID']
+          })
+        }).then(() => {
+          console.log("widget added")
+        }).catch((error) => {
+          console.error(error);
+          setdata("error with connecting to api")
+        });
+      }
+      setDisplay("All")
+      setPotentialWidgets(potentialWidgets - newWidgets.length)
+
     }
-    setDisplay("All")
+
   }
 
   function addArtistWidgets(newWidgets){
     console.log("adding widget:")
     console.log(newWidgets)
-    for (let i = 0; i < newWidgets.length; ++i){
-      fetch('http://127.0.0.1:5000/addwidget', {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          "type": "music",
-          "subtype": "artist",
-          "name": newWidgets[i]['name'],
-          "url": newWidgets[i]['url'],
-          "artistID": newWidgets[i]['artistID']
-        })
-      }).then(() => {
-        console.log("widget added")
+    if (checkWidgetLimit(newWidgets)){
+      for (let i = 0; i < newWidgets.length; ++i){
+        fetch('http://127.0.0.1:5000/addwidget', {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "type": "music",
+            "subtype": "artist",
+            "name": newWidgets[i]['name'],
+            "url": newWidgets[i]['url'],
+            "artistID": newWidgets[i]['artistID']
+          })
+        }).then(() => {
+          console.log("widget added")
+        }).catch((error) => {
+          console.error(error);
+          setdata("error with connecting to api")
+        });
+      }
+      setDisplay("All")
+    }
+
+  }
+
+  // check widget limit functions 
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000/getwidgets", {mode: 'no-cors'}).then((response) => response.json())
+      .then((json) => {
+        if (json && Object.entries(json).length > 0){
+          setPotentialWidgets(5 - Object.entries(json).length);
+        }
+        else{
+          setPotentialWidgets(5);
+        }
       }).catch((error) => {
         console.error(error);
-        setdata("error with connecting to api")
+        setPotentialWidgets(5);
+      })
+      .catch((error) => {
+        console.error(error);
       });
+  }, );
+
+  function checkWidgetLimit(newWidgets){
+    console.log(newWidgets);
+    if (newWidgets.length > potentialWidgets){
+      Alert.alert("Too many widgets selected. You already had " + (5 - potentialWidgets) + "widgets, and you've selected " + newWidgets.length + " widgets, and StraightForward has a limit of 5 widgets. Please try again, or head to the 'Manage Widgets' page to deselect contacts or navigation widgets.")
+      return false;
     }
-    setDisplay("All")
+    return true;
   }
 
 
 
   console.log(display)
+  console.log(potentialWidgets)
 
 
   return (
