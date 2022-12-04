@@ -5,10 +5,7 @@ import { StyleSheet, Text, View, FlatList, TouchableOpacity, Alert, TextInput } 
 const Navigation = ({ navigation }) => {
   const [selected, setSelected] = useState({});
   const [potentialWidgets, setPotentialWidgets] = useState(5);
-  let data = [
-    "Bob and Betty Beyster Building (BBB)", "Burton Memorial Tower", "University of Michigan School of Nursing"
-  ];
-  let address = "";
+  const [theArray, setTheArray] = useState(["Bob and Betty Beyster Building (BBB)", "Burton Memorial Tower", "University of Michigan School of Nursing"]);
 
   const check = (item) => {
     setSelected(test => (test[item] ? { ...test, [item]: false } : { ...test, [item]: true }));
@@ -22,14 +19,6 @@ const Navigation = ({ navigation }) => {
         {selected[item] ? <Text style={styles.text}>{item} &#10003;</Text> : <Text style={styles.text}>{item}</Text>}
       </TouchableOpacity>
     )
-  }
-
-  const handleKeyDown = (e) => {
-    if(e.nativeEvent.key == "Enter"){
-      dismissKeyboard();
-      data.push(address)
-      address = ""
-    }
   }
 
   const handleWidgets = () => {
@@ -60,7 +49,6 @@ const Navigation = ({ navigation }) => {
         return
       });
     }
-
   }
 
   // functions for checking widget limit
@@ -97,23 +85,20 @@ const Navigation = ({ navigation }) => {
     return true;
   }
 
-
-
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Navigate To</Text>
       <FlatList
-        data={data}
+        data={theArray}
         renderItem={render}
         keyExtractor={(item, index) => index.toString()}
       />
-      {/* <TextInput
+      <TextInput
         style={styles.input}
         placeholder="Enter Destination"
         keyboardType="default"
-        onKeyPress={handleKeyDown}
-        onChangeText={(destination) => {address = destination}}
-      /> */}
+        onSubmitEditing={(value) => setTheArray([...theArray, value.nativeEvent.text])}
+      />
       <TouchableOpacity
         style={styles.button2}
         onPress={() => handleWidgets(selected)}
@@ -123,11 +108,6 @@ const Navigation = ({ navigation }) => {
     </View>
   );
 };
-
-
-
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -165,6 +145,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 10,
     marginBottom: 10,
+    borderRadius: 10,
   }
 });
 
