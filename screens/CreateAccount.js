@@ -11,21 +11,23 @@ import {
 } from "react-native";
 import AuthContext from "../components/AuthContext";
 
-
-// adapted from https://code.tutsplus.com/tutorials/common-react-native-app-layouts-login-page--cms-27639
-
-
-
-const Login = ({ navigation }) => {
+const CreateAccount = ({ navigation }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [blankField, setBlankField] = useState(false)
     const [buttonPressed, setButtonPressed] = useState(false);
 
     const auth = React.useContext(AuthContext);
 
-    function loginHandler(navigation, username, password) {
-        console.log(auth)
-        fetch('http://127.0.0.1:5000/login', {
+    function createAccount() {
+        if (username === "" || password === "") {
+            setBlankField(true)
+            return
+        }
+        else {
+            setBlankField(false)
+        }
+        fetch('http://localhost:5000/account', {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -34,20 +36,15 @@ const Login = ({ navigation }) => {
                 'username': username,
                 // 'password': password,
             }),
-            mode: 'no-cors'
 
         }).then((response) => {
             response = response.json();
             console.log(response)
-            console.log("successfully logged in (in login page) ")
-            setButtonPressed(!buttonPressed)
-            // navigation.navigate('Customize',
-            //     {
-            //         screen: 'CustomizeHome',
-            //         params: {}
-            //     })
+            console.log("successfully created account ")
+
             auth.status = true;
             console.log(auth)
+            auth.login(username, password)
         }).catch((error) => {
             console.error(error);
             setdata("error with connecting to api")
@@ -56,8 +53,10 @@ const Login = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Image style={styles.image} source={require('../assets/images/logotagline.png')} />
+            <View><Text style={{ fontSize: 30, marginTop: 20, fontWeight: 'bold' }}>Create New Account</Text></View>
             <View style={styles.login}>
+
+                {blankField ? <Text style={{fontSize: 15, color: 'red'}}>Username or Password cannot be blank</Text>: <></>}
 
                 <StatusBar style="auto" />
                 <View style={styles.inputView}>
@@ -78,14 +77,10 @@ const Login = ({ navigation }) => {
                         onChangeText={(password) => setPassword(password)}
                     />
                 </View>
-                <TouchableOpacity style={styles.loginBtn} onPress={() => {
-                    loginHandler(navigation, username, password); auth.login(username, password); setButtonPressed(!buttonPressed)}}>
-                    <Text style={{ fontSize: 20, fontWeight: "bold", color: "#FFF" }}>Login</Text>
-                </TouchableOpacity>
+
                 <TouchableOpacity 
-                    style={styles.createAccBtn} 
-                    onPress={() => navigation.navigate('CreateAccount')
-                    }
+                    style={styles.loginBtn}  
+                    onPress={() => createAccount()}
                 >
                     <Text style={{ fontSize: 20, fontWeight: "bold", color: "#FFF" }}>Create Account</Text>
                 </TouchableOpacity>
@@ -94,7 +89,7 @@ const Login = ({ navigation }) => {
     );
 };
 
-export default Login;
+export default CreateAccount;
 
 const styles = StyleSheet.create({
     container: {
@@ -103,21 +98,21 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     login: {
-        top: -50,
+        top: 20,
         justifyContent: 'center',
         alignItems: 'center',
     },
 
     image: {
-        marginBottom: 0,
+        marginBottom: 40,
     },
 
     inputView: {
         backgroundColor: "#DDD",
-        width: 250,
+        width: 230,
         height: 45,
-        marginBottom: 10,
-        borderRadius: 10,
+        marginBottom: 20,
+
         alignItems: "center",
     },
 
@@ -128,6 +123,7 @@ const styles = StyleSheet.create({
         padding: 10,
         marginLeft: 20,
         width: 250,
+        borderRadius: 10,
     },
 
     forgot_button: {
@@ -142,16 +138,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         marginTop: 40,
-        fontSize: 20,
-        backgroundColor: "#4285F4",
-    },
-    createAccBtn: {
-        width: 250,
-        borderRadius: 25,
-        height: 50,
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: 20,
         fontSize: 20,
         backgroundColor: "#4285F4",
     },

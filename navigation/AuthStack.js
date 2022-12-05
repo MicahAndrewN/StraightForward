@@ -2,6 +2,7 @@ import * as React from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 import Login from '../screens/Login';
 import CustomizeHome from '../screens/CustomizeHome';
+import CreateAccount  from '../screens/CreateAccount';
 // import ForgotPassword from '../screens/ForgotPassword';
 
 // import { LoginForm } from '../screens';
@@ -19,6 +20,10 @@ const AuthStack = () => {
           headerShown: false
 
         }}
+      />
+      <Stack.Screen 
+        name="CreateAccount" 
+        component={CreateAccount}
       />
       <Stack.Screen
         name="CustomizeHome"
