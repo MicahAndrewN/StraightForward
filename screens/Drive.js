@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect, Component } from "react";
-import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
+import React, { useState, useEffect, Component, useContext } from "react";
+import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
 import { Linking, Alert, Platform, Dimensions } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import MapViewDirections from 'react-native-maps-directions';
@@ -7,7 +7,7 @@ import MapView from 'react-native-maps';
 import { ResponseType, useAuthRequest, makeRedirectUri } from "expo-auth-session";
 import SpotifyWebApi from "spotify-web-api-node";
 import AuthContext from "../components/AuthContext";
-
+import { ColorMode, WidgetLayout } from "../navigation";
 
 const { width, height } = Dimensions.get('window');
 
@@ -22,9 +22,9 @@ const Drive = ({ navigation }) => {
   const [names, setNames] = useState([]);
   const [contactWidgets, setContactWidgets] = useState([]);
   const [musicWidgets, setMusicWidgets] = useState([]);
-  const [playing, setPlaying] = useState('');
-  const [switchDestination, setSwitchDestination] = useState(false);
-
+  const [playing, setPlaying] = useState(false);
+  const [colorMode, setColorMode] = useContext(ColorMode);
+  const [widgetLayout, setWidgetLayout] = useContext(WidgetLayout);
 
   useEffect(() => {
     fetch('http://127.0.0.1:5000/getwidgets', { mode: 'no-cors' })
@@ -45,7 +45,7 @@ const Drive = ({ navigation }) => {
     tokenEndpoint: "https://accounts.spotify.com/api/token",
   };
 
-
+  
 
   const [request, response, promptAsync] = useAuthRequest(
     {
@@ -154,70 +154,110 @@ const Drive = ({ navigation }) => {
           console.log(item['artistID'])
         })
     }
-    setPlaying(item['name']);
+    setPlaying(true);
   }
 
   function pauseSpotify(){
     SpotifyApi.pause();
-    setPlaying('');
+    setPlaying(false);
   }
 
   console.log("names", names)
 
-  let temp_contacts = []
-  let temp_music = []
-  let temp_directions = []
-  for (let i = 0; i < names.length; i++) {
+  const flex = {"top": "row-reverse", "bottom": "row", "left": "column", "right": "column-reverse"};
 
-    if (names[i]['type'] == 'contacts'){
-      temp_contacts.push(
-        <TouchableOpacity
-          style={styles.callButton}
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      flexDirection: flex[widgetLayout],
+      width: '100%',
+      height: '100%',
+      backgroundColor: colorMode === "dark" ? "#000" : "#FFFFFF",
+      alignSelf: 'center',
+      alignItems: 'center',
+      margin: 10,
+    },
+    image: {
+      flex: 3,
+      resizeMode: 'cover',
+      height: '100%',
+      width: "100%"
+    },
+    sidebar: {
+      flex: 1,
+      flexDirection: widgetLayout === "left" || widgetLayout === "right" ? "column" : "row",
+      alignItems: widgetLayout === "left" || widgetLayout === "right" ? "" : "flex-end"
+    },
+    button: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#DDD',
+      height: widgetLayout === "left" || widgetLayout === "right" ? 80 : 90,
+      width: widgetLayout === "left" || widgetLayout === "right" ? 200 : 100,
+      margin: widgetLayout === "left" || widgetLayout === "right" ? -55 : 10,
+      alignSelf: 'center',
+      transform: [{ rotate: '-90deg' }],
+      borderRadius: 20
+    },
+    buttonText: {
+      fontWeight: 'bold',
+      textAlign: 'center'
+    },
+  });
+
+  const render = ({ item }) => {
+    var widgetType = ''
+    if (item['type'] == 'contacts') {
+      widgetType = 'phone'
+    }
+    else if (item['type'] == 'navigation') {
+      widgetType = 'map'
+    }
+    else {
+      widgetType = 'music'
+    }
+    var text = item['type'] == 'contacts' ? 'Call' : 'Play';
+    var text = item['type'] == 'navigation' ? 'Map to' : 'Play';
+    
+    return(
+      <TouchableOpacity
+          style={styles.button}
           onPress={() => console.log("Call")}
         >
-          <Text style={styles.buttonText}><FontAwesome name="phone" size={20} color="black" /> Call {names[i]['name']}</Text>
-        </TouchableOpacity>
-      )
-    }
-    else if (names[i]['type'] == 'music'){
-      temp_music.push(
-        <TouchableOpacity
-          style={styles.musicButton}
-          onPress={() => playing ? pauseSpotify() : playSpotify(names[i])}
+        <Text 
+          style={styles.buttonText}
+          numberOfLines={2}
+          adjustsFontSizeToFit={true}
         >
-          {
-            playing == names[i]['name'] ? 
-            <Text style={styles.buttonText}><FontAwesome name="music" size={20} color="black" /> Pause {names[i]['name']}</Text> : 
-            <Text style={styles.buttonText}><FontAwesome name="music" size={20} color="black" /> Play {names[i]['name']}</Text>
-          }
-        </TouchableOpacity>
-      )
-    }
-    else if (names[i]['type'] == 'navigation'){
+          <FontAwesome name={widgetType} size={20} color="black" /> {text} {item['name']}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
+  /*else if (names[i]['type'] == 'address'){
       temp_directions.push(
         <TouchableOpacity
           style={styles.button}
-          onPress={() => {
-            destination = names[i]['name'];
-            setSwitchDestination(!switchDestination);
-          }
-          }
+          onPress={() => console.log("Call")}
         >
           <Text style={styles.buttonText}><FontAwesome name="map" size={20} color="black" /> {names[i]['name']}</Text>
         </TouchableOpacity>
       )
-    }
-  }
+    }*/
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Map />
       <View style={styles.sidebar}>
-        {temp_contacts}
-        {temp_music}
-        {temp_directions}
+        <FlatList
+          horizontal={widgetLayout === "left" || widgetLayout === "right" ? true : false}
+          data={names}
+          renderItem={render}
+          keyExtractor={(item, index) => index.toString()}
+        />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -262,7 +302,7 @@ class Map extends Component {
           latitudeDelta: 0.00922,
           longitudeDelta: 0.00421,  
         }}
-        style={styles.map}
+        style={mapStyles.map}
         ref={c => this.mapView = c}
         // onPress={this.onMapPress}
       >
@@ -324,57 +364,11 @@ export const callNumber = phone => {
   .catch(err => console.log(err));
 };
 
-
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: "#FFFFFF",
-    alignSelf: 'center',
-    alignItems: 'center'
-  },
-  sidebar: {
-    flex: 1,
-    width: 200,
-    alignItems: "center",
-    justifyContent: "space-evenly",
-    transform: [{ rotate: '-90deg' }],
-  },
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#DDD',
-    marginVertical: 30,
-    height: 65,
-    width: 140,
-    borderRadius: 10,
-  },
-  buttonText: {
-    fontWeight: 'bold'
-  },
+const mapStyles = StyleSheet.create({
   map: {
     flex: 3,
     width: 600,
     height: "100%",
     transform: [{ rotate: '-90deg' }]
-  },
-  callButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#afdbc2',
-    marginVertical: 30,
-    height: 65,
-    width: 140,
-    borderRadius: 10,
-  },
-  musicButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#a1d3e3',
-    marginVertical: 30,
-    height: 65,
-    width: 140,
-    borderRadius: 10,
-  },
+  }
 });
