@@ -28,7 +28,7 @@ def handle_newaccount():
     username = request.json.get('username')
     flask.session['username'] = request.json.get('username')
     print('logged in user is ', flask.session['username'])
-    resp = requests.put(url=f"https://straightforward-89f53-default-rtdb.firebaseio.com/users/{username}.json", data=json.dumps({'name': username, 'widgets': [{'type': "navigation", 'name': 'University Of Michigan'}]}))
+    resp = requests.put(url=f"https://straightforward-89f53-default-rtdb.firebaseio.com/users/{username}.json", data=json.dumps({'name': username, 'widgets': {0: {'type': "navigation", 'name': 'University Of Michigan'}}}))
     print(resp)
     #requests.post(url=f"https://straightforward-89f53-default-rtdb.firebaseio.com/users/{getLogname()}/widgets.json", data = [])
     return jsonify({'status_code': 200}), 200
@@ -59,13 +59,19 @@ def postwidget():
     req = request.json
     if isinstance(resp_json, str):
         resp_json = [resp_json]
+    if isinstance(resp_json, dict):
+        resp_json = resp_json.items()
+        resp_json = list(resp_json)
     if resp_json:
+        print("resp json is", resp_json)
+        print("req is", req)
         for item in resp_json:
-            if resp_json[item]['type'] == 'contacts' and resp_json[item]['name'] == req['name']:
+            print("item is", item)
+            if item[1]['type'] == 'contacts' and item[1]['name'] == req['name']:
                 return jsonify({'status_code': 304}), 304
-            if resp_json[item]['type'] == 'music' and resp_json[item]['name'] == req['name']:
+            if item[1]['type'] == 'music' and item[1]['name'] == req['name']:
                 return jsonify({'status_code': 304}), 304
-            if resp_json[item]['type'] == 'navigation' and resp_json[item]['name'] == req['name']:
+            if item[1]['type'] == 'navigation' and item[1]['name'] == req['name']:
                 return jsonify({'status_code': 304}), 304
 
     print(req)

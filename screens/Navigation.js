@@ -23,6 +23,7 @@ const Navigation = ({ navigation }) => {
   const handleWidgets = () => {
     if (checkWidgetLimit()){
       Object.keys(selected).forEach(function (key, index) {
+        console.log(selected)
         if (selected[key]) {
           fetch('http://127.0.0.1:5000/addwidget', {
             method: "POST",
