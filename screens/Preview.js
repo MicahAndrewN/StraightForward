@@ -48,8 +48,8 @@ const Preview = () => {
       justifyContent: 'center',
       backgroundColor: '#DDD',
       height: widgetLayout === "left" || widgetLayout === "right" ? 80 : 90,
-      width: widgetLayout === "left" || widgetLayout === "right" ? 200 : 170,
-      margin: widgetLayout === "left" || widgetLayout === "right" ? -55 : 45,
+      width: widgetLayout === "left" || widgetLayout === "right" ? 170 : 170,
+      margin: widgetLayout === "left" || widgetLayout === "right" ? -35 : 45,
       alignSelf: 'center',
       transform: [{ rotate: '-90deg' }],
       borderRadius: 20
@@ -95,7 +95,7 @@ const Preview = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Image style={styles.image} source={require('../assets/images/mapimage2.png')} />
       <View style={styles.sidebar}>
         <FlatList
@@ -105,7 +105,7 @@ const Preview = () => {
           keyExtractor={(item, index) => index.toString()}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 

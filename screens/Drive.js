@@ -14,7 +14,7 @@ const { width, height } = Dimensions.get('window');
 // npm i react-native-phone-call --legacy-peer-deps
 // npm install react-native-maps-directions --legacy-peer-deps
 
-const origin = {latitude: 42.292894, longitude: -83.715395};
+const origin = { latitude: 42.292894, longitude: -83.715395 };
 let destination = ""; // want to get from database
 const GOOGLE_MAPS_APIKEY = 'AIzaSyCbD_d7uMnnYJ_kQxpQ8lQYhaOb5RwQgpI';
 
@@ -33,7 +33,7 @@ const Drive = ({ navigation }) => {
         var vals = Object.values(json)
         console.log(vals)
         setNames(vals)
-        }).catch((error) => console.log("error1 " + error))
+      }).catch((error) => console.log("error1 " + error))
   }, []);
 
   const auth = useContext(AuthContext);
@@ -46,7 +46,7 @@ const Drive = ({ navigation }) => {
     tokenEndpoint: "https://accounts.spotify.com/api/token",
   };
 
-  
+
 
   const [request, response, promptAsync] = useAuthRequest(
     {
@@ -69,103 +69,103 @@ const Drive = ({ navigation }) => {
     },
     discovery
   );
-  
+
 
   SpotifyApi.getMyDevices()
-  .then(function(data) {
-    let availableDevices = data.body.devices;
-    console.log("devices are", availableDevices);
-    deviceID = data.body.devices[0]['id']
-  }, function(err) {
-    console.log('Something went wrong!', err);
-  });
+    .then(function (data) {
+      let availableDevices = data.body.devices;
+      console.log("devices are", availableDevices);
+      deviceID = data.body.devices[0]['id']
+    }, function (err) {
+      console.log('Something went wrong!', err);
+    });
 
   console.log(auth.spotifyToken)
   console.log(deviceID)
   console.log(playing)
 
-  function playSpotify(item){
-    if (item['subtype'] == 'playlist'){
+  function playSpotify(item) {
+    if (item['subtype'] == 'playlist') {
       console.log("in if")
       SpotifyApi.getPlaylistTracks(item['playlistID'], {
         offset: 1,
         fields: 'items'
-        }).then((data) => {
-          SpotifyApi.play({
-              context_uri: item['url'],
-              device_id: deviceID,
-              uri: data.body.items[0].track.uri 
-            }).then(
-            function () {
-              console.log("playing: ", data.body);
-            },
-            function (err) {
-              //if the user making the request is non-premium, a 403 FORBIDDEN response code
-              console.log("Something went wrong!", err);
-            })
-        }).catch((err) => {
-          console.log(err)
-          console.log(item['playlistID'])
-        })
-      
+      }).then((data) => {
+        SpotifyApi.play({
+          context_uri: item['url'],
+          device_id: deviceID,
+          uri: data.body.items[0].track.uri
+        }).then(
+          function () {
+            console.log("playing: ", data.body);
+          },
+          function (err) {
+            //if the user making the request is non-premium, a 403 FORBIDDEN response code
+            console.log("Something went wrong!", err);
+          })
+      }).catch((err) => {
+        console.log(err)
+        console.log(item['playlistID'])
+      })
+
     }
-    else if (item['subtype'] == 'album'){
+    else if (item['subtype'] == 'album') {
       SpotifyApi.getAlbumTracks(item['albumID'], {
         offset: 1,
         fields: 'items'
-        }).then((data) => {
-          console.log(data.body)
-          SpotifyApi.play({
-              context_uri: item['url'],
-              device_id: deviceID,
-              uri: data.body.items[0].uri 
-            }).then(
-            function () {
-              console.log("playing: ", data.body);
-            },
-            function (err) {
-              //if the user making the request is non-premium, a 403 FORBIDDEN response code
-              console.log("Something went wrong!", err);
-            })
-        }).catch((err) => {
-          console.log(err)
-          console.log(item['albumID'])
-        })
+      }).then((data) => {
+        console.log(data.body)
+        SpotifyApi.play({
+          context_uri: item['url'],
+          device_id: deviceID,
+          uri: data.body.items[0].uri
+        }).then(
+          function () {
+            console.log("playing: ", data.body);
+          },
+          function (err) {
+            //if the user making the request is non-premium, a 403 FORBIDDEN response code
+            console.log("Something went wrong!", err);
+          })
+      }).catch((err) => {
+        console.log(err)
+        console.log(item['albumID'])
+      })
 
 
     }
-    else if (item['subtype'] == 'artist'){
+    else if (item['subtype'] == 'artist') {
       SpotifyApi.getArtistTopTracks(item['artistID'], 'US',
-        ).then((data) => {
-          console.log(data.body)
-          SpotifyApi.play({
-              context_uri: item['url'],
-              device_id: deviceID,
-              uri: data.body.tracks[0].uri 
-            }).then(
-            function () {
-              console.log("playing: ", data.body);
-            },
-            function (err) {
-              //if the user making the request is non-premium, a 403 FORBIDDEN response code
-              console.log("Something went wrong!", err);
-            })
-        }).catch((err) => {
-          console.log(err)
-          console.log(item['artistID'])
-        })
+      ).then((data) => {
+        console.log(data.body)
+        SpotifyApi.play({
+          context_uri: item['url'],
+          device_id: deviceID,
+          uri: data.body.tracks[0].uri
+        }).then(
+          function () {
+            console.log("playing: ", data.body);
+          },
+          function (err) {
+            //if the user making the request is non-premium, a 403 FORBIDDEN response code
+            console.log("Something went wrong!", err);
+          })
+      }).catch((err) => {
+        console.log(err)
+        console.log(item['artistID'])
+      })
     }
     setPlaying(item['name']);
   }
 
-  function pauseSpotify(){
+  function pauseSpotify() {
     SpotifyApi.pause();
     setPlaying('');
   }
 
   console.log("names", names)
 
-  const flex = {"top": "row-reverse", "bottom": "row", "left": "column", "right": "column-reverse"};
+  const flex = { "top": "row-reverse", "bottom": "row", "left": "column", "right": "column-reverse" };
 
   const styles = StyleSheet.create({
     container: {
@@ -176,7 +176,6 @@ const Drive = ({ navigation }) => {
       backgroundColor: colorMode === "dark" ? "#000" : "#FFFFFF",
       alignSelf: 'center',
       alignItems: 'center',
-      margin: 10,
     },
     image: {
       flex: 3,
@@ -187,15 +186,16 @@ const Drive = ({ navigation }) => {
     sidebar: {
       flex: 1,
       flexDirection: widgetLayout === "left" || widgetLayout === "right" ? "column" : "row",
-      alignItems: widgetLayout === "left" || widgetLayout === "right" ? "" : "flex-end"
+      alignItems: widgetLayout === "left" || widgetLayout === "right" ? "" : "flex-end",
+      backgroundColor: "#FFF",
     },
     button: {
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: '#DDD',
       height: widgetLayout === "left" || widgetLayout === "right" ? 80 : 90,
-      width: widgetLayout === "left" || widgetLayout === "right" ? 200 : 100,
-      margin: widgetLayout === "left" || widgetLayout === "right" ? -55 : 10,
+      width: widgetLayout === "left" || widgetLayout === "right" ? 200 : 170,
+      margin: widgetLayout === "left" || widgetLayout === "right" ? -55 : 45,
       alignSelf: 'center',
       transform: [{ rotate: '-90deg' }],
       borderRadius: 20
@@ -204,23 +204,29 @@ const Drive = ({ navigation }) => {
       fontWeight: 'bold',
       textAlign: 'center'
     },
-    callButton: {	
-      alignItems: 'center',	
-      justifyContent: 'center',	
-      backgroundColor: '#afdbc2',	
-      marginVertical: 30,	
-      height: 65,	
-      width: 140,	
-      borderRadius: 10,	
-    },	
-    musicButton: {	
-      alignItems: 'center',	
-      justifyContent: 'center',	
-      backgroundColor: '#a1d3e3',	
-      marginVertical: 30,	
-      height: 65,	
-      width: 140,	
-      borderRadius: 10,	
+    callButton: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#DDD',
+      height: widgetLayout === "left" || widgetLayout === "right" ? 80 : 90,
+      width: widgetLayout === "left" || widgetLayout === "right" ? 200 : 100,
+      margin: widgetLayout === "left" || widgetLayout === "right" ? -55 : 10,
+      alignSelf: 'center',
+      transform: [{ rotate: '-90deg' }],
+      borderRadius: 20,
+      backgroundColor: '#afdbc2',
+
+    },
+    musicButton: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#a1d3e3',
+      height: widgetLayout === "left" || widgetLayout === "right" ? 80 : 90,
+      width: widgetLayout === "left" || widgetLayout === "right" ? 200 : 100,
+      margin: widgetLayout === "left" || widgetLayout === "right" ? -55 : 10,
+      alignSelf: 'center',
+      transform: [{ rotate: '-90deg' }],
+      borderRadius: 10,
     },
   });
 
@@ -228,10 +234,10 @@ const Drive = ({ navigation }) => {
     if (item['type'] == 'contacts') {
       return (
         <TouchableOpacity
-            style={styles.callButton}
-            onPress={() => console.log("Call")}
-          >
-          <Text 
+          style={styles.callButton}
+          onPress={() => console.log("Call")}
+        >
+          <Text
             style={styles.buttonText}
             numberOfLines={2}
             adjustsFontSizeToFit={true}
@@ -246,12 +252,12 @@ const Drive = ({ navigation }) => {
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-              destination = item['name'];
-              setSwitchDestination(!switchDestination);
-            }
+            destination = item['name'];
+            setSwitchDestination(!switchDestination);
+          }
           }
         >
-          <Text 
+          <Text
             style={styles.buttonText}
             numberOfLines={2}
             adjustsFontSizeToFit={true}
@@ -268,21 +274,21 @@ const Drive = ({ navigation }) => {
           onPress={() => playing ? pauseSpotify() : playSpotify(item)}
         >
           {
-            playing == item['name'] ? 
-            <Text 
-              style={styles.buttonText}
-              numberOfLines={2}
-              adjustsFontSizeToFit={true}
-            >
-              <FontAwesome name="music" size={20} color="black" /> Pause {item['name']}
-            </Text> : 
-            <Text 
-              style={styles.buttonText}
-              numberOfLines={2}
-              adjustsFontSizeToFit={true}
-            >
-              <FontAwesome name="music" size={20} color="black" /> Play {item['name']}
-            </Text>
+            playing == item['name'] ?
+              <Text
+                style={styles.buttonText}
+                numberOfLines={2}
+                adjustsFontSizeToFit={true}
+              >
+                <FontAwesome name="music" size={20} color="black" /> Pause {item['name']}
+              </Text> :
+              <Text
+                style={styles.buttonText}
+                numberOfLines={2}
+                adjustsFontSizeToFit={true}
+              >
+                <FontAwesome name="music" size={20} color="black" /> Play {item['name']}
+              </Text>
           }
         </TouchableOpacity>
       )
@@ -291,7 +297,9 @@ const Drive = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Map />
+      <View style={{ flex: 3, width: '100%', alignItems: 'center' }}>
+        <Map />
+      </View>
       <View style={styles.sidebar}>
         <FlatList
           horizontal={widgetLayout === "left" || widgetLayout === "right" ? true : false}
@@ -343,11 +351,11 @@ class Map extends Component {
           latitude: 42.292894,
           longitude: -83.715395,
           latitudeDelta: 0.00922,
-          longitudeDelta: 0.00421,  
+          longitudeDelta: 0.00421,
         }}
         style={mapStyles.map}
         ref={c => this.mapView = c}
-        // onPress={this.onMapPress}
+      // onPress={this.onMapPress}
       >
         {/* {this.state.coordinates.map((coordinate, index) =>
           <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} />
@@ -355,7 +363,7 @@ class Map extends Component {
         {(this.state.coordinates.length >= 2) && (destination) && (
           <MapViewDirections
             origin={this.state.coordinates[0]}
-            destination= {destination}
+            destination={destination}
             waypoints={[origin, destination]}
             apikey={GOOGLE_MAPS_APIKEY}
             strokeWidth={3}
@@ -393,24 +401,23 @@ export const callNumber = phone => {
   if (Platform.OS !== 'android') {
     phoneNumber = `telprompt:${phone}`;
   }
-  else  {
+  else {
     phoneNumber = `tel:${phone}`;
   }
   Linking.canOpenURL(phoneNumber)
-  .then(supported => {
-    if (!supported) {
-      Alert.alert('Phone number is not available');
-    } else {
-      return Linking.openURL(phoneNumber);
-    }
-  })
-  .catch(err => console.log(err));
+    .then(supported => {
+      if (!supported) {
+        Alert.alert('Phone number is not available');
+      } else {
+        return Linking.openURL(phoneNumber);
+      }
+    })
+    .catch(err => console.log(err));
 };
 
 const mapStyles = StyleSheet.create({
   map: {
-    flex: 3,
-    width: 600,
+    width: Drive.widgetLayout === "left" || Drive.widgetLayout === "right" ? '115%' : "210%",
     height: "100%",
     transform: [{ rotate: '-90deg' }]
   }
