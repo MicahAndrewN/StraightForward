@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Alert, TextInput } from 'react-native';
-
 
 const Navigation = ({ navigation }) => {
   const [selected, setSelected] = useState({});
@@ -78,7 +77,13 @@ const Navigation = ({ navigation }) => {
   }, );
 
   function checkWidgetLimit(){
-    if (Object.entries(selected).length > potentialWidgets){
+    let selectedCount = 0;
+    for (let i = 0; i < Object.entries(selected).length; ++i){
+      if (Object.entries(selected)[i][1] === true){
+        selectedCount += 1;
+      }
+    }
+    if (selectedCount > 5){
       Alert.alert("Too many widgets selected. You've selected " + Object.entries(selected).length + " widgets, while already having " + (5 - potentialWidgets) + " widgets, and StraightForward has a limit of 5 widgets. Please try again, or head to the 'Manage Widgets' page to deselect media or contacts widgets.")
       return false;
     }
@@ -87,7 +92,7 @@ const Navigation = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Navigate To</Text>
+      <Text style={{ fontSize: 24, fontWeight: 'bold', marginTop: 10, }}>Navigate To</Text>
       <FlatList
         data={theArray}
         renderItem={render}
@@ -103,7 +108,7 @@ const Navigation = ({ navigation }) => {
         style={styles.button2}
         onPress={() => handleWidgets(selected)}
       >
-      <Text style={{ fontWeight: 'bold', marginTop: 15, fontSize: 20 }}>Submit</Text>
+      <Text style={{ fontWeight: 'bold', marginTop: 15, fontSize: 20, color: '#ffffff' }}>Submit</Text>
       </TouchableOpacity>
     </View>
   );
@@ -117,25 +122,30 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#ebebeb",
     marginTop: 10,
     marginBottom: 10,
     height: 65,
-    width: 250,
-    borderRadius: 20,
+    width: 300,
+    borderRadius: 10,
   },
   button2: {
     alignItems: 'center',
-    backgroundColor: '#DDDDDD',
+    backgroundColor: '#5271FF',
     marginTop: 10,
+    color: 'ffffff',
+    textAlign: 'center',
     marginBottom: 10,
     height: 65,
-    width: 250,
-    borderRadius: 20,
+    width: 300,
+    borderRadius: 30,
   },
   text: {
     fontSize: 20,
     marginTop: 15,
+    textAlign: 'center',
+    alignSelf: 'center',
+
   },
   input: {
     alignItems: 'center',

@@ -53,17 +53,17 @@ const CustomizeHome = ({ navigation }) => {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: colorMode === "dark" ? "#000" : "#FFFFFF"
+      backgroundColor: colorMode === "dark" ? "#000000" : "#FFFFFF"
     },
     button: {
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#DDDDDD',
+      backgroundColor: colorMode === "dark" ? "#3d3d3d" : "#ebebeb",
       marginTop: 10,
       marginBottom: 10,
       height: 65,
-      width: 250,
-      borderRadius: 20,
+      width: 300,
+      borderRadius: 10,
     },
     text: {
       fontSize: 20,
@@ -82,15 +82,31 @@ const CustomizeHome = ({ navigation }) => {
       flex: 1,
       justifyContent: 'flex-end',
     },
+    manageButton: {
+      width: 200, 
+      justifyContent: 'space-around',
+      backgroundColor: '#ffb5b5',
+      alignSelf: 'center', 
+      textAlign: 'center',
+      height: 50, 
+      marginBottom: 20, 
+      borderRadius: 10,
+
+    },
+    manageText: {
+      alignSelf: 'center',
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
     drive: {
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#4285F4',
+      backgroundColor: '#5271FF',
       marginTop: 10,
       marginBottom: 10,
       height: 65,
-      width: 250,
-      borderRadius: 20,
+      width: 300,
+      borderRadius: 30,
       fontWeight: 'bold'
     },
     title2: {
@@ -159,7 +175,7 @@ const CustomizeHome = ({ navigation }) => {
       
       <View style={styles.driveButton}>
         <TouchableOpacity
-          style={styles.button}
+          style={styles.manageButton}
           onPress={() => navigation.navigate('Customize',
             {
               screen: 'ManageWidgets',
@@ -167,7 +183,7 @@ const CustomizeHome = ({ navigation }) => {
             })
           }
         >
-          <Text style={styles.text}>Manage Widgets</Text>
+          <Text style={styles.manageText}>Manage Widgets</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.drive}

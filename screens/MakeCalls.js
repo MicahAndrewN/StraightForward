@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, SafeAreaView, Alert } from 'react-native';
+import AuthContext from '../components/AuthContext';
 import { ColorMode } from "../navigation";
 
 
 const MakeCalls = ({ navigation }) => {
   const [selected, setSelected] = useState({});
+  const [nonContacts, setNonContacts] = useState(0);
+
   const [colorMode, setColorMode] = useContext(ColorMode);
   const [potentialWidgets, setPotentialWidgets] = useState(5);
   const data = [
@@ -22,6 +25,7 @@ const MakeCalls = ({ navigation }) => {
   }, []);
 
   const check = (item) => {
+    console.log(selected)
     setSelected(test => (test[item] ? { ...test, [item]: false } : { ...test, [item]: true }));
   }
   const render = ({ item }) => {
@@ -37,6 +41,7 @@ const MakeCalls = ({ navigation }) => {
   const handleWidgets = () => {
     if (checkWidgetLimit()){
       Object.keys(selected).forEach(function (key, index) {
+        console.log("selected key is", selected[key])
         if (selected[key]) {
           fetch('http://127.0.0.1:5000/addwidget', {
             method: "POST",
@@ -74,25 +79,26 @@ const MakeCalls = ({ navigation }) => {
     },
     button: {
       alignItems: 'center',
-      backgroundColor: colorMode === "dark" ? "#000" : "#FFFFFF",
+      backgroundColor: colorMode === "dark" ? "#3d3d3d" : "#ebebeb",
       marginTop: 10,
       marginBottom: 10,
       height: 65,
-      width: 250,
-      borderRadius: 20,
+      width: 300,
+      borderRadius: 10,
     },
     submitButton: {
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#4285F4',
+      backgroundColor: '#5271FF',
       marginTop: 10,
       marginBottom: 10,
       height: 65,
-      width: 250,
-      borderRadius: 20,
+      width: 300,
+      borderRadius: 30,
     },
     text: {
       fontSize: 24,
+      marginTop: 18,
       color: colorMode === "dark" ? "#FFFFFF" : "#000"
     },
     submitText: {
@@ -102,6 +108,7 @@ const MakeCalls = ({ navigation }) => {
     },
     title: {
       fontSize: 24,
+      marginTop: 20,
       fontWeight: 'bold',
       color: colorMode === "dark" ? "#FFFFFF" : "#000"
     },
@@ -119,6 +126,7 @@ const MakeCalls = ({ navigation }) => {
             }
           }
           setPotentialWidgets(5 - nonContactsWidgets);
+          setNonContacts(nonContactsWidgets)
         }
         else{
           setPotentialWidgets(5);
@@ -133,8 +141,14 @@ const MakeCalls = ({ navigation }) => {
   }, );
 
   function checkWidgetLimit(){
-    if (Object.entries(selected).length > potentialWidgets){
-      Alert.alert("Too many widgets selected. You've selected " + Object.entries(selected).length + " widgets, while already having " + (5 - potentialWidgets) + " widgets, and StraightForward has a limit of 5 widgets. Please try again, or head to the 'Manage Widgets' page to deselect media or contacts widgets.")
+    let selectedCount = 0;
+    for (let i = 0; i < Object.entries(selected).length; ++i){
+      if (Object.entries(selected)[i][1] === true){
+        selectedCount += 1;
+      }
+    }
+    if (selectedCount > 5){
+      Alert.alert("Too many widgets selected. You've selected " + (selectedCount - nonContacts) + " widgets (while already having " + nonContacts + " widgets in other categories) and StraightForward has a limit of 5 widgets. Please try again, or head to the 'Manage Widgets' page to deselect media or contacts widgets.")
       return false;
     }
     return true;
