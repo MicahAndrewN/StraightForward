@@ -1,7 +1,7 @@
 """This is a generic handler that will write to and read from database and allow frontend to print result."""
 import flask # run `pip install Flask` if this is not found
 from flask import Flask, request, jsonify
-# import flask_cors
+#import flask_cors
 import json
 import requests
 import os
@@ -22,13 +22,15 @@ def handle_login():
     return jsonify({'status_code': 200}), 200
 
 @app.route("/account", methods=['POST'])
-# @flask_cors.cross_origin
+#@flask_cors.cross_origin
 def handle_newaccount():
     # creates account and logs in user
     username = request.json.get('username')
     flask.session['username'] = request.json.get('username')
     print('logged in user is ', flask.session['username'])
-    requests.post(url=f"https://straightforward-89f53-default-rtdb.firebaseio.com/users", data=username)
+    resp = requests.put(url=f"https://straightforward-89f53-default-rtdb.firebaseio.com/users/{username}.json", data=json.dumps({'name': username, 'widgets': [{'type': "navigation", 'name': 'University Of Michigan'}]}))
+    print(resp)
+    #requests.post(url=f"https://straightforward-89f53-default-rtdb.firebaseio.com/users/{getLogname()}/widgets.json", data = [])
     return jsonify({'status_code': 200}), 200
 
 @app.route("/", methods=['GET'])
@@ -47,6 +49,7 @@ def get_widget():
         resp = requests.get(url=f"https://straightforward-89f53-default-rtdb.firebaseio.com/users/{getLogname()}/widgets.json")
     except Exception:
         return jsonify({'status_code': 200}), 200
+    print
     return resp.json()
 
 @app.route("/addwidget", methods=['POST'])
