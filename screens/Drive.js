@@ -22,7 +22,8 @@ const Drive = ({ navigation }) => {
   const [names, setNames] = useState([]);
   const [contactWidgets, setContactWidgets] = useState([]);
   const [musicWidgets, setMusicWidgets] = useState([]);
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState('');
+  const [switchDestination, setSwitchDestination] = useState(false);
   const [colorMode, setColorMode] = useContext(ColorMode);
   const [widgetLayout, setWidgetLayout] = useContext(WidgetLayout);
 
@@ -154,12 +155,12 @@ const Drive = ({ navigation }) => {
           console.log(item['artistID'])
         })
     }
-    setPlaying(true);
+    setPlaying(item['name']);
   }
 
   function pauseSpotify(){
     SpotifyApi.pause();
-    setPlaying(false);
+    setPlaying('');
   }
 
   console.log("names", names)
@@ -203,48 +204,90 @@ const Drive = ({ navigation }) => {
       fontWeight: 'bold',
       textAlign: 'center'
     },
+    callButton: {	
+      alignItems: 'center',	
+      justifyContent: 'center',	
+      backgroundColor: '#afdbc2',	
+      marginVertical: 30,	
+      height: 65,	
+      width: 140,	
+      borderRadius: 10,	
+    },	
+    musicButton: {	
+      alignItems: 'center',	
+      justifyContent: 'center',	
+      backgroundColor: '#a1d3e3',	
+      marginVertical: 30,	
+      height: 65,	
+      width: 140,	
+      borderRadius: 10,	
+    },
   });
 
   const render = ({ item }) => {
-    var widgetType = ''
     if (item['type'] == 'contacts') {
-      widgetType = 'phone'
-    }
-    else if (item['type'] == 'navigation') {
-      widgetType = 'map'
-    }
-    else {
-      widgetType = 'music'
-    }
-    var text = item['type'] == 'contacts' ? 'Call' : 'Play';
-    var text = item['type'] == 'navigation' ? 'Map to' : 'Play';
-    
-    return(
-      <TouchableOpacity
-          style={styles.button}
-          onPress={() => console.log("Call")}
-        >
-        <Text 
-          style={styles.buttonText}
-          numberOfLines={2}
-          adjustsFontSizeToFit={true}
-        >
-          <FontAwesome name={widgetType} size={20} color="black" /> {text} {item['name']}
-        </Text>
-      </TouchableOpacity>
-    )
-  }
-
-  /*else if (names[i]['type'] == 'address'){
-      temp_directions.push(
+      return (
         <TouchableOpacity
-          style={styles.button}
-          onPress={() => console.log("Call")}
-        >
-          <Text style={styles.buttonText}><FontAwesome name="map" size={20} color="black" /> {names[i]['name']}</Text>
+            style={styles.callButton}
+            onPress={() => console.log("Call")}
+          >
+          <Text 
+            style={styles.buttonText}
+            numberOfLines={2}
+            adjustsFontSizeToFit={true}
+          >
+            <FontAwesome name='phone' size={20} color="black" /> Call {item['name']}
+          </Text>
         </TouchableOpacity>
       )
-    }*/
+    }
+    else if (item['type'] == 'navigation') {
+      return (
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+              destination = item['name'];
+              setSwitchDestination(!switchDestination);
+            }
+          }
+        >
+          <Text 
+            style={styles.buttonText}
+            numberOfLines={2}
+            adjustsFontSizeToFit={true}
+          >
+            <FontAwesome name="map" size={20} color="black" /> Map to {item['name']}
+          </Text>
+        </TouchableOpacity>
+      )
+    }
+    else {
+      return (
+        <TouchableOpacity
+          style={styles.musicButton}
+          onPress={() => playing ? pauseSpotify() : playSpotify(item)}
+        >
+          {
+            playing == item['name'] ? 
+            <Text 
+              style={styles.buttonText}
+              numberOfLines={2}
+              adjustsFontSizeToFit={true}
+            >
+              <FontAwesome name="music" size={20} color="black" /> Pause {item['name']}
+            </Text> : 
+            <Text 
+              style={styles.buttonText}
+              numberOfLines={2}
+              adjustsFontSizeToFit={true}
+            >
+              <FontAwesome name="music" size={20} color="black" /> Play {item['name']}
+            </Text>
+          }
+        </TouchableOpacity>
+      )
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>
