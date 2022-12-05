@@ -1,6 +1,6 @@
 """This is a generic handler that will write to and read from database and allow frontend to print result."""
 import flask # run `pip install Flask` if this is not found
-from flask import Flask, request, session, jsonify
+from flask import Flask, request, jsonify
 # import flask_cors
 import json
 import requests
