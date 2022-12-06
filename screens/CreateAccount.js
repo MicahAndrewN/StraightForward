@@ -53,7 +53,7 @@ const CreateAccount = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <View><Text style={{ fontSize: 30, marginTop: 20, fontWeight: 'bold' }}>Create New Account</Text></View>
+            <View><Text style={{ fontSize: 30, marginTop: 100, fontWeight: 'bold' }}>Create A New Account</Text></View>
             <View style={styles.login}>
 
                 {blankField ? <Text style={{fontSize: 15, color: 'red'}}>Username or Password cannot be blank</Text>: <></>}
@@ -82,7 +82,14 @@ const CreateAccount = ({ navigation }) => {
                     style={styles.loginBtn}  
                     onPress={() => createAccount()}
                 >
-                    <Text style={{ fontSize: 20, fontWeight: "bold", color: "#FFF" }}>Create Account</Text>
+                    <Text style={{ fontSize: 20, fontWeight: "bold", color: "#FFF" }}>Join</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                    style={{ fontSize: 20, fontWeight: "bold", color: "#000" }}  
+                    onPress={() => navigation.navigate("Login")}
+                >
+                    <Text style={{ fontSize: 16, marginTop: 20, fontWeight: "bold", color: "#3d3d3d" }}>I Already Have An Account</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -111,7 +118,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#DDD",
         width: 230,
         height: 45,
-        marginBottom: 20,
+        marginBottom: 10,
+        borderRadius: 10,
 
         alignItems: "center",
     },

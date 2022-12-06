@@ -63,18 +63,23 @@ def postwidget():
         resp_json = resp_json.items()
         resp_json = list(resp_json)
     if resp_json:
-        print("resp json is", resp_json)
-        print("req is", req)
         for item in resp_json:
-            print("item is", item)
-            if item[1]['type'] == 'contacts' and item[1]['name'] == req['name']:
-                return jsonify({'status_code': 304}), 304
-            if item[1]['type'] == 'music' and item[1]['name'] == req['name']:
-                return jsonify({'status_code': 304}), 304
-            if item[1]['type'] == 'navigation' and item[1]['name'] == req['name']:
-                return jsonify({'status_code': 304}), 304
+            if not isinstance(item, tuple):
+                if item['type'] == 'contacts' and item['name'] == req['name']:
+                    return jsonify({'status_code': 304}), 304
+                if item['type'] == 'music' and item['name'] == req['name']:
+                    return jsonify({'status_code': 304}), 304
+                if item['type'] == 'navigation' and item['name'] == req['name']:
+                    return jsonify({'status_code': 304}), 304
+            else:
+                if item[1]['type'] == 'contacts' and item[1]['name'] == req['name']:
+                    return jsonify({'status_code': 304}), 304
+                if item[1]['type'] == 'music' and item[1]['name'] == req['name']:
+                    return jsonify({'status_code': 304}), 304
+                if item[1]['type'] == 'navigation' and item[1]['name'] == req['name']:
+                    return jsonify({'status_code': 304}), 304
 
-    print(req)
+    print("returning 7, 200 code")
 
     cmd = f"curl -X POST https://straightforward-89f53-default-rtdb.firebaseio.com/users/{getLogname()}/widgets.json -d '{json.dumps(req)}' -H 'Content-Type: application/json'"
     os.system(cmd)

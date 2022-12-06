@@ -24,6 +24,9 @@ const AuthStack = () => {
       <Stack.Screen 
         name="CreateAccount" 
         component={CreateAccount}
+        options={{ 
+          headerShown: false,
+        }}
       />
       <Stack.Screen
         name="CustomizeHome"
